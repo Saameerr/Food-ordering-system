@@ -9,6 +9,7 @@ const Login = () => {
         <div className="col-8">
           <img src="img2.png" alt="" className="img" />
         </div>
+        
         {/*login form side*/}
         <div className="col-4">
           <img src="logo1.png" alt="" className="login_logo" />
