@@ -65,7 +65,7 @@ const Login = () => {
             {/*Register */}
             <div style={{marginLeft:"8rem", marginTop:"1rem"}}>
               <p>Not Registerd yet?
-              <a href="#" style={{ textDecoration: "none"}}> Register</a></p>
+              <a href="/Register" style={{ textDecoration: "none"}}> Register</a></p>
             </div>
           </form>
         </div>
