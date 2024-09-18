@@ -1,15 +1,21 @@
-import React from 'react'
-import './App.css'
-import Navbar from './components/Navbar/Navbar'
+import React, { useState } from "react";
+import "./App.css";
+import Navbar from "./components/Navbar/Navbar.jsx";
+import Carousel from "./components/Carousel/Carousel.jsx";
+import Login from "./components/Login/Login.jsx";
 
-function App() {
+const App = () => {
+  const [showLogin, setShowLogin] = useState(false);
+
   return (
     <>
-    <div className='app'>
-      <Navbar/>
-    </div>
+      {showLogin ? <Login setShowLogin={setShowLogin} /> : <></>}
+      <div className="app">
+        <Navbar setShowLogin={setShowLogin} />
+        <Carousel />
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

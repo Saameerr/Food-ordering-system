@@ -1,0 +1,52 @@
+.carousel {
+  width: 100%; /* Full width of the container */
+  overflow: hidden; /* Hide images that are outside the viewport */
+  position: relative; /* Position relative to allow for absolute positioning */
+}
+
+.carousel-container {
+  display: flex; /* Display images side by side */
+  animation: slide 30s ease-in-out infinite; /* Smooth, continuous animation with pauses */
+}
+
+.carousel-image {
+  flex: 0 0 auto; /* Prevent the image from stretching or shrinking */
+  width: 78vw; /* Each image takes up the full viewport width */
+  height: auto; /* Maintain the aspect ratio */
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(0); /* Pause on the first image */
+  }
+  20% {
+    transform: translateX(-100%); /* Move to the second image */
+  }
+  35% {
+    transform: translateX(-100%); /* Pause on the second image */
+  }
+  40% {
+    transform: translateX(-200%); /* Move to the third image */
+  }
+  55% {
+    transform: translateX(-200%); /* Pause on the third image */
+  }
+  60% {
+    transform: translateX(-300%); /* Move to the fourth image */
+  }
+  75% {
+    transform: translateX(-300%); /* Pause on the fourth image */
+  }
+  80% {
+    transform: translateX(-400%); /* Move to the fifth image */
+  }
+  95% {
+    transform: translateX(-400%); /* Pause on the fifth image */
+  }
+  100% {
+    transform: translateX(-500%); /* Move to the sixth image */
+  }
+}

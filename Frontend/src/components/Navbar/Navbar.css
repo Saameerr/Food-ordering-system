@@ -3,6 +3,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+   
 }
 .navbar .logo{
     width: 100px;
@@ -48,6 +50,7 @@
     border-radius: 5px;
     top: -8px;
     right: -8px;
+    
 
 }
 .navbar button{
