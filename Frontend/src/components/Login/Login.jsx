@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { RxCross2 } from "react-icons/rx";
 import "./Login.css";
 
 const Login = ({ setShowLogin }) => {
@@ -8,7 +9,7 @@ const Login = ({ setShowLogin }) => {
       <form className="login-container">
         <div className="login-title">
           <h2>{currentState}</h2>
-          <img onClick={() => setShowLogin(false)} src={"/crossicon.png"} />
+          <span><RxCross2 onClick={() => setShowLogin(false)} style={{height:"25px", width:"25px", cursor:"pointer"}}/></span>
         </div>
 
         <div className="login-inputs">

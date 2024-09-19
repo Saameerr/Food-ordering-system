@@ -8,8 +8,8 @@ const App = () => {
   const [showLogin, setShowLogin] = useState(false);
 
   return (
-    <>
-      {showLogin ? <Login setShowLogin={setShowLogin} /> : <></>}
+    <>¬
+      {showLogin ? <Login setShowLogin={setShowLogin} /> : null}
       <div className="app">
         <Navbar setShowLogin={setShowLogin} />
         <Carousel />
