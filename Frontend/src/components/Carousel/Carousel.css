@@ -11,7 +11,7 @@
 
 .carousel-image {
   flex: 0 0 auto; /* Prevent the image from stretching or shrinking */
-  width: 80vw; /* Each image takes up the full viewport width */
+  width: 79.1vw; /* Each image takes up the full viewport width */
   height: 30vw; /* Maintain the aspect ratio */
   border-radius: 50px;
 }

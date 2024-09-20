@@ -33,17 +33,23 @@ const Navbar = ({ setShowLogin }) => {
           Menu
         </li>
         <li
-          onClick={() => setMenu("Mobile-app")}
+          onClick={() =>{
+            setMenu("Mobile-app");
+            document.getElementById("app-download").scrollIntoView({ behavior: "smooth" });
+          }}
           className={menu === "Mobile-app" ? "active" : ""}
         >
           Mobile-app
         </li>
-        <li
-          onClick={() => setMenu("Contact us")}
-          className={menu === "Contact us" ? "active" : ""}
-        >
-          Contact us
-        </li>
+       <li
+  onClick={() => {
+    setMenu("Contact us");
+    document.getElementById("footer").scrollIntoView({ behavior: "smooth" });
+  }}
+  className={menu === "Contact us" ? "active" : ""}
+>
+  Contact us
+</li>
       </ul>
 
       {/* Search Icon */}
