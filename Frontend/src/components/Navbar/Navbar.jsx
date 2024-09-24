@@ -27,7 +27,10 @@ const Navbar = ({ setShowLogin }) => {
           Home
         </li>
         <li
-          onClick={() => setMenu("Menu")}
+          onClick={() =>{
+            setMenu("Menu");
+            document.getElementById("explore-menu").scrollIntoView({ behavior: "smooth" });
+          }}
           className={menu === "Menu" ? "active" : ""}
         >
           Menu
