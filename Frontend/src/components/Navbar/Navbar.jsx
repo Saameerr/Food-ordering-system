@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Navbar.css";
 import { IoSearch } from "react-icons/io5";
 import { FaShoppingCart } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { StoreContext } from "../../Context/StoreContext";
 
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("Home");
@@ -11,48 +13,60 @@ const Navbar = ({ setShowLogin }) => {
     setIsSearchExpanded(!isSearchExpanded);
   };
 
+  const { getTotalCartAmount } = useContext(StoreContext);
+
   return (
     <div className="navbar">
       {/* logo */}
 
-      <img src="logo.png" alt="" className="logo" />
+      <Link to="/">
+        <img src="logo.png" alt="" className="logo" />
+      </Link>
 
       {/* Navigation Menu */}
 
       <ul className="navbar-menu">
+        <Link to="/home">
+          <li
+            onClick={() => setMenu("Home")}
+            className={menu === "Home" ? "active" : ""}
+          >
+            Home
+          </li>
+        </Link>
         <li
-          onClick={() => setMenu("Home")}
-          className={menu === "Home" ? "active" : ""}
-        >
-          Home
-        </li>
-        <li
-          onClick={() =>{
+          onClick={() => {
             setMenu("Menu");
-            document.getElementById("explore-menu").scrollIntoView({ behavior: "smooth" });
+            document
+              .getElementById("explore-menu")
+              .scrollIntoView({ behavior: "smooth" });
           }}
           className={menu === "Menu" ? "active" : ""}
         >
           Menu
         </li>
         <li
-          onClick={() =>{
+          onClick={() => {
             setMenu("Mobile-app");
-            document.getElementById("app-download").scrollIntoView({ behavior: "smooth" });
+            document
+              .getElementById("app-download")
+              .scrollIntoView({ behavior: "smooth" });
           }}
           className={menu === "Mobile-app" ? "active" : ""}
         >
           Mobile-app
         </li>
-       <li
-  onClick={() => {
-    setMenu("Contact us");
-    document.getElementById("footer").scrollIntoView({ behavior: "smooth" });
-  }}
-  className={menu === "Contact us" ? "active" : ""}
->
-  Contact us
-</li>
+        <li
+          onClick={() => {
+            setMenu("Contact us");
+            document
+              .getElementById("footer")
+              .scrollIntoView({ behavior: "smooth" });
+          }}
+          className={menu === "Contact us" ? "active" : ""}
+        >
+          Contact us
+        </li>
       </ul>
 
       {/* Search Icon */}
@@ -75,10 +89,12 @@ const Navbar = ({ setShowLogin }) => {
         {/* Cart Icon */}
 
         <div className="navbar-shopping-cart">
-          <FaShoppingCart
-            style={{ height: "25px", width: "25px", cursor: "pointer" }}
-          />
-          <div className="dot"></div>
+          <Link to="/cart">
+            <FaShoppingCart
+              style={{ height: "25px", width: "25px", cursor: "pointer" }}
+            />
+          </Link>
+          <div className={getTotalCartAmount() === 0 ? "" : "dot"}></div>
         </div>
 
         {/* Signin Button */}
