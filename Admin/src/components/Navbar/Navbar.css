@@ -1,0 +1,25 @@
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 4%;
+}
+.navbar .logo{
+    width: 90px;
+    transition: transform 0.3s ease-in-out;
+}
+.navbar .logo:hover {
+    transform: scale(1.1); /* Logo enlarges slightly on hover */
+}
+.navbar .profile{
+    width: 60px;
+    border-radius: 50%;
+    border: 2px solid #fff; 
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.navbar .profile:hover {
+    transform: scale(1.05); /* Profile image enlarges slightly on hover */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Increased shadow on hover */
+}

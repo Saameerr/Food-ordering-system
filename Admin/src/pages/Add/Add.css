@@ -1,0 +1,132 @@
+/* Global Styles */
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+.add {
+  width: 70%;
+  margin-left: max(5vw, 25px);
+  margin-top: 30px;
+  font-size: 18px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Layout */
+.add form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Reduced gap for more compact design */
+}
+
+/* Image Upload Section */
+.add-img-upload {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  cursor: pointer;
+}
+
+.img {
+  width: 100px;
+  height: 100px;
+  padding: 5px;
+  border: 2px dashed #aaa;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.3s ease;
+}
+
+.img:hover {
+  border-color: #6c63ff;
+}
+
+.image-preview {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Product Name & Description */
+.add-product-name, .add-product-description {
+  width: 100%; 
+  margin-top: 10px;/* Ensure fields use available width */
+}
+
+.add-product-name input, .add-product-description textarea {
+  width: 100%;
+  padding: 8px; /* Reduce padding for compactness */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #fff;
+}
+
+/* Category and Price */
+.add-category-price {
+  display: flex;
+}
+
+.add-category-price select, .add-category-price input {
+  width: 100%; /* Ensure dropdowns and inputs take full space on smaller screens */
+  padding: 8px; /* Reduced padding */
+  max-width: 100px; /* Constrain width to fit better */
+}
+
+/* Add Button */
+.add-btn {
+  max-width: 120px;
+  padding: 10px;
+  background-color: #6c63ff;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.add-btn:hover {
+  background-color: #5a53e0;
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .add {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 80vh; /* Ensure the form stays within the viewport */
+  }
+
+  .add-category-price {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .add-product-name, .add-product-description {
+    width: 100%;
+  }
+
+  .add-img-upload {
+    width: 100px;
+    height: 100px;
+  }
+
+  .img, .image-preview {
+    width: 80px;
+    height: 80px;
+  }
+
+  .add-btn {
+    width: 100%;
+    max-width: none;
+  }
+}
