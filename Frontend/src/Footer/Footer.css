@@ -22,7 +22,7 @@
 }
 .footer-content-left li, .footer-content-right li, .footer-content-center li{
 list-style: none;
-margin-bottom: 10px;
+margin-top: 10px;
 }
 .footer-content-right h3, .footer-content-center h3{
     color: white;
