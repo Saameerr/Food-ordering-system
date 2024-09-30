@@ -32,6 +32,18 @@ const FoodItem = ({ id, name, price, description, image }) => {
             />
           </div>
         )}
+
+        {/* Description overlay (only on hover) */}
+        <div className="food-item-description-hover">
+          <p>
+            <p>
+              A refreshing blend of crisp lettuce, cucumbers, and fresh herbs,
+              complemented by a tangy lemon vinaigrette and a sprinkle of seeds
+              for added crunch.
+            </p>
+          </p>
+        </div>
+
         <div className="food-item-info">
           <div className="food-item-name-rating">
             <p>{name}</p>

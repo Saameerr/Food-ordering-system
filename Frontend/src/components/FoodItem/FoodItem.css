@@ -68,5 +68,22 @@
     cursor: pointer;
 }
 
-
+.food-item-description-hover {
+    position: absolute;
+    top: 0; /* Stick it to the top */
+    left: 0;
+    width: 100%;
+    background-color: rgba(201, 242, 244, 0.6); /* Semi-transparent background */
+    color: rgb(7, 6, 6);
+    padding: 10px;
+    text-align: center;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease; /* Smooth transition */
+    backdrop-filter: blur(5px); /* Blur effect */
+    z-index: 1; /* Ensure it's on top of the image */
+  }
+  
+  .food-item-img-container:hover .food-item-description-hover {
+    opacity: 5; /* Show on hover */
+  }
   
