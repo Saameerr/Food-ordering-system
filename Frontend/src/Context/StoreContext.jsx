@@ -29,6 +29,20 @@ const StoreContextProvider = (props) => {
     return totalAmount;
   };
 
+  const getTotalItemsInCart = () => {
+    let totalItems = 0;
+    for (const itemId in cartItems) {
+      // Check if the quantity of the item is greater than 0
+      if (cartItems[itemId] > 0) {
+        // Accumulate the total quantity
+        totalItems += cartItems[itemId];
+      }
+    }
+    
+    return totalItems;
+  };
+  
+
   const contextValue = {
     food_list,
     cartItems,
@@ -36,6 +50,7 @@ const StoreContextProvider = (props) => {
     addToCart,
     removeFromCart,
     getTotalCartAmount,
+    getTotalItemsInCart
   };
   return (
     <StoreContext.Provider value={contextValue}>

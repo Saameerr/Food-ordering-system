@@ -1,0 +1,31 @@
+.company{
+    margin-top: 55px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f8f9fa;
+    padding: 5px;
+    border-radius: 15px;
+ 
+}
+.company p {
+     font-family:  'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+     margin-top: 20px;
+}
+.content{
+    
+    margin: 10px;
+}
+
+/* Add media query for responsive design */
+@media (max-width: 600px) {
+    .company {
+        padding: 20px; /* Reduce padding on smaller screens */
+    }
+
+    .company h2 {
+        font-size: 2rem; /* Smaller heading on mobile */
+    }
+
+    .company p {
+        font-size: 1rem; /* Smaller paragraph text on mobile */
+    }
+}

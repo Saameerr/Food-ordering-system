@@ -2,6 +2,7 @@
   width: 100%; /* Full width of the container */
   overflow: hidden; /* Hide images that are outside the viewport */
   position: relative; /* Position relative to allow for absolute positioning */
+  margin-top: 4em;
 }
 
 .carousel-container {

@@ -1,2 +1,5 @@
-
-   
+/* Ensure the content starts below the navbar */
+.app{
+    padding-top: 80px;
+    margin: 0;
+}

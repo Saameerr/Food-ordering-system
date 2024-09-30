@@ -13,7 +13,7 @@ const Navbar = ({ setShowLogin }) => {
     setIsSearchExpanded(!isSearchExpanded);
   };
 
-  const { getTotalCartAmount } = useContext(StoreContext);
+  const { getTotalItemsInCart} = useContext(StoreContext);
 
   return (
     <div className="navbar">
@@ -26,14 +26,18 @@ const Navbar = ({ setShowLogin }) => {
       {/* Navigation Menu */}
 
       <ul className="navbar-menu">
-        <Link to="/home">
-          <li
-            onClick={() => setMenu("Home")}
-            className={menu === "Home" ? "active" : ""}
-          >
-            Home
-          </li>
-        </Link>
+      <li
+          onClick={() => {
+            setMenu("Home");
+            document
+              .getElementById("home")
+              .scrollIntoView({ behavior: "smooth" });
+          }}
+          className={menu === "Home" ? "active" : ""}
+        >
+          Home
+        </li>
+        
         <li
           onClick={() => {
             setMenu("Menu");
@@ -89,13 +93,20 @@ const Navbar = ({ setShowLogin }) => {
         {/* Cart Icon */}
 
         <div className="navbar-shopping-cart">
-          <Link to="/cart">
-            <FaShoppingCart
-              style={{ height: "25px", width: "25px", cursor: "pointer" }}
-            />
-          </Link>
-          <div className={getTotalCartAmount() === 0 ? "" : "dot"}></div>
-        </div>
+  <Link to="/cart">
+    <FaShoppingCart
+      style={{ height: "25px", width: "25px", cursor: "pointer" }}
+    />
+  </Link>
+  
+  {/* Display the number of items in the cart */}
+  {getTotalItemsInCart() > 0 && (
+    <div className="cart-item-count">
+      {getTotalItemsInCart()}
+    </div>
+  )}
+</div>
+
 
         {/* Signin Button */}
 

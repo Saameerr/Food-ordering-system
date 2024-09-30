@@ -1,206 +1,114 @@
-.cart {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    animation: fadeIn 0.5s ease-in-out; /* Animation for the whole cart */
-  }
-  
-  .cart-items {
-    width: 100%;
-    margin-top: 20px;
-  }
-  
-  .cart-itemstitle,
-  .cart-itemsitem {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr;
-    align-items: center;
-    text-align: center;
-    padding: 10px 0;
-  }
-  
-  .cart-itemstitle {
-    font-weight: bold;
-    font-size: 18px;
-    border-bottom: 2px solid #954a4a;
-  }
-  
-  .cart-itemsitem {
-    border-bottom: 1px solid #ddd;
-    animation: fadeInUp 0.5s ease-in-out; /* Animation for individual items */
-  }
-  
-  .cart-itemsitem img {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 5px;
-  }
-  
-  .cart-itemsitem p {
-    margin: 0;
-    padding: 5px;
-  }
-  
-  .cart-itemsitem p:nth-child(2) {
-    text-align: left;
-    padding-left: 15px;
-  }
-  
-  hr {
-    border: 0.5px solid #ddd;
-  }
-  
-  .cart p {
-    color: #333;
-  }
-  
-  .cart .remove-button {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .cart .remove-button:hover {
-    background-color: #c0392b;
-  }
-  .removecart{
-    cursor: pointer;
-  }
-  
-  
-  /* Fade-in animation for the cart */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  
-  /* Fade-in up animation for cart items */
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .cart-container {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 800px;
-    margin: 20px auto;
-    flex-wrap: wrap; /* Allows wrapping for small screens */
-  }
-  
-  .cart-bottom, .cart-promocode {
-    flex: 1;
-    padding: 20px;
-    border-radius: 10px;
-    margin: 0 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .cart-total h2 {
-    font-size: 20px;
-    margin-bottom: 15px;
-    color: #333;
-    text-align: left;
-  }
-  
-  .cart-totaldetail {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    font-size: 16px;
-    color: #555;
-  }
-  
-  .cart-totaldetail p, .cart-totaldetail b {
-    margin: 0;
-  }
-  
-  .cart-totaldetail hr {
-    border: none;
-    border-top: 1px solid #e0e0e0;
-    margin: 10px 0;
-  }
-  
-  .cart-bottom button {
-    background-color: #ff6b6b;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    width: auto;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .cart-bottom button:hover {
-    background-color: #ff4949;
-  }
-  
-  .cart-promocode {
-    text-align: left;
-  }
-  
-  .cart-promocode p {
-    font-size: 16px;
-    color: #777;
-    margin-bottom: 15px;
-  }
-  
-  .cart-promocodeinput {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .cart-promocodeinput input {
-    padding: 10px;
-    width: 70%;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 14px;
-  }
-  
-  .cart-promocodeinput button {
-    background-color: #4caf50;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    width: auto;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .cart-promocodeinput button:hover {
-    background-color: #43a047;
-  }
-  
-
+.cart-page {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  min-height: 10vh; 
    
+}
+.cart {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.cart-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cart-items {
+  width: 70%;
+  margin-top: 20px;
+}
+
+.cart-itemstitle,
+.cart-itemsitem {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 1fr 0.5fr;
+  align-items: center;
+  text-align: center;
+  padding: 10px 0;
+}
+
+.cart-itemstitle {
+  font-weight: bold;
+  font-size: 20px;
+  border-bottom: 3px solid #ff6b6b;
+}
+
+.cart-itemsitem {
+  border-bottom: 1px solid #ddd;
+  animation: fadeInUp 0.5s ease-in-out;
+  font-size: 16px; /* Set font size for cart items */
+}
+
+.cart-itemsitem img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease; /* Transition for image hover effect */
+}
+
+.cart-itemsitem img:hover {
+  cursor: pointer;
+  transform: scale(1.1); /* Scale image on hover */
+}
+
+.cart-itemsitem .removecart {
+  color: darkred; /* Color for remove button */
+  cursor: pointer; /* Change cursor to pointer */
+  font-weight: bold; /* Make it bold */
+  transition: color 0.3s ease; /* Transition for color change */
+}
+
+.cart-itemsitem .removecart:hover {
+  color: red; /* Dark red on hover */
+  font-size: 20px;
+}
+
+.cart-bottom {
+  width: 25%;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cart-total {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.cart-totaldetail {
+  display: flex;
+  padding: 5px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+.cart-totaldetail .price {
+  margin-right: 50px;
+}
+
+.cart-bottom button {
+  color: #fff;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cart-bottom button:hover {
+  background-color: #ff4949; /* Darker shade on hover */
+}
