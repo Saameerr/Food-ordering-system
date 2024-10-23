@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation} from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar.jsx";
 import Login from "./components/Login/Login.jsx";
@@ -15,7 +15,10 @@ import C_privacy from "./components/Company/C_privacy.jsx"
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
+  const location = useLocation();  // Get current route
 
+  // Define the routes where the footer should NOT be displayed
+  const hideFooterRoutes = ['/cart', '/order'];
   return (
     <>
       {showLogin ? <Login setShowLogin={setShowLogin} /> : null}
@@ -24,6 +27,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="home" element={<Home />} />
+          <Route path="footer" element={<Footer />} />
 
           <Route path="cart" element={<Cart />} />
           <Route path="order" element={<PlaceOrder />} />
@@ -33,11 +37,13 @@ const App = () => {
           <Route path="c_delivery" element={<C_delivery />} />
           <Route path="c_privacy" element={<C_privacy />} />
 
-
           
         </Routes>
+
+         {/* Conditionally render Footer only on non-Cart pages */}
+         {!hideFooterRoutes.includes(location.pathname) && <Footer />} 
+
       </div>
-      <Footer />
     </>
   );
 };

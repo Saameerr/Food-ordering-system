@@ -30,17 +30,17 @@ const Footer = () => {
           </p>
 
           <div className="footer-social-icons">
-            <a href="https://www.facebook.com/" className="facebook">
+            <a href="https://www.facebook.com/"  className="facebook" target="_blank">
               <FaFacebook
                 style={{ height: "30px", width: "30px", marginRight: "20px" }}
               />
             </a>
-            <a href="https://www.instagram.com/">
+            <a href="https://www.instagram.com/" target="_blank">
               <FaInstagramSquare
                 style={{ height: "30px", width: "30px", marginRight: "20px" }}
               />
             </a>
-            <a href="https://www.twitter.com/">
+            <a href="https://www.twitter.com/" target="_blank"> 
               <FaTwitter style={{ height: "30px", width: "30px" }} />
             </a>
           </div>
@@ -64,7 +64,7 @@ const Footer = () => {
               <IoMdCall /> 02100000
             </li>
             <li>
-              <a href="https://www.gmail.com/">
+              <a href="https://www.gmail.com/" target="_blank">
                 <MdEmail /> KhajaBhayo@gmail.com
               </a>
             </li>

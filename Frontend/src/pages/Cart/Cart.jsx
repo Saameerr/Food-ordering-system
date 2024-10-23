@@ -34,12 +34,12 @@ const Cart = () => {
                   <p>Remove</p>
                 </div>
                 <br />
-                <hr />
 
                 {/* Display total items in the cart */}
                 <div className="cart-total-items">
                   <h4>Total Items: {getTotalItemsInCart()}</h4>
                 </div>
+                
 
                 {food_list.map((items, index) => {
                   if (cartItems[items._id] > 0) {
