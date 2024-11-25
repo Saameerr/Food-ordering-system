@@ -18,16 +18,6 @@ const Footer = () => {
             src="logo.png"
             alt=""
           />
-          <p>
-            {/* Welcome to KHAJABHAYO – Your Ultimate Food Destination! At
-            Khajavayo, we bring the best of flavors right to your doorstep.
-            Craving a quick bite or a hearty meal? We've got you covered! Our
-            platform offers an extensive range of cuisines, handpicked from the
-            finest local restaurants, ensuring every meal is a celebration of
-            taste. Whether you're in the mood for comfort food or want to
-            explore new culinary experiences, Khajabhayo makes ordering simple,
-            fast, and delightful. */}
-          </p>
 
           <div className="footer-social-icons">
             <a href="https://www.facebook.com/"  className="facebook" target="_blank">
@@ -58,14 +48,14 @@ const Footer = () => {
           <h3>GET IN TOUCH</h3>
           <ul>
             <li>
-              <IoMdCall /> 98000000000
+              <IoMdCall  style={{marginLeft:"-5px"}} /> 98000000000
             </li>
             <li>
-              <IoMdCall /> 02100000
+              <IoMdCall  style={{marginLeft:"-5px"}}/> 02100000
             </li>
             <li>
               <a href="https://www.gmail.com/" target="_blank">
-                <MdEmail /> KhajaBhayo@gmail.com
+                <MdEmail  style={{marginLeft:"-5px"}}/> KhajaBhayo@gmail.com
               </a>
             </li>
           </ul>
