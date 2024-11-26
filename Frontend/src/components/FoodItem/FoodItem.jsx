@@ -1,10 +1,21 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./FoodItem.css";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../Context/StoreContext";
 
 const FoodItem = ({ id, name, price, description, image }) => {
   const { cartItems, addToCart, removeFromCart } = useContext(StoreContext);
+
+  // State to manage ratings for each food item
+  const [ratings, setRatings] = useState({});
+
+  // Handle setting the rating
+  const handleRating = (itemId, rating) => {
+    setRatings((prevRatings) => ({
+      ...prevRatings,
+      [itemId]: rating,
+    }));
+  };
 
   return (
     <div className="food-item">
@@ -32,16 +43,42 @@ const FoodItem = ({ id, name, price, description, image }) => {
             />
           </div>
         )}
-      
+
+        {/* Description overlay (only on hover) */}
+        <div className="food-item-description-hover">
+          <p>
+            A refreshing blend of crisp lettuce, cucumbers, and fresh herbs,
+            complemented by a tangy lemon vinaigrette and a sprinkle of seeds
+            for added crunch.
+          </p>
+        </div>
 
         <div className="food-item-info">
           <div className="food-item-name-rating">
             <p>{name}</p>
-            <img src={assets.rating_starts} alt="Rating" />
+            {/* <img src={assets.rating_starts} alt="Rating" /> */}
           </div>
           <p className="food-item-desc">{description}</p>
           <p className="food-item-price">Rs.{price}</p>
         </div>
+      </div>
+
+      {/* Dynamic Star Rating */}
+      <div className="food-item-rating">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <span
+            key={star}
+            style={{
+              fontSize: "20px",
+              cursor: "pointer",
+              color: star <= (ratings[id] || 0) ? "#ffc107" : "#e4e5e9",
+            }}
+            onClick={() => handleRating(id, star)}
+          >
+            ★
+          </span>
+        ))}
+        <p>Rating: {ratings[id] || "No rating yet"}</p>
       </div>
     </div>
   );

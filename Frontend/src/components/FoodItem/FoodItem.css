@@ -86,4 +86,13 @@
     opacity: 5; /* Show on hover */
     cursor: pointer;
   }
-  
+  .food-item-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.food-item-rating span {
+  transition: color 0.3s;
+}
