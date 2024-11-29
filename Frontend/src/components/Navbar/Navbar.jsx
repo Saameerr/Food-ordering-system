@@ -77,17 +77,16 @@ const Navbar = ({ setShowLogin }) => {
 
       <div className="navbar-search-icon">
         <div className="navbar-search-container">
-          <IoSearch
+          <IoSearch id="icon"
             style={{ height: "25px", width: "25px", cursor: "pointer" }}
-            onClick={toggleSearch}
           />
-          {isSearchExpanded && (
+
             <input
               type="text"
               className="navbar-search-input"
               placeholder=" Search..."
             />
-          )}
+        
         </div>
 
         {/* Cart Icon */}

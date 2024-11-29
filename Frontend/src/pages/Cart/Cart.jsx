@@ -16,7 +16,7 @@ const Cart = () => {
       {/* Show 'Cart is empty' message if no items in cart */}
       {isCartEmpty ? (
         <div className="empty-cart">
-          <img src="cartEmpty.png" alt="nophoto" />
+          <img src="cartEmpty.png" alt="nophoto" style={{ height: "400px", width: "400px", cursor: "pointer" }} />
           <a href="home"><button>Go to Home</button></a>
         </div>
       ) : (
