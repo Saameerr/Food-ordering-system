@@ -91,7 +91,7 @@ const Navbar = ({ setShowLogin }) => {
 
         {/* Cart Icon */}
 
-        <div className="navbar-shopping-cart">
+        <div className="navbar-shopping-cart" >
   <Link to="/cart">
     <FaShoppingCart
       style={{ height: "25px", width: "25px", cursor: "pointer" }}
@@ -105,8 +105,6 @@ const Navbar = ({ setShowLogin }) => {
     </div>
   )}
 </div>
-
-
         {/* Signin Button */}
 
         <button onClick={() => setShowLogin(true)}>Sign in</button>

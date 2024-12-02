@@ -113,3 +113,6 @@
 .cart-bottom button:hover {
   background-color: #ff4949; /* Darker shade on hover */
 }
+.empty-cart button{
+  border: none;
+}

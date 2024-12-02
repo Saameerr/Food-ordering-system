@@ -1,7 +1,7 @@
 .carousel {
   width: 100%; /* Full width of the container */
   overflow: hidden; /* Hide images that are outside the viewport */
-  position: relative; /* Position relative to allow for absolute positioning */
+  position: relative ; /* Position relative to allow for absolute positioning */
   /* margin:  4em; */
   margin: auto;
   padding-top: 5em;

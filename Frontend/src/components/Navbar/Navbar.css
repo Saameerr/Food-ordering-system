@@ -1,113 +1,151 @@
+/* Navbar container */
 .navbar {
-    position: fixed !important;
-    top: 0;
-    width: 100%;
-    height: 70px;
-    background-color: white;
-    z-index: 1000;
-    padding: 10px 20px;
-    margin-left: -8.3rem;
-    margin-right: -8.3rem;
- 
-  }
-  
-  
-  .navbar .logo {
-    width: 60px;
-    margin-left: 130px;
+  position: fixed !important; /* Ensures the navbar stays at the top */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background-color: white;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px; 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+}
 
-  }
+/* Logo */
+.navbar .logo {
+  width: 60px;
+  cursor: pointer;
+  margin-left: 10rem;
+}
+
+/* Navigation Menu */
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 30px; /* Adjusts spacing between menu items */
+  list-style: none;
+  margin-left: 5rem;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.navbar-menu li {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  color: #49557e;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.navbar-menu li:hover,
+.navbar-menu li.active {
+  color: #ff5722;
+  border-bottom: 2px solid #ff5722;
+  padding-bottom: 2px;
+}
+
+/* Search Icon and Input */
+.navbar-search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 5px 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-search-container input {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  width: 200px; /* Adjust width */
+  margin-left: 8px;
+  color: #333;
+}
+
+.navbar-search-container input:focus {
+  outline: none;
+}
+
+#icon {
+  color: #888;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Cart Icon */
+.navbar-shopping-cart {
+  position: relative;
+  width: 40px; /* Fixed width prevents resizing */
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.navbar-shopping-cart .cart-item-count {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: #ff5722;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 3px 7px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   
+}
+
+/* Sign-in Button */
+.navbar button {
+  background-color: #ff5722;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 15px;
+  cursor: pointer;
+  margin-right: 10rem;
+  box-shadow: 0 2px 10px rgba(255, 87, 34, 0.3);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar button:hover {
+  background-color: #e64a19;
+  transform: scale(1.05);
+}
+
+/* Alignment for all elements */
+.navbar-search-icon {
+  display: flex;
+  align-items: center;
+  gap: 50px; /* Space between search and other icons */
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap; /* Stack items when screen width reduces */
+    height: auto;
+    padding: 10px 15px;
+  }
+
   .navbar-menu {
-    display: flex;
-    gap: 20px;
-    list-style: none;
-    color: #49557e;
-    font-size: 17px;
+    gap: 15px; /* Reduce gap for smaller screens */
   }
-  
-  .navbar .active {
-    padding-bottom: 2px;
-    border-bottom: 2px solid red;
-  }
-  
-  .navbar li {
-    cursor: pointer;
-  }
-  
-  .navbar-search-icon {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-  }
-  
-  .navbar-search-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    background-color:  white;
-    width: 100%;
-    border-radius: 10px;
-    height: 1.75rem;
-    padding: 0 15px;
-    box-shadow: 0px 0px 8px hsl(0, 0%, 15%);
-    margin-bottom: 20px;
 
-  }
-  
   .navbar-search-container input {
-    background-color: transparent;
-    border: none;
-    height: 100%;
-    font-size: 1rem;
-    width: 100%;
-    margin-left: 5px;
-  }
-  input:focus{
-    outline: none;
-  }
-  #icon{
-    color: rgb(207, 185, 170);
-   
+    width: 150px; /* Shrink input field width */
   }
 
-  .navbar-shopping-cart {
-    position: relative;
-    display: inline-block;
-    margin-bottom: 20px;
-    color: rgba(198, 204, 206, 0.966);
-  }
-  
-  .cart-item-count {
-    position: absolute;
-    top: -14px;
-    right: -15px;
-    background-color: #ff00808c;
-    color: white;
-    border-radius: 100%;
-    padding: 4px 7px;
-    font-size: 12px;
-    font-weight: bold;
-  }
-  
-  
   .navbar button {
-    position: relative;
-    align-items: center;
-    background-color: white;
-    color: hwb(220 27% 71%);
-    width: 30%;
-    border-radius: 10px ;
-    height: 1.75rem;
-    padding: 0 15px;
-    border: none;
-    box-shadow: 0px 0px 8px hsl(0, 0%, 15%);
-    margin-bottom: 20px;
-    margin-right: 10px;
+    padding: 5px 10px; /* Adjust button padding */
   }
-  
-  .navbar button:hover {
-    background-color: hwb(9 94% 3%);
-  }
-
-  
+}
