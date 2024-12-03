@@ -4,7 +4,7 @@ import { StoreContext } from "../../Context/StoreContext";
 import {Link} from 'react-router-dom'
 
 const PlaceOrder = () => {
-    const { cartItems, food_list, getTotalCartAmount, getTotalItemsInCart } = useContext(StoreContext);
+    const { cartItems, food_list, getTotalCartAmount, getTotalItemsInCart, url } = useContext(StoreContext);
     const [deliveryType, setDeliveryType] = useState('homeDelivery');  // State to manage delivery type
 
     const openMap = () => {
@@ -117,7 +117,7 @@ const PlaceOrder = () => {
                             if (cartItems[item._id] > 0) {
                                 return (
                                     <div key={item._id} className="cart-item">
-                                        <img src={item.image} alt={item.name} className="item-image" />
+                                        <img src={url+"/images/"+item.image} alt={item.name} className="item-image" />
                                         <div className="item-details">
                                             <h6>{item.name}</h6>
                                             <p>Price: Rs. {item.price}</p>
