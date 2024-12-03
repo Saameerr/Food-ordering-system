@@ -7,7 +7,7 @@ import Login from "./components/Login/Login.jsx";
 import Home from "./pages/Home/Home.jsx";
 import Cart from "./pages/Cart/Cart.jsx";
 import PlaceOrder from "./pages/PlaceOrder/PlaceOrder.jsx";
-import Footer from "./Footer/Footer.jsx";
+import Footer from "./components/Footer/Footer.jsx";
 import C_home from "./components/Company/C_home.jsx"
 import C_about from "./components/Company/C_about.jsx"
 import C_delivery from "./components/Company/C_delivery.jsx"
