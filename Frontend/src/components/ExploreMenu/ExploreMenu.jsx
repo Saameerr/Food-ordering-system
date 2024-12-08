@@ -10,14 +10,14 @@ const ExploreMenu = ({ category, setCategory }) => {
   // Function to scroll right
   const handleScrollRight = () => {
     if (menuRef.current) {
-      menuRef.current.scrollBy({ left: 500, behavior: "smooth" }); // Scroll 100px to the right
+      menuRef.current.scrollBy({ left: 500, behavior: "smooth" }); // Scroll 500px to the right
     }
   };
 
   // Function to scroll left
   const handleScrollLeft = () => {
     if (menuRef.current) {
-      menuRef.current.scrollBy({ left: -500, behavior: "smooth" }); // Scroll 100px to the left
+      menuRef.current.scrollBy({ left: -500, behavior: "smooth" }); // Scroll 500px to the left
     }
   };
 

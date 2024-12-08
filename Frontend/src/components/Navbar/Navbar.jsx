@@ -51,17 +51,6 @@ const Navbar = ({ setShowLogin }) => {
         </li>
         <li
           onClick={() => {
-            setMenu("Mobile-app");
-            document
-              .getElementById("app-download")
-              .scrollIntoView({ behavior: "smooth" });
-          }}
-          className={menu === "Mobile-app" ? "active" : ""}
-        >
-          Mobile-app
-        </li>
-        <li
-          onClick={() => {
             setMenu("Contact us");
             document
               .getElementById("footer")
