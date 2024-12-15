@@ -2,11 +2,11 @@ import userModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
-import crypto from "crypto";  // To generate OTP
+import crypto from "crypto"; // To generate OTP
 
 // Function to create a token
 const createToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET); 
+    return jwt.sign({ id }, process.env.JWT_SECRET);
 };
 
 // Login user
@@ -110,7 +110,7 @@ const registerUser = async (req, res) => {
     }
 };
 
-// Request password reset
+// Step 1: Request Password Reset
 const requestPasswordReset = async (req, res) => {
     const { email } = req.body;
 
@@ -128,8 +128,7 @@ const requestPasswordReset = async (req, res) => {
         user.otpExpiry = Date.now() + 10 * 60 * 1000; // OTP valid for 10 minutes
         await user.save();
 
-        // Send OTP to user's email (using your email service)
-        // For simplicity, we're just returning the OTP here, you should send it through an email service like Nodemailer
+        // Send OTP to user's email (use your email service)
         console.log(`OTP for password reset: ${otp}`);
 
         res.json({ success: true, message: "OTP sent to your email." });
@@ -139,9 +138,9 @@ const requestPasswordReset = async (req, res) => {
     }
 };
 
-// Verify OTP and reset password
-const verifyOTPAndResetPassword = async (req, res) => {
-    const { email, otp, newPassword } = req.body;
+// Step 2: Verify OTP
+const verifyOTP = async (req, res) => {
+    const { email, otp } = req.body;
 
     try {
         const user = await userModel.findOne({ email });
@@ -149,9 +148,26 @@ const verifyOTPAndResetPassword = async (req, res) => {
             return res.json({ success: false, message: "User not found." });
         }
 
-        // Check if OTP is valid and not expired
+        // Verify OTP and expiry
         if (user.passwordResetOTP !== otp || user.otpExpiry < Date.now()) {
             return res.json({ success: false, message: "Invalid or expired OTP." });
+        }
+
+        res.json({ success: true, message: "OTP verified successfully." });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Error occurred while verifying OTP." });
+    }
+};
+
+// Step 3: Reset Password
+const resetPassword = async (req, res) => {
+    const { email, newPassword } = req.body;
+
+    try {
+        const user = await userModel.findOne({ email });
+        if (!user) {
+            return res.json({ success: false, message: "User not found." });
         }
 
         // Validate new password
@@ -172,12 +188,18 @@ const verifyOTPAndResetPassword = async (req, res) => {
         user.otpExpiry = undefined;
         await user.save();
 
-        res.json({ success: true, message: "Password has been successfully reset." });
+        res.json({ success: true, message: "Password reset successfully." });
     } catch (error) {
         console.log(error);
         res.json({ success: false, message: "Error occurred while resetting password." });
     }
 };
 
-// Export the functions
-export { loginUser, registerUser, requestPasswordReset, verifyOTPAndResetPassword };
+// Export functions
+export { 
+    loginUser, 
+    registerUser, 
+    requestPasswordReset, 
+    verifyOTP, 
+    resetPassword 
+};

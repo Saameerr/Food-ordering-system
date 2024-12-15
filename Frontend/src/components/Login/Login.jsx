@@ -3,6 +3,8 @@ import { RxCross2 } from "react-icons/rx";
 import "./Login.css";
 import { StoreContext } from "../../Context/StoreContext";
 import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = ({ setShowLogin }) => {
   const { url, setToken } = useContext(StoreContext);
@@ -30,64 +32,79 @@ const Login = ({ setShowLogin }) => {
     let newUrl = url;
     newUrl += currentState === "Login" ? "/api/user/login" : "/api/user/register";
 
-    const response = await axios.post(newUrl, data);
+    try {
+      const response = await axios.post(newUrl, data);
 
-    if (response.data.success) {
-      if (currentState === "Sign in") {
-        // Registration successful, show message and redirect to login page
-        // Clear the form fields before switching to the login form
-    setData({
-      email: "",
-      password: "",
-    });
-        alert("Registration successful. Please log in.");
-        setCurrentstate("Login"); // Switch to login page
+      if (response.data.success) {
+        if (currentState === "Sign in") {
+          setData({
+            email: "",
+            password: "",
+          });
+          toast.success("Registration successful. Please log in.");
+          setCurrentstate("Login");
+        } else {
+          setToken(response.data.token);
+          localStorage.setItem("token", response.data.token);
+          setShowLogin(false);
+          toast.success("Login successful!");
+        }
       } else {
-        // Login successful, set token and proceed to home
-        setToken(response.data.token);
-        localStorage.setItem("token", response.data.token);
-        setShowLogin(false);
+        toast.error(response.data.message);
       }
-    } else {
-      alert(response.data.message);
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
     }
   };
 
   const handleForgotPassword = async (event) => {
     event.preventDefault();
 
+    // Step 1: Request OTP
     if (step === 1) {
-      // Request OTP
       try {
         const response = await axios.post(`${url}/api/user/requestPasswordReset`, { email });
         if (response.data.success) {
-          alert(response.data.message); // OTP sent successfully
-          setStep(2); // Proceed to the next step for OTP verification
+          toast.success(response.data.message); // OTP sent successfully
+          setStep(2); // Move to Step 2: OTP Verification
         } else {
-          alert(response.data.message); // Show error message
+          toast.error(response.data.message);
         }
       } catch (error) {
-        console.error("Error requesting OTP:", error.message);
-        alert("Error occurred while requesting OTP.");
+        toast.error("Error occurred while requesting OTP.");
       }
-    } else if (step === 2) {
-      // Verify OTP and reset password
+    }
+    // Step 2: Verify OTP
+    else if (step === 2) {
       try {
-        const response = await axios.post(`${url}/api/user/verifyOTPAndResetPassword`, {
+        const response = await axios.post(`${url}/api/user/verifyOTP`, { email, otp });
+        if (response.data.success) {
+          toast.success(response.data.message); // OTP verified successfully
+          setStep(3); // Move to Step 3: Reset Password
+        } else {
+          toast.error(response.data.message);
+        }
+      } catch (error) {
+        toast.error("Error occurred while verifying OTP.");
+      }
+    }
+    // Step 3: Reset Password
+    else if (step === 3) {
+      try {
+        const response = await axios.post(`${url}/api/user/resetPassword`, {
           email,
           otp,
           newPassword,
         });
         if (response.data.success) {
-          alert(response.data.message); // Password reset successfully
+          toast.success(response.data.message); // Password reset successfully
           setForgotPasswordState(false); // Return to login screen
           setStep(1); // Reset steps
         } else {
-          alert(response.data.message); // Show error message
+          toast.error(response.data.message);
         }
       } catch (error) {
-        console.error("Error resetting password:", error.message);
-        alert("Error occurred while resetting password.");
+        toast.error("Error occurred while resetting password.");
       }
     }
   };
@@ -95,6 +112,7 @@ const Login = ({ setShowLogin }) => {
   return (
     <div className="login-overlay">
       <div className="login">
+        <ToastContainer /> {/* Add ToastContainer to render toasts */}
         {!forgotPasswordState ? (
           <form onSubmit={onLogin} className="login-container">
             <div className="login-title">
@@ -165,49 +183,42 @@ const Login = ({ setShowLogin }) => {
             </div>
 
             <div className="login-inputs">
-  {step === 1 && (
-    <input
-      type="email"
-      value={email}
-      onChange={(e) => setEmail(e.target.value)}
-      placeholder="Enter your registered email"
-      required
-    />
-  )}
+              {step === 1 && (
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your registered email"
+                  required
+                />
+              )}
 
-  {step === 2 && (
-    <>
-      <label>Enter 6-digit OTP</label>
-      <input
-        type="text"
-        value={otp}
-        onChange={(e) => setOtp(e.target.value)}
-        placeholder="Enter OTP"
-        required
-      />
-    </>
-  )}
+              {step === 2 && (
+                <>
+                  <label>Enter 6-digit OTP</label>
+                  <input
+                    type="text"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    placeholder="Enter OTP"
+                    required
+                  />
+                </>
+              )}
 
-  {step === 3 && (
-    <>
-      <input
-        type="password"
-        value={newPassword}
-        onChange={(e) => setNewPassword(e.target.value)}
-        placeholder="Enter new password"
-        required
-      />
-      <input
-        type="password"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-        placeholder="Confirm new password"
-        required
-      />
-    </>
-  )}
-</div>
-
+              {step === 3 && (
+                <>
+                  <label>New Password:</label>
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Enter new password"
+                    required
+                  />
+                </>
+              )}
+            </div>
 
             <button type="submit">Submit</button>
           </form>
