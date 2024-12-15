@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
 import crypto from "crypto"; // To generate OTP
+import nodemailer from "nodemailer"; // Import nodemailer
 
 // Function to create a token
 const createToken = (id) => {
@@ -110,7 +111,44 @@ const registerUser = async (req, res) => {
     }
 };
 
-// Step 1: Request Password Reset
+const sendOTPEmail = async (email, otp) => {
+    const transporter = nodemailer.createTransport({
+        service: "gmail", // You can also use other email services if needed
+        auth: {
+            user: process.env.EMAIL_USER, // Your Gmail address (from .env)
+            pass: process.env.EMAIL_PASS, // Your app-specific Gmail password (from .env)
+        },
+    });
+
+    const mailOptions = {
+        from: process.env.EMAIL_USER, // Sender address
+        to: email, // Recipient address
+        subject: "Password Reset OTP", // Email subject
+        html: `
+        <html>
+          <body>
+            <p>Dear User,</p>
+            <p>We received a request to reset your password. Please use the following OTP to reset your password:</p>
+            <h2 style="font-size: 24px; color: #333;">${otp}</h2>
+            <p>This OTP is valid for the next 10 minutes. If you did not request this, please ignore this email.</p>
+            <br />
+            <p>Best regards,</p>
+            <p>The KhajaBhayo Team</p>
+          </body>
+        </html>
+      `,
+    };
+
+    // Send the email
+    try {
+        await transporter.sendMail(mailOptions);
+        console.log(`OTP sent to ${email}`);
+    } catch (error) {
+        console.log("Error sending OTP email:", error);
+    }
+};
+
+// Updated requestPasswordReset function
 const requestPasswordReset = async (req, res) => {
     const { email } = req.body;
 
@@ -128,8 +166,8 @@ const requestPasswordReset = async (req, res) => {
         user.otpExpiry = Date.now() + 10 * 60 * 1000; // OTP valid for 10 minutes
         await user.save();
 
-        // Send OTP to user's email (use your email service)
-        console.log(`OTP for password reset: ${otp}`);
+        // Send OTP to user's email
+        await sendOTPEmail(email, otp); // Call the sendOTPEmail function
 
         res.json({ success: true, message: "OTP sent to your email." });
     } catch (error) {
