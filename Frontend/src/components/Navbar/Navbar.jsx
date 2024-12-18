@@ -44,7 +44,9 @@ const Navbar = ({ setShowLogin }) => {
         <li
           onClick={() => {
             setMenu("Home");
-            document.getElementById("home").scrollIntoView({ behavior: "smooth" });
+            document
+              .getElementById("home")
+              .scrollIntoView({ behavior: "smooth" });
           }}
           className={menu === "Home" ? "active" : ""}
         >
@@ -53,7 +55,9 @@ const Navbar = ({ setShowLogin }) => {
         <li
           onClick={() => {
             setMenu("Menu");
-            document.getElementById("explore-menu").scrollIntoView({ behavior: "smooth" });
+            document
+              .getElementById("explore-menu")
+              .scrollIntoView({ behavior: "smooth" });
           }}
           className={menu === "Menu" ? "active" : ""}
         >
@@ -62,7 +66,9 @@ const Navbar = ({ setShowLogin }) => {
         <li
           onClick={() => {
             setMenu("Contact us");
-            document.getElementById("footer").scrollIntoView({ behavior: "smooth" });
+            document
+              .getElementById("footer")
+              .scrollIntoView({ behavior: "smooth" });
           }}
           className={menu === "Contact us" ? "active" : ""}
         >
@@ -73,14 +79,23 @@ const Navbar = ({ setShowLogin }) => {
       {/* Search and Profile Section */}
       <div className="navbar-search-icon">
         <div className="navbar-search-container">
-          <IoSearch id="icon" style={{ height: "25px", width: "25px", cursor: "pointer" }} />
-          <input type="text" className="navbar-search-input" placeholder=" Search..." />
+          <IoSearch
+            id="icon"
+            style={{ height: "25px", width: "25px", cursor: "pointer" }}
+          />
+          <input
+            type="text"
+            className="navbar-search-input"
+            placeholder=" Search..."
+          />
         </div>
 
         {/* Cart Icon */}
         <div className="navbar-shopping-cart">
           <Link to="/cart">
-            <FaShoppingCart style={{ height: "25px", width: "25px", cursor: "pointer" }} />
+            <FaShoppingCart
+              style={{ height: "25px", width: "25px", cursor: "pointer" }}
+            />
           </Link>
           {getTotalItemsInCart() > 0 && (
             <div className="cart-item-count">{getTotalItemsInCart()}</div>
@@ -95,11 +110,13 @@ const Navbar = ({ setShowLogin }) => {
             className="navbar-profile"
             onClick={() => setDropdownOpen((prev) => !prev)}
           >
-            <img src={assets.profile_icon} alt="Profile" className="profile-icon" />
+            <img
+              src={assets.profile_icon}
+              alt="Profile"
+              className="profile-icon"
+            />
             <ul
-              className={`nav-profile-dropdown ${
-                dropdownOpen ? "show" : ""
-              }`}
+              className={`nav-profile-dropdown ${dropdownOpen ? "show" : ""}`}
             >
               <li>
                 <img src={assets.bag_icon} alt="Orders" />
