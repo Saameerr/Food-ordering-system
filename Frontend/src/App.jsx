@@ -6,6 +6,7 @@ import Login from "./components/Login/Login.jsx";
 import Home from "./pages/Home/Home.jsx";
 import Cart from "./pages/Cart/Cart.jsx";
 import PlaceOrder from "./pages/PlaceOrder/PlaceOrder.jsx";
+import Payment from './components/Payment/Payment.jsx';
 import Footer from "./components/Footer/Footer.jsx";
 import C_home from "./components/Company/C_home.jsx";
 import C_about from "./components/Company/C_about.jsx";
@@ -35,11 +36,14 @@ const App = () => {
 
           <Route path="cart" element={<Cart />} />
           <Route path="order" element={<PlaceOrder />} />
+          <Route path="payment" element ={<Payment />} />
 
           <Route path="c_home" element={<C_home />} />
           <Route path="c_about" element={<C_about />} />
           <Route path="c_delivery" element={<C_delivery />} />
           <Route path="c_privacy" element={<C_privacy />} />
+
+          
         </Routes>
 
         {/* Conditionally render Footer only on non-Cart pages */}

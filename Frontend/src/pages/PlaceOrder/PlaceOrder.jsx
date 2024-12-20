@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react';
 import './PlaceOrder.css';
 import { StoreContext } from "../../Context/StoreContext";
-import {Link} from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 const PlaceOrder = () => {
     const { cartItems, food_list, getTotalCartAmount, getTotalItemsInCart, url } = useContext(StoreContext);
     const [deliveryType, setDeliveryType] = useState('homeDelivery');  // State to manage delivery type
+     const navigate = useNavigate();
 
     const openMap = () => {
         alert('Opening map to select location...');
@@ -16,7 +17,7 @@ const PlaceOrder = () => {
     };
 
     // Calculate delivery fee based on delivery type
-    const deliveryFee = deliveryType === 'takeaway' ? 0 : 5;
+    const deliveryFee = deliveryType === 'takeaway' ? 0 : 85;
     const totalAmount = getTotalCartAmount() + deliveryFee;
 
     return (
@@ -101,8 +102,9 @@ const PlaceOrder = () => {
                 </div>
 
                 <div className="action-buttons">
-                    <button className="back-button">Back</button>
-                    <button className="proceed-button">Proceed for Payment</button>
+                    <button  onClick={() => navigate("/Cart")}className="back-button">Back</button>
+                   <button onClick={() => navigate("../Payment")} className="proceed-button">Proceed for Payment</button>
+                    
                 </div>
             </div>
 
