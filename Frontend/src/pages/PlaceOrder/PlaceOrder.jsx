@@ -2,18 +2,37 @@ import React, { useContext, useState } from 'react';
 import './PlaceOrder.css';
 import { StoreContext } from "../../Context/StoreContext";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';  // Import ToastContainer and toast
+import 'react-toastify/dist/ReactToastify.css';  // Import the required CSS
 
 const PlaceOrder = () => {
     const { cartItems, food_list, getTotalCartAmount, getTotalItemsInCart, url } = useContext(StoreContext);
-    const [deliveryType, setDeliveryType] = useState('homeDelivery');  // State to manage delivery type
-     const navigate = useNavigate();
+    const [deliveryType, setDeliveryType] = useState('homeDelivery');
+    const [paymentOption, setPaymentOption] = useState('');
+    const navigate = useNavigate();
 
     const openMap = () => {
-        alert('Opening map to select location...');
+        toast.info('Opening map to select location...');
     };
 
     const handleDeliveryTypeChange = (e) => {
-        setDeliveryType(e.target.value);  // Update delivery type when user changes option
+        setDeliveryType(e.target.value);
+    };
+
+    const handlePaymentOptionChange = (e) => {
+        setPaymentOption(e.target.value);
+    };
+
+    const handleProceedPayment = () => {
+        if (paymentOption === 'digitalPayment') {
+            // Pass total amount to PaymentForm for eSewa payment
+            navigate("/PaymentForm", { state: { totalAmount } });
+        } else if (paymentOption === 'cashOnDelivery') {
+            toast.success('You have selected Cash on Delivery. Your order will be placed.');
+            // Handle Cash on Delivery logic here
+        } else {
+            toast.error('Please select a payment method before proceeding.');
+        }
     };
 
     // Calculate delivery fee based on delivery type
@@ -52,8 +71,8 @@ const PlaceOrder = () => {
                             </label>
                         </div>
                     </div>
-                    
-                         {/* Conditionally render "Deliver To" section based on the selected delivery type */}
+
+                    {/* Conditionally render "Deliver To" section based on the selected delivery type */}
                     {deliveryType === 'homeDelivery' && (
                         <div className="delivery-details">
                             <h4>Deliver To</h4>
@@ -61,7 +80,6 @@ const PlaceOrder = () => {
                             <p className="location-button" onClick={openMap}>+ Add Your Location</p>
                         </div>
                     )}
-                    
 
                     <div className="delivery-time">
                         <h4>Delivery Time</h4>
@@ -74,9 +92,7 @@ const PlaceOrder = () => {
                             <select>
                                 <option value="">Select Time</option>
                                 {Array.from({ length: 24 }, (_, i) => (
-                                    <option key={i} value={`${i.toString().padStart(2, '0')}:00`}>
-                                        {`${i.toString().padStart(2, '0')}:00`}
-                                    </option>
+                                    <option key={i} value={`${i.toString().padStart(2, '0')}:00`}>{`${i.toString().padStart(2, '0')}:00`}</option>
                                 ))}
                             </select>
                         </div>
@@ -87,24 +103,32 @@ const PlaceOrder = () => {
                         <hr />
                         <div className="payment-options">
                             <label>
-                                <input type="radio" name="paymentOption" value="cashOnDelivery" defaultChecked
-                                 />
+                                <input 
+                                    type="radio" 
+                                    name="paymentOption" 
+                                    value="cashOnDelivery" 
+                                    checked={paymentOption === 'cashOnDelivery'}
+                                    onChange={handlePaymentOptionChange}
+                                />
                                 Cash On Delivery
                             </label>
                             <label>
-                                <input type="radio" name="paymentOption" value="digitalPayment" 
+                                <input 
+                                    type="radio" 
+                                    name="paymentOption" 
+                                    value="digitalPayment" 
+                                    checked={paymentOption === 'digitalPayment'}
+                                    onChange={handlePaymentOptionChange}
                                 />
                                 E-sewa
                             </label>
                         </div>
-                        
                     </div>
                 </div>
 
                 <div className="action-buttons">
-                    <button  onClick={() => navigate("/Cart")}className="back-button">Back</button>
-                   <button onClick={() => navigate("../PaymentForm")} className="proceed-button">Proceed for Payment</button>
-                    
+                    <button onClick={() => navigate("/Cart")} className="back-button">Back</button>
+                    <button onClick={handleProceedPayment} className="proceed-button">Proceed for Payment</button>
                 </div>
             </div>
 
@@ -119,7 +143,7 @@ const PlaceOrder = () => {
                             if (cartItems[item._id] > 0) {
                                 return (
                                     <div key={item._id} className="cart-item">
-                                        <img src={url+"/images/"+item.image} alt={item.name} className="item-image" />
+                                        <img src={`${url}/images/${item.image}`} alt={item.name} className="item-image" />
                                         <div className="item-details">
                                             <h6>{item.name}</h6>
                                             <p>Price: Rs. {item.price}</p>
@@ -127,11 +151,10 @@ const PlaceOrder = () => {
                                             <hr />
                                         </div>
                                     </div>
-                                ); 
+                                );
                             }
                             return null;
                         })
-                        
                     ) : (
                         <p className="empty-cart-message">Your cart is empty</p>
                     )}
@@ -143,14 +166,17 @@ const PlaceOrder = () => {
                     </div>
                     <div className="cart-totaldetail">
                         <p>Delivery Fee</p>
-                        <p>Rs. {deliveryFee}</p> {/* Updated Delivery Fee */}
+                        <p>Rs. {deliveryFee}</p>
                     </div>
                     <div className="cart-totaldetail">
                         <b>Total</b>
-                        <b>Rs. {totalAmount}</b> {/* Updated Total */}
+                        <b>Rs. {totalAmount}</b>
                     </div>
                 </div>
             </div>
+
+            {/* Toast Container for displaying toasts */}
+            <ToastContainer />
         </div>
     );
 };

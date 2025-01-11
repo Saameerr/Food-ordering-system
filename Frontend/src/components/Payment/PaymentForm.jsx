@@ -1,22 +1,29 @@
-import React,{useState} from 'react'
-import axios from "axios";
-import { generateUniqueId } from "esewajs";
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { generateUniqueId } from 'esewajs';
 
 const PaymentForm = () => {
-  const [amount, setAmount] = useState("");
+  const location = useLocation();
+  const [amount, setAmount] = useState(location.state.totalAmount); // Use the passed totalAmount
+  const [paymentMethod, setPaymentMethod] = useState('eSewa');
+
+  useEffect(() => {
+    setAmount(location.state.totalAmount); // Ensure the amount is updated if changed
+  }, [location.state.totalAmount]);
 
   const handlePayment = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:4000/initiate-payment", //server payment route
+        "http://localhost:4000/initiate-payment",
         {
-          amount,
+          amount: amount,
           productId: generateUniqueId(),
         }
       );
 
-      window.location.href = response.data.url;
+      window.location.href = response.data.url; // Redirect to eSewa page
     } catch (error) {
       console.error("Error initiating payment:", error);
     }
@@ -24,28 +31,23 @@ const PaymentForm = () => {
 
   return (
     <div>
-    <h1>eSewa Payment Integration</h1>
+      <h1>eSewa Payment Integration</h1>
 
-    <div className="form-container" onSubmit={handlePayment}>
-      <form className="styled-form">
-        <div className="form-group">
-          <label htmlFor="Amount">Amount:</label>
+      <form onSubmit={handlePayment}>
+        <div>
+          <label htmlFor="amount">Amount:</label>
           <input
             type="number"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            readOnly
             required
-            placeholder="Enter amount"
           />
         </div>
 
-        <button type="submit" className="submit-button">
-          Pay with eSewa
-        </button>
+        <button type="submit">Proceed to Pay with eSewa</button>
       </form>
     </div>
-  </div>
-  )
-}
+  );
+};
 
-export default PaymentForm
+export default PaymentForm;
