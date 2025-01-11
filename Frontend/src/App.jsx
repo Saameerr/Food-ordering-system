@@ -13,6 +13,9 @@ import C_about from "./components/Company/C_about.jsx";
 import C_delivery from "./components/Company/C_delivery.jsx";
 import C_privacy from "./components/Company/C_privacy.jsx";
 import SearchFood from "./components/SearchFood/SearchFood.jsx";
+import PaymentForm from "./components/Payment/PaymentForm.jsx";
+import Success from "./components/Payment/Success.jsx";
+import Failure from "./components/Payment/Failure.jsx";
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -37,6 +40,10 @@ const App = () => {
           <Route path="cart" element={<Cart />} />
           <Route path="order" element={<PlaceOrder />} />
           <Route path="payment" element ={<Payment />} />
+          <Route path="paymentform" element={<PaymentForm/>} />
+          <Route path="payment-success" element={<Success/>} />
+          <Route path="payment-failure" element={<Failure/>} />
+
 
           <Route path="c_home" element={<C_home />} />
           <Route path="c_about" element={<C_about />} />

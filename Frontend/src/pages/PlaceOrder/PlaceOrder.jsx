@@ -103,7 +103,7 @@ const PlaceOrder = () => {
 
                 <div className="action-buttons">
                     <button  onClick={() => navigate("/Cart")}className="back-button">Back</button>
-                   <button onClick={() => navigate("../Payment")} className="proceed-button">Proceed for Payment</button>
+                   <button onClick={() => navigate("../PaymentForm")} className="proceed-button">Proceed for Payment</button>
                     
                 </div>
             </div>
