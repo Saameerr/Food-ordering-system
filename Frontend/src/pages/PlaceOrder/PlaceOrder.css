@@ -1,157 +1,312 @@
-/* Main Container */
-.place-order-container {
+        /* Main Container */
+        .place-order-container {
+          display: flex;
+          justify-content: space-between;
+          padding: 20px;
+          gap: 20px;
+          width: 90%;
+          margin: 60px auto;
+      }
+      
+      /* Left Side - Checkout Form */
+      .place-order-left {
+          width: 65%;
+          padding: 20px;
+          background-color: #f7f7f7;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      .place-order-heading,
+      .delivery-details,
+      .delivery-time,
+      .payment-method {
+          background-color: #ffffff;
+          border-radius: 10px;
+          margin-bottom: 15px;
+          padding: 20px;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+      
+      .heading {
+          font-size: 24px;
+          text-align: center;
+          background-color: #ffe8cc;
+          border-radius: 10px;
+          padding: 15px;
+          margin-bottom: 20px;
+      }
+      
+      /* Delivery Time Date */
+      .delivery-time .date {
+          display: flex;
+          gap: 15px;
+      }
+      
+      /* Delivery & Payment Options */
+      .delivery-option,
+      .payment-options {
+          display: flex;
+          gap: 20px;
+      }
+      
+      /* Location Button */
+      .location-button {
+          color: #007BFF;
+          cursor: pointer;
+          font-size: 14px;
+          font-weight: 500;
+          transition: color 0.3s ease;
+          margin-bottom: 20px;
+      }
+      
+      .location-button:hover {
+          text-decoration: underline;
+          color: #0056b3;
+      }
+      
+      /* Action Buttons */
+      .action-buttons {
+          display: flex;
+          justify-content: space-between;
+          gap: 10px;
+          margin-top: 20px;
+      }
+      
+      .action-buttons button {
+          padding: 10px 20px;
+          font-size: 14px;
+          font-weight: 600;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+      }
+      
+      .back-button {
+          background-color: #007BFF;
+          color: white;
+      }
+      
+      .back-button:hover {
+          background-color: #0056b3;
+      }
+      
+      .proceed-button {
+          background-color: #28a745;
+          color: white;
+      }
+      
+      .proceed-button:hover {
+          background-color: #218838;
+      }
+      
+      /* Right Side - My Cart */
+      .place-order-right {
+          width: 30%;
+          background-color: #f1f1f1;
+          padding: 20px;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          height: fit-content;
+          position: sticky;
+          top: 100px;
+      }
+      
+      .cart-header h3 {
+          font-size: 18px;
+          font-weight: bold;
+          margin-bottom: 10px;
+      }
+      
+      .cart-items {
+          margin-bottom: 20px;
+      }
+      
+      .cart-item {
+          display: flex;
+          margin-bottom: 15px;
+          align-items: center;
+      }
+      
+      .cart-item img {
+          width: 100px;
+          height: 100px;
+          object-fit: cover;
+          margin-right: 15px;
+      }
+      
+      .cart-item .item-details {
+          flex: 1;
+      }
+      
+      .cart-item .item-details h4 {
+          margin: 0;
+          font-size: 16px;
+      }
+      
+      .cart-item .item-details p {
+          margin: 0;
+          font-size: 14px;
+      }
+      
+      .cart-summary {
+          margin-top: 20px;
+      }
+      
+      .cart-summary .cart-totaldetail {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
+      }
+      
+      .cart-summary .cart-totaldetail b {
+          font-size: 16px;
+      }
+      
+      .empty-cart-message {
+          font-size: 18px;
+          color: #555;
+          text-align: center;
+      }
+      
+      /* Modal for Map */
+      .map-modal {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+      }
+      
+      .map-modal #map {
+          width: 80%;
+          height: 80%;
+      }
+      
+      .close-map-button {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          background-color: #ff0000;
+          color: white;
+          padding: 6px 12px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 12px;
+          font-weight: 500;
+          transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+      
+      .close-map-button:hover {
+          background-color: #cc0000;
+          transform: scale(1.05);
+      }
+      
+      /* Responsive Design: Adjust Layout on Smaller Screens */
+      @media (max-width: 768px) {
+          .place-order-container {
+              flex-direction: column;
+              padding: 10px;
+          }
+      
+          .place-order-left,
+          .place-order-right {
+              width: 100%;
+              margin-left: 0;
+          }
+      
+          .place-order-heading {
+              font-size: 20px;
+          }
+      
+          .cart-header h3 {
+              font-size: 16px;
+          }
+      
+          .cart-item img {
+              width: 80px;
+              height: 80px;
+          }
+      
+          .action-buttons button {
+              width: 48%;
+          }
+      }
+      
+
+      /* Modal for Map */
+.map-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: space-between;
-  margin: 60px auto;
-  width: 90%;
-  gap: 20px;
-}
-
-/* Left side - Checkout form */
-.place-order-left {
-  width: 65%;
-  padding: 20px;
-}
-
-.place-order {
-  background-color: #f7f7f7;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.heading {
-  text-align: center;
-  background-color: #ffe8cc;
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 20px;
-}
-
-.place-order-heading,
-.delivery-details,
-.delivery-time,
-.payment-method {
-  background-color: #ffffff;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  padding: 20px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-.delivery-time .date {
-  display: flex;  
-  gap: 15px;      
-}
-
-.delivery-option,
-.payment-options {
-  display: flex;
-  gap: 20px;
-}
-
-.location-button {
-  cursor: pointer;
-  color: #ff5e5e;
-  font-weight: bold;
-  padding: 10px;
-  border: 1px solid #ff5e5e;
-  border-radius: 5px;
-  text-align: center;
-  width: 50%;
-  margin-top: 10px;
-}
-
-.location-button:hover {
-  background-color: #ffcccc;
-}
-
-/* Action buttons */
-.action-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.back-button,
-.proceed-button {
-  width: 24%;
-  font-size: 14px;
-  background-color: tomato;
-  color: white;
-  border: none;
-  border-radius: 15px;
-  cursor: pointer;
-}
-
-.back-button:hover,
-.proceed-button:hover {
-  background-color: #e55353;
-}
-
-/* Right side - My Cart */
-.place-order-right {
-  width: 30%;
-  background-color: #f1f1f1;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: fit-content;
-  position: sticky;
-  margin-top: 100px;
-}
-
-.cart-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.cart-items {
-  margin-bottom: 20px;
-}
-
-.cart-item {
-  display: flex;
+  justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
-.item-image {
-  width: 50px;
-  height: 50px;
-  border-radius: 5px;
-  margin-right: 10px;
+.map-modal #map {
+  width: 80%;
+  height: 80%;
 }
 
-.item-details {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.close-map-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff0000;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.item-details h4 {
-  margin: 0;
-  font-size: 16px;
+.close-map-button:hover {
+  background-color: #cc0000;
+  transform: scale(1.05);
 }
 
-.item-details p {
-  margin: 0;
-  font-size: 14px;
-}
+/* Responsive Design: Adjust Layout on Smaller Screens */
+@media (max-width: 768px) {
+  .place-order-container {
+      flex-direction: column;
+      padding: 10px;
+  }
 
-.cart-item p {
-  margin: 0;
-  display: flex;
-  justify-content: space-between;
-}
+  .place-order-left,
+  .place-order-right {
+      width: 100%;
+      margin-left: 0;
+  }
 
+  .place-order-heading {
+      font-size: 20px;
+  }
 
-.cart-totaldetail {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
+  .cart-header h3 {
+      font-size: 16px;
+  }
 
-.empty-cart-message {
-  text-align: center;
-  font-size: 16px;
-  color: #888;
+  .cart-item img {
+      width: 80px;
+      height: 80px;
+  }
+
+  .action-buttons button {
+      width: 48%;
+  }
 }
