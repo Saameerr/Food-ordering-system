@@ -128,6 +128,26 @@ const PlaceOrder = () => {
     toast.info("Map closed. Default location set.");
   };
 
+  // Convert 24-hour time to 12-hour format with AM/PM
+  const formatTimeTo12Hour = (hour, minute) => {
+    const isPM = hour >= 12;
+    const formattedHour = hour % 12 || 12; // Convert to 12-hour format
+    const formattedMinute = minute === 0 ? "00" : "30"; // Add 00 or 30 for minute intervals
+    const ampm = isPM ? "PM" : "AM";
+    return `${formattedHour}:${formattedMinute} ${ampm}`;
+  };
+
+  const handleTimeChange = (e) => {
+    setDeliveryTime(e.target.value);
+  };
+
+  // Generate the time options with 30-minute intervals
+  const timeOptions = [];
+  for (let i = 0; i < 24; i++) {
+    timeOptions.push(formatTimeTo12Hour(i, 0)); // Full hour
+    timeOptions.push(formatTimeTo12Hour(i, 30)); // Half hour
+  }
+
   return (
     <div className="place-order-container">
       <div className="place-order-left">
@@ -179,16 +199,12 @@ const PlaceOrder = () => {
                 <option value="today">Today</option>
                 <option value="tomorrow">Tomorrow</option>
               </select>
-              <select
-                value={deliveryTime}
-                onChange={(e) => setDeliveryTime(e.target.value)}
-              >
+              <select value={deliveryTime} onChange={handleTimeChange}>
                 <option value="">Select Time</option>
-                {Array.from({ length: 24 }, (_, i) => (
-                  <option
-                    key={i}
-                    value={`${i.toString().padStart(2, "0")}:00`}
-                  >{`${i.toString().padStart(2, "0")}:00`}</option>
+                {timeOptions.map((time, index) => (
+                  <option key={index} value={time}>
+                    {time}
+                  </option>
                 ))}
               </select>
             </div>
