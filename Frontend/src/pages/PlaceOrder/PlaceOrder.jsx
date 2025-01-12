@@ -125,7 +125,7 @@ const PlaceOrder = () => {
     // If the map is closed without selecting a location, set the location to the default one
     setUserLocation(defaultLocation);
     setIsMapVisible(false);
-    toast.info("Map closed. Default location not set.");
+    toast.info("Map closed. Location not set.");
   };
 
   // Convert 24-hour time to 12-hour format with AM/PM
