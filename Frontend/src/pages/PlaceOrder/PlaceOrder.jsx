@@ -12,9 +12,10 @@ const PlaceOrder = () => {
     useContext(StoreContext);
   const [deliveryType, setDeliveryType] = useState("homeDelivery");
   const [paymentOption, setPaymentOption] = useState("");
+  const [deliveryTime, setDeliveryTime] = useState(""); // Track the selected delivery time
   const [isMapVisible, setIsMapVisible] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
-  const [locationName, setLocationName] = useState("");
+  const [locationName, setLocationName] = useState(""); // Track the selected location
   const navigate = useNavigate();
 
   const defaultLocation = { latitude: 27.7172, longitude: 85.324 }; // Set default coordinates (Kathmandu, Nepal)
@@ -49,6 +50,16 @@ const PlaceOrder = () => {
   };
 
   const handleProceedPayment = () => {
+    if (deliveryType === "homeDelivery" && !locationName) {
+      toast.error("Please select a location before proceeding.");
+      return;
+    }
+
+    if (!deliveryTime) {
+      toast.error("Please select a delivery time before proceeding.");
+      return;
+    }
+
     if (paymentOption === "digitalPayment") {
       navigate("/PaymentForm", { state: { totalAmount } });
     } else if (paymentOption === "cashOnDelivery") {
@@ -168,7 +179,10 @@ const PlaceOrder = () => {
                 <option value="today">Today</option>
                 <option value="tomorrow">Tomorrow</option>
               </select>
-              <select>
+              <select
+                value={deliveryTime}
+                onChange={(e) => setDeliveryTime(e.target.value)}
+              >
                 <option value="">Select Time</option>
                 {Array.from({ length: 24 }, (_, i) => (
                   <option
@@ -266,7 +280,7 @@ const PlaceOrder = () => {
 
       {isMapVisible && (
         <div className="map-modal">
-          <div id="map" style={{ height: "400px", width: "100%" }}></div>
+          <div id="map" style={{ height: "500px", width: "70%" }}></div>
           <button
             onClick={handleCloseMap} // Close and set to default location
             className="close-map-button"
