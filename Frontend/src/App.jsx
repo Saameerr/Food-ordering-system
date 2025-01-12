@@ -11,7 +11,6 @@ import C_home from "./components/Company/C_home.jsx";
 import C_about from "./components/Company/C_about.jsx";
 import C_delivery from "./components/Company/C_delivery.jsx";
 import C_privacy from "./components/Company/C_privacy.jsx";
-import SearchFood from "./components/SearchFood/SearchFood.jsx";
 import PaymentForm from "./components/Payment/PaymentForm.jsx";
 import Success from "./components/Payment/Success.jsx";
 import Failure from "./components/Payment/Failure.jsx";
@@ -24,10 +23,6 @@ const App = () => {
   const hideFooterRoutes = ["/cart", "/order"];
   return (
     <>
-      <div>
-        <h1 style={{ textAlign: "center", margin: "20px 0" }}>Food Search</h1>
-        <SearchFood />
-      </div>
       {showLogin ? <Login setShowLogin={setShowLogin} /> : null}
       <div className="app">
         <Navbar setShowLogin={setShowLogin} />
@@ -38,17 +33,14 @@ const App = () => {
 
           <Route path="cart" element={<Cart />} />
           <Route path="order" element={<PlaceOrder />} />
-          <Route path="paymentform" element={<PaymentForm/>} />
-          <Route path="payment-success" element={<Success/>} />
-          <Route path="payment-failure" element={<Failure/>} />
-
+          <Route path="paymentform" element={<PaymentForm />} />
+          <Route path="payment-success" element={<Success />} />
+          <Route path="payment-failure" element={<Failure />} />
 
           <Route path="c_home" element={<C_home />} />
           <Route path="c_about" element={<C_about />} />
           <Route path="c_delivery" element={<C_delivery />} />
           <Route path="c_privacy" element={<C_privacy />} />
-
-          
         </Routes>
 
         {/* Conditionally render Footer only on non-Cart pages */}
