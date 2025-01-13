@@ -13,6 +13,7 @@ const PlaceOrder = () => {
   const [deliveryType, setDeliveryType] = useState("homeDelivery");
   const [paymentOption, setPaymentOption] = useState("");
   const [deliveryTime, setDeliveryTime] = useState(""); // Track the selected delivery time
+  const [phoneNumber, setPhoneNumber] = useState(""); // Track the phone number input
   const [isMapVisible, setIsMapVisible] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
   const [locationName, setLocationName] = useState(""); // Track the selected location
@@ -49,6 +50,10 @@ const PlaceOrder = () => {
     setPaymentOption(e.target.value);
   };
 
+  const handlePhoneNumberChange = (e) => {
+    setPhoneNumber(e.target.value);
+  };
+
   const handleProceedPayment = () => {
     if (deliveryType === "homeDelivery" && !locationName) {
       toast.error("Please select a location before proceeding.");
@@ -59,6 +64,17 @@ const PlaceOrder = () => {
       toast.error("Please select a delivery time before proceeding.");
       return;
     }
+
+    if (
+      !phoneNumber ||
+      phoneNumber.length !== 10 ||
+      !/^[0-9]+$/.test(phoneNumber) ||
+      !/^(97|98)/.test(phoneNumber) // Check if the number starts with 97 or 98
+    ) {
+      toast.error("Please enter a valid 10-digit phone number");
+      return;
+    }
+    
 
     if (paymentOption === "digitalPayment") {
       navigate("/PaymentForm", { state: { totalAmount } });
@@ -208,6 +224,18 @@ const PlaceOrder = () => {
                 ))}
               </select>
             </div>
+          </div>
+
+          <div className="phone-number">
+            <h4>Phone Number</h4>
+            <hr />
+            <input
+              type="text" 
+              maxLength="10"
+              placeholder="Enter your phone number"
+              value={phoneNumber}
+              onChange={handlePhoneNumberChange}
+            />
           </div>
 
           <div className="payment-method">
