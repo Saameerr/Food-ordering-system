@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./FoodItem.css";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../Context/StoreContext";
@@ -7,15 +7,44 @@ const FoodItem = ({ id, name, price, description, image }) => {
   const { cartItems, addToCart, removeFromCart, url } =
     useContext(StoreContext);
 
-  // State to manage ratings for each food item
-  const [ratings, setRatings] = useState({});
+  // State for rating
+  const [rating, setRating] = useState(() => {
+    // Retrieve rating from sessionStorage if available
+    const savedRating = sessionStorage.getItem(`rating-${id}`);
+    return savedRating ? parseFloat(savedRating) : 0; // Default to 0 if no rating saved
+  });
 
-  // Handle setting the rating
-  const handleRating = (itemId, rating) => {
-    setRatings((prevRatings) => ({
-      ...prevRatings,
-      [itemId]: rating,
-    }));
+  // Update sessionStorage whenever the rating changes
+  useEffect(() => {
+    sessionStorage.setItem(`rating-${id}`, rating);
+  }, [rating, id]);
+
+  // Handle rating selection
+  const handleRating = (newRating) => {
+    setRating(newRating); // Update rating state
+  };
+
+  // Render stars dynamically based on rating
+  const renderStars = (currentRating) => {
+    return Array.from({ length: 5 }, (_, index) => {
+      const starValue = index + 1;
+      return (
+        <span
+          key={starValue}
+          className={`star ${
+            starValue <= currentRating ? "selected" : "unselected"
+          }`}
+          onClick={() => handleRating(starValue)}
+          style={{
+            cursor: "pointer",
+            fontSize: "20px",
+            color: starValue <= currentRating ? "#ffc107" : "#e4e5e9",
+          }}
+        >
+          ★
+        </span>
+      );
+    });
   };
 
   return (
@@ -52,29 +81,11 @@ const FoodItem = ({ id, name, price, description, image }) => {
         <div className="food-item-info">
           <div className="food-item-name-rating">
             <p>{name}</p>
-            {/* <img src={assets.rating_starts} alt="Rating" /> */}
+            <div className="food-item-stars">{renderStars(rating)}</div>
           </div>
           <p className="food-item-desc">{description}</p>
           <p className="food-item-price">Rs.{price}</p>
         </div>
-      </div>
-
-      {/* Dynamic Star Rating */}
-      <div className="food-item-rating">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <span
-            key={star}
-            style={{
-              fontSize: "20px",
-              cursor: "pointer",
-              color: star <= (ratings[id] || 0) ? "#ffc107" : "#e4e5e9",
-            }}
-            onClick={() => handleRating(id, star)}
-          >
-            ★
-          </span>
-        ))}
-        <p>Rating: {ratings[id] || "No rating yet"}</p>
       </div>
     </div>
   );
