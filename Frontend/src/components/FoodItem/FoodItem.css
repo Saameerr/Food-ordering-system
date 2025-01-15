@@ -83,3 +83,17 @@
 .food-item-rating span {
   transition: color 0.3s;
 }
+
+.star {
+    font-size: 20px;
+    margin-right: 5px;
+  }
+  
+  .selected {
+    color: #ffc107; /* Gold color for selected stars */
+  }
+  
+  .unselected {
+    color: #e4e5e9; /* Grey color for unselected stars */
+  }
+  
