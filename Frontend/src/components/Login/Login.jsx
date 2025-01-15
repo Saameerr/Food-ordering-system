@@ -149,6 +149,17 @@ const Login = ({ setShowLogin }) => {
                 placeholder="Password"
                 required
               />
+             <div className="password-requirement">
+                   
+                        <ul>
+                            <li>At least 8 characters</li>
+                            <li>One uppercase letter</li>
+                            <li>One lowercase letter</li>
+                            <li>One number</li>
+                            <li>One special symbol (e.g., @, #, $, %, etc.)</li>
+                        </ul>
+                   
+                    </div>
             </div>
 
             <button type="submit">
