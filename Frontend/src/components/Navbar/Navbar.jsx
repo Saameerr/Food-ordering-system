@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { StoreContext } from "../../Context/StoreContext";
 import { assets } from "../../assets/assets";
 
+
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("Home");
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -120,7 +121,7 @@ const Navbar = ({ setShowLogin }) => {
             >
               <li>
                 <img src={assets.bag_icon} alt="Orders" />
-                <p>Orders</p>
+                <span onClick={() => navigate("/MyOrders")}>Orders</span>
               </li>
               <hr />
               <li onClick={logout}>

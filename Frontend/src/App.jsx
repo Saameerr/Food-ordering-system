@@ -14,6 +14,7 @@ import C_privacy from "./components/Company/C_privacy.jsx";
 import PaymentForm from "./components/Payment/PaymentForm.jsx";
 import Success from "./components/Payment/Success.jsx";
 import Failure from "./components/Payment/Failure.jsx";
+import MyOrders from "./pages/MyOrders/MyOrders.jsx";
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="c_about" element={<C_about />} />
           <Route path="c_delivery" element={<C_delivery />} />
           <Route path="c_privacy" element={<C_privacy />} />
+          <Route path="/myorders" element={<MyOrders/>} />
         </Routes>
 
         {/* Conditionally render Footer only on non-Cart pages */}

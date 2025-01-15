@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { StoreContext } from "../../Context/StoreContext";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -6,57 +6,121 @@ import "react-toastify/dist/ReactToastify.css";
 import L from "leaflet"; // Import Leaflet
 import "leaflet/dist/leaflet.css";
 import "./PlaceOrder.css";
+import axois from 'axios';
 
 const PlaceOrder = () => {
-  const { cartItems, food_list, getTotalCartAmount, getTotalItemsInCart, url } =
+  const { token, cartItems, food_list, getTotalCartAmount, getTotalItemsInCart, url } =
     useContext(StoreContext);
-  const [deliveryType, setDeliveryType] = useState("homeDelivery");
-  const [paymentOption, setPaymentOption] = useState("");
-  const [deliveryTime, setDeliveryTime] = useState(""); // Track the selected delivery time
-  const [phoneNumber, setPhoneNumber] = useState(""); // Track the phone number input
+
+  const [formState, setFormState] = useState({
+    deliveryType: "homeDelivery",
+    paymentOption: "",
+    deliveryDate: "today", // Default is today
+    deliveryTime: "",
+    phoneNumber: "",
+    locationName: "",
+  });
+
   const [isMapVisible, setIsMapVisible] = useState(false);
-  const [userLocation, setUserLocation] = useState(null);
-  const [locationName, setLocationName] = useState(""); // Track the selected location
+  const [userLocation, setUserLocation] = useState({ latitude: 27.7172, longitude: 85.324 }); // Default location: Kathmandu, Nepal
+  const mapRef = useRef(null); // Persist map instance across renders
   const navigate = useNavigate();
 
-  const defaultLocation = { latitude: 27.7172, longitude: 85.324 }; // Set default coordinates (Kathmandu, Nepal)
+  const deliveryFee = formState.deliveryType === "takeaway" ? 0 : 85;
+  const totalAmount = getTotalCartAmount() + deliveryFee;
+
+  // useEffect to log formState to console
+  // useEffect(() => {
+  //   console.log("Current form state:", formState);
+  // }, [formState]); // This will run whenever formState changes
+
+  const placeOrder = async (event) => {
+    event.preventDefault();
+    let orderItems = [];
+    food_list.map((item)=>{
+      if(cartItems[item._id]>0){
+        let itemInfo = item; 
+        itemInfo["quantity"] = cartItems[item._id];
+        orderItems.push(itemInfo);
+      }
+    }) 
+    
+   let orderData = {
+    address:formState,
+    items:orderItems,
+    amount:getTotalCartAmount()+84,
+   }
+   let response = await axois.post(url+"/api/order/place",orderData,{headers:{token}});
+   if (response.data.success){
+    const {session_url} = response.data;
+    window.location.replace(session_url);
+   }
+   else{
+    alert("Error");
+   }
+  }
 
   useEffect(() => {
-    // Set default location on component mount
-    setUserLocation(defaultLocation);
-  }, []);
-
-  const openMap = () => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setUserLocation({ latitude, longitude });
-        setIsMapVisible(true);
-        toast.info("Map opened! Click to select a location.");
-      },
-      () => {
-        toast.error(
-          "Unable to fetch your location. Please enable location services."
+    if (isMapVisible && userLocation) {
+      if (!mapRef.current) {
+        mapRef.current = L.map("map").setView(
+          [userLocation.latitude, userLocation.longitude],
+          13
         );
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+        }).addTo(mapRef.current);
+
+        mapRef.current.on("click", async (e) => {
+          const { lat, lng } = e.latlng;
+          setUserLocation({ latitude: lat, longitude: lng });
+          const locationName = await reverseGeocode(lat, lng);
+          setFormState((prev) => ({ ...prev, locationName }));
+          setIsMapVisible(false);
+          toast.success(`Location selected: ${locationName}`);
+        });
+      } else {
+        mapRef.current.setView([userLocation.latitude, userLocation.longitude], 13);
       }
-    );
+    }
+
+    return () => {
+      if (mapRef.current) mapRef.current.remove();
+      mapRef.current = null;
+    };
+  }, [isMapVisible, userLocation]);
+
+  const reverseGeocode = async (latitude, longitude) => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+      );
+      if (!response.ok) throw new Error("Failed to fetch location data");
+      const data = await response.json();
+      return data.display_name;
+    } catch (error) {
+      console.error("Reverse Geocode Error:", error);
+      toast.error("Unable to fetch location name");
+      return "Unknown Location";
+    }
   };
 
-  const handleDeliveryTypeChange = (e) => {
-    setDeliveryType(e.target.value);
-  };
-
-  const handlePaymentOptionChange = (e) => {
-    setPaymentOption(e.target.value);
-  };
-
-  const handlePhoneNumberChange = (e) => {
-    setPhoneNumber(e.target.value);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormState((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleProceedPayment = () => {
+    const { deliveryType, locationName, deliveryDate, deliveryTime, phoneNumber, paymentOption } = formState;
+
     if (deliveryType === "homeDelivery" && !locationName) {
       toast.error("Please select a location before proceeding.");
+      return;
+    }
+
+    if (!deliveryDate) {
+      toast.error("Please select a delivery date before proceeding.");
       return;
     }
 
@@ -69,273 +133,204 @@ const PlaceOrder = () => {
       !phoneNumber ||
       phoneNumber.length !== 10 ||
       !/^[0-9]+$/.test(phoneNumber) ||
-      !/^(97|98)/.test(phoneNumber) // Check if the number starts with 97 or 98
+      !/^(97|98)/.test(phoneNumber)
     ) {
       toast.error("Please enter a valid 10-digit phone number");
       return;
     }
-    
 
     if (paymentOption === "digitalPayment") {
       navigate("/PaymentForm", { state: { totalAmount } });
     } else if (paymentOption === "cashOnDelivery") {
-      toast.success(
-        "You have selected Cash on Delivery. Your order will be placed."
-      );
+      toast.success("You have selected Cash on Delivery. Your order will be placed.");
     } else {
       toast.error("Please select a payment method before proceeding.");
     }
   };
 
-  const deliveryFee = deliveryType === "takeaway" ? 0 : 85;
-  const totalAmount = getTotalCartAmount() + deliveryFee;
-
-  const reverseGeocode = async (latitude, longitude) => {
-    const response = await fetch(
-      `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+  const openMap = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setUserLocation({ latitude, longitude });
+        setIsMapVisible(true);
+        toast.info("Map opened! Click to select a location.");
+      },
+      () => {
+        toast.error("Unable to fetch your location. Please enable location services.");
+      }
     );
-    const data = await response.json();
-    return data.display_name;
   };
 
-  const handleMapClick = async (e) => {
-    const { lat, lng } = e.latlng;
-    setUserLocation({ latitude: lat, longitude: lng });
-
-    // Reverse geocode the coordinates to get the place name
-    const place = await reverseGeocode(lat, lng);
-    setLocationName(place);
-
-    // Close the map after selecting the location
-    setIsMapVisible(false);
-
-    toast.success(`Location selected: ${place}`);
-  };
-
-  useEffect(() => {
-    if (isMapVisible && userLocation) {
-      const map = L.map("map").setView(
-        [userLocation.latitude, userLocation.longitude],
-        13
-      );
-
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-      }).addTo(map);
-
-      const marker = L.marker([
-        userLocation.latitude,
-        userLocation.longitude,
-      ]).addTo(map);
-      marker.bindPopup("Your location").openPopup();
-
-      map.on("click", handleMapClick); // Handle map click
-
-      return () => {
-        map.remove();
-      };
-    }
-  }, [isMapVisible, userLocation]);
-
-  const handleCloseMap = () => {
-    // If the map is closed without selecting a location, set the location to the default one
-    setUserLocation(defaultLocation);
+  const closeMap = () => {
     setIsMapVisible(false);
     toast.info("Map closed. Location not set.");
   };
 
-  // Convert 24-hour time to 12-hour format with AM/PM
   const formatTimeTo12Hour = (hour, minute) => {
     const isPM = hour >= 12;
-    const formattedHour = hour % 12 || 12; // Convert to 12-hour format
-    const formattedMinute = minute === 0 ? "00" : "30"; // Add 00 or 30 for minute intervals
+    const formattedHour = hour % 12 || 12;
+    const formattedMinute = minute === 0 ? "00" : "30";
     const ampm = isPM ? "PM" : "AM";
     return `${formattedHour}:${formattedMinute} ${ampm}`;
   };
 
-  const handleTimeChange = (e) => {
-    setDeliveryTime(e.target.value);
-  };
-
-  // Generate the time options with 30-minute intervals
   const timeOptions = [];
   for (let i = 0; i < 24; i++) {
-    timeOptions.push(formatTimeTo12Hour(i, 0)); // Full hour
-    timeOptions.push(formatTimeTo12Hour(i, 30)); // Half hour
+    timeOptions.push(formatTimeTo12Hour(i, 0));
+    timeOptions.push(formatTimeTo12Hour(i, 30));
   }
 
   return (
+    <form onSubmit={placeOrder}>
     <div className="place-order-container">
       <div className="place-order-left">
-        <div className="place-order">
-          <h1 className="heading">Checkout</h1>
-          <div className="place-order-heading">
-            <h4>Delivery Type</h4>
-            <hr />
-            <div className="delivery-option">
-              <label>
-                <input
-                  type="radio"
-                  name="deliveryType"
-                  value="homeDelivery"
-                  checked={deliveryType === "homeDelivery"}
-                  onChange={handleDeliveryTypeChange}
-                />
-                Home Delivery
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="deliveryType"
-                  value="takeaway"
-                  checked={deliveryType === "takeaway"}
-                  onChange={handleDeliveryTypeChange}
-                />
-                Takeaway
-              </label>
-            </div>
-          </div>
+        <h1 className="heading">Checkout</h1>
 
-          {deliveryType === "homeDelivery" && (
-            <div className="delivery-details">
-              <h4>Deliver To</h4>
-              <hr />
-              <p className="location-button" onClick={openMap}>
-                + Add Your Location
-              </p>
-              {locationName && <p>Selected Location: {locationName}</p>}
-            </div>
-          )}
-
-          <div className="delivery-time">
-            <h4>Delivery Time</h4>
-            <hr />
-            <div className="date">
-              <select>
-                <option value="today">Today</option>
-                <option value="tomorrow">Tomorrow</option>
-              </select>
-              <select value={deliveryTime} onChange={handleTimeChange}>
-                <option value="">Select Time</option>
-                {timeOptions.map((time, index) => (
-                  <option key={index} value={time}>
-                    {time}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          <div className="phone-number">
-            <h4>Phone Number</h4>
-            <hr />
-            <input
-              type="text" 
-              maxLength="10"
-              placeholder="Enter your phone number"
-              value={phoneNumber}
-              onChange={handlePhoneNumberChange}
-            />
-          </div>
-
-          <div className="payment-method">
-            <h4>Choose Payment Method</h4>
-            <hr />
-            <div className="payment-options">
-              <label>
-                <input
-                  type="radio"
-                  name="paymentOption"
-                  value="cashOnDelivery"
-                  checked={paymentOption === "cashOnDelivery"}
-                  onChange={handlePaymentOptionChange}
-                />
-                Cash On Delivery
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="paymentOption"
-                  value="digitalPayment"
-                  checked={paymentOption === "digitalPayment"}
-                  onChange={handlePaymentOptionChange}
-                />
-                E-sewa
-              </label>
-            </div>
+        {/* Delivery Type */}
+        <div>
+          <h4>Delivery Type</h4>
+          <hr />
+          <div>
+            <label>
+              <input
+                type="radio"
+                name="deliveryType"
+                value="homeDelivery"
+                checked={formState.deliveryType === "homeDelivery"}
+                onChange={handleInputChange}
+              />
+              Home Delivery
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="deliveryType"
+                value="takeaway"
+                checked={formState.deliveryType === "takeaway"}
+                onChange={handleInputChange}
+              />
+              Takeaway
+            </label>
           </div>
         </div>
 
-        <div className="action-buttons">
+        {formState.deliveryType === "homeDelivery" && (
+          <div>
+            <h4>Deliver To</h4>
+            <hr />
+            <p className="location-button" onClick={openMap}>
+              + Add Your Location
+            </p>
+            {formState.locationName && <p>Selected Location: {formState.locationName}</p>}
+          </div>
+        )}
+
+        {/* Delivery Date */}
+        <div>
+          <h4>Delivery Date</h4>
+          <hr />
+          <select name="deliveryDate" value={formState.deliveryDate} onChange={handleInputChange}>
+            <option value="today">Today</option>
+            <option value="tomorrow">Tomorrow</option>
+          </select>
+        </div>
+
+        {/* Delivery Time */}
+        <div>
+          <h4>Delivery Time</h4>
+          <hr />
+          <select name="deliveryTime" value={formState.deliveryTime} onChange={handleInputChange}>
+            <option value="">Select Time</option>
+            {timeOptions.map((time, index) => (
+              <option key={index} value={time}>
+                {time}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Phone Number */}
+        <div>
+          <h4>Phone Number</h4>
+          <hr />
+          <input
+            type="text"
+            name="phoneNumber"
+            maxLength="10"
+            placeholder="Enter your phone number"
+            value={formState.phoneNumber}
+            onChange={handleInputChange}
+          />
+        </div>
+
+        {/* Payment Method */}
+        <div>
+          <h4>Choose Payment Method</h4>
+          <hr />
+          <label>
+            <input
+              type="radio"
+              name="paymentOption"
+              value="cashOnDelivery"
+              checked={formState.paymentOption === "cashOnDelivery"}
+              onChange={handleInputChange}
+            />
+            Cash On Delivery
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="paymentOption"
+              value="digitalPayment"
+              checked={formState.paymentOption === "digitalPayment"}
+              onChange={handleInputChange}
+            />
+            E-sewa
+          </label>
+        </div>
+
+        {/* Action Buttons */}
+        <div>
           <button onClick={() => navigate("/Cart")} className="back-button">
             Back
           </button>
-          <button onClick={handleProceedPayment} className="proceed-button">
+          <button type="submit" onClick={handleProceedPayment} className="proceed-button">
             Proceed for Payment
           </button>
         </div>
       </div>
 
       <div className="place-order-right">
-        <div className="cart-header">
-          <h3>My Cart ({getTotalItemsInCart()} items)</h3>
-        </div>
-        <div className="cart-items">
-          {Object.keys(cartItems).length > 0 ? (
-            food_list.map((item) => {
-              if (cartItems[item._id] > 0) {
-                return (
-                  <div key={item._id} className="cart-item">
-                    <img
-                      src={`${url}/images/${item.image}`}
-                      alt={item.name}
-                      className="item-image"
-                    />
-                    <div className="item-details">
-                      <h6>{item.name}</h6>
-                      <p>Price: Rs. {item.price}</p>
-                      <p>Quantity: {cartItems[item._id]}</p>
-                      <hr />
-                    </div>
-                  </div>
-                );
-              }
-              return null;
-            })
-          ) : (
-            <p className="empty-cart-message">Your cart is empty</p>
-          )}
-        </div>
-        <div className="cart-summary">
-          <div className="cart-totaldetail">
-            <p>Subtotal</p>
-            <p>Rs. {getTotalCartAmount()}</p>
-          </div>
-          <div className="cart-totaldetail">
-            <p>Delivery Fee</p>
-            <p>Rs. {deliveryFee}</p>
-          </div>
-          <div className="cart-totaldetail">
-            <b>Total</b>
-            <b>Rs. {totalAmount}</b>
-          </div>
+        <h3>My Cart ({getTotalItemsInCart()} items)</h3>
+        {food_list.map(
+          (item) =>
+            cartItems[item._id] > 0 && (
+              <div key={item._id}>
+                <img src={`${url}/images/${item.image}`} alt={item.name} />
+                <p>{item.name}</p>
+                <p>Price: Rs. {item.price}</p>
+                <p>Quantity: {cartItems[item._id]}</p>
+              </div>
+            )
+        )}
+        <div>
+          <p>Subtotal: Rs. {getTotalCartAmount()}</p>
+          <p>Delivery Fee: Rs. {deliveryFee}</p>
+          <p>Total: Rs. {totalAmount}</p>
         </div>
       </div>
 
       {isMapVisible && (
         <div className="map-modal">
           <div id="map" style={{ height: "500px", width: "70%" }}></div>
-          <button
-            onClick={handleCloseMap} // Close and set to default location
-            className="close-map-button"
-          >
-            Close Map
-          </button>
+          <button onClick={closeMap}>Close Map</button>
         </div>
       )}
 
       <ToastContainer />
     </div>
+    </form>
   );
 };
 
