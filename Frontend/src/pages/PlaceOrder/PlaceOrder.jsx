@@ -270,6 +270,7 @@ const PlaceOrder = () => {
             placeholder="Enter your phone number"
             value={formState.phoneNumber}
             onChange={handleInputChange}
+            required
           />
         </div>
 
