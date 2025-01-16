@@ -132,6 +132,12 @@ p span:hover::after {
   text-decoration: underline;
 }
 
+.password-requirement {
+    color: red;
+    font-size: 12px;
+}
+
+
 /* Animation for the login form */
 @keyframes slideIn {
   from {
