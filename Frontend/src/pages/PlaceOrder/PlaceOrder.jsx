@@ -14,11 +14,11 @@ const PlaceOrder = () => {
 
   const [formState, setFormState] = useState({
     deliveryType: "homeDelivery",
-    paymentOption: "",
+    locationName: "",
     deliveryDate: "today", // Default is today
     deliveryTime: "",
     phoneNumber: "",
-    locationName: "",
+    paymentOption: "",
   });
 
   const [isMapVisible, setIsMapVisible] = useState(false);
@@ -228,7 +228,7 @@ const PlaceOrder = () => {
           <div>
             <h4>Deliver To</h4>
             <hr />
-            <p className="location-button" onClick={openMap}>
+            <p className="location-button" name="locationName" onClick={openMap}>
               + Add Your Location
             </p>
             {formState.locationName && <p>Selected Location: {formState.locationName}</p>}
