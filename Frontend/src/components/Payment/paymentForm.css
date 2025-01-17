@@ -1,0 +1,98 @@
+/* General container styles */
+.payment-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Form heading */
+  .payment-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  /* Form container */
+  .payment-form {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+  }
+  
+  /* Form group (input and label container) */
+  .form-group {
+    margin-bottom: 25px;
+  }
+  
+  /* Label styling */
+  .form-label {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 10px;
+    display: block;
+    text-align: left;
+  }
+  
+  /* Input field styling */
+  .form-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin-top: 5px;
+    box-sizing: border-box;
+    outline: none;
+  }
+  
+  /* Input focus state */
+  .form-input:focus {
+    border-color: #007bff;
+    background-color: #ffffff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }
+  
+  /* Button styling */
+  .payment-button {
+    width: 100%;
+    padding: 15px 0;
+    font-size: 1.1rem;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+  }
+  
+  /* Button hover effect */
+  .payment-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Responsive design for smaller screens */
+  @media (max-width: 768px) {
+    .payment-form {
+      padding: 25px;
+    }
+  
+    .payment-title {
+      font-size: 1.5rem;
+    }
+  
+    .payment-button {
+      font-size: 1rem;
+      padding: 12px 0;
+    }
+  }
+  

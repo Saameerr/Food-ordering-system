@@ -38,18 +38,6 @@
           margin-bottom: 20px;
       }
       
-      /* Delivery Time Date */
-      .delivery-time .date {
-          display: flex;
-          gap: 15px;
-      }
-      
-      /* Delivery & Payment Options */
-      .delivery-option,
-      .payment-options {
-          display: flex;
-          gap: 20px;
-      }
       
       /* Location Button */
       .location-button {
@@ -114,10 +102,11 @@
           top: 100px;
       }
       
-      .cart-header h3 {
-          font-size: 18px;
+      .cart-header h2 {
+          font-size: 22px;
           font-weight: bold;
           margin-bottom: 10px;
+          margin-left: 55px;
       }
       
       .cart-items {
@@ -131,10 +120,12 @@
       }
       
       .cart-item img {
-          width: 100px;
-          height: 100px;
+          width: 80px;
+          height: 80px;
           object-fit: cover;
           margin-right: 15px;
+          border-radius: 10px;
+          
       }
       
       .cart-item .item-details {
@@ -142,7 +133,6 @@
       }
       
       .cart-item .item-details h4 {
-          margin: 0;
           font-size: 16px;
       }
       
@@ -150,21 +140,27 @@
           margin: 0;
           font-size: 14px;
       }
+      .hr{
+        color: red;
+        margin-bottom: 2px;
+      }
       
       .cart-summary {
           margin-top: 20px;
+          font-weight: bold;
       }
-      
-      .cart-summary .cart-totaldetail {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 10px;
+      .cart-amt{
+        color: red;
+        margin-left: 6rem;
       }
-      
-      .cart-summary .cart-totaldetail b {
-          font-size: 16px;
+      .cart-amtt{
+        color: red;
+        margin-left: 4rem;
       }
-      
+      .cart-amttt{
+        color: red;
+        margin-left: 7.2rem;
+      }
       .empty-cart-message {
           font-size: 18px;
           color: #555;
@@ -192,15 +188,15 @@
       
       .close-map-button {
           position: absolute;
-          top: 10px;
-          right: 10px;
+          top: 75px;
+          width: 67%;
           background-color: #ff0000;
           color: white;
           padding: 6px 12px;
           border: none;
           border-radius: 4px;
           cursor: pointer;
-          font-size: 12px;
+          font-size: 14px;
           font-weight: 500;
           transition: background-color 0.3s ease, transform 0.2s ease;
       }
@@ -240,6 +236,3 @@
               width: 48%;
           }
       }
-      
-
-      /* Modal for Map */

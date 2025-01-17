@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { generateUniqueId } from 'esewajs';
+import './paymentForm.css'
 
 const PaymentForm = () => {
   const location = useLocation();
@@ -30,24 +31,25 @@ const PaymentForm = () => {
   };
 
   return (
-    <div>
-      <h1>eSewa Payment Integration</h1>
+    <div className="payment-container">
+  <h1 className="payment-title">eSewa Payment Integration</h1>
 
-      <form onSubmit={handlePayment}>
-        <div>
-          <label htmlFor="amount">Amount:</label>
-          <input
-            type="number"
-            value={amount}
-            readOnly
-            required
-          />
-        </div>
-
-        <button type="submit">Proceed to Pay with eSewa</button>
-      </form>
+  <form className="payment-form" onSubmit={handlePayment}>
+    <div className="form-group">
+      <label htmlFor="amount" className="form-label"><b>Amount:</b></label>
+      <input
+        type="number"
+        value={amount}
+        className="form-input"
+        readOnly
+        required
+      />
     </div>
-  );
-};
+
+    <button type="submit" className="payment-button">Proceed to Pay with eSewa</button>
+  </form>
+</div>
+  )
+}
 
 export default PaymentForm;

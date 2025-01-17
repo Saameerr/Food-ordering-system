@@ -138,6 +138,11 @@ const PlaceOrder = () => {
       return;
     }
 
+    if (!phoneNumber) {
+      toast.error("Please enter a valid phone number before proceeding.");
+      return;
+    }
+
     if (
       !phoneNumber ||
       phoneNumber.length !== 10 ||
@@ -197,11 +202,11 @@ const PlaceOrder = () => {
         <h1 className="heading">Checkout</h1>
 
         {/* Delivery Type */}
-        <div>
-          <h4>Delivery Type</h4>
+        <div className="delivery-details">
+          <h5>Delivery Type</h5>
           <hr />
           <div>
-            <label>
+            <label style={{ marginRight: "20px" }}>
               <input
                 type="radio"
                 name="deliveryType"
@@ -225,8 +230,8 @@ const PlaceOrder = () => {
         </div>
 
         {formState.deliveryType === "homeDelivery" && (
-          <div>
-            <h4>Deliver To</h4>
+          <div className="delivery-details">
+            <h5>Deliver To</h5>
             <hr />
             <p className="location-button" name="locationName" onClick={openMap}>
               + Add Your Location
@@ -236,8 +241,8 @@ const PlaceOrder = () => {
         )}
 
         {/* Delivery Date */}
-        <div>
-          <h4>Delivery Date</h4>
+        <div className="delivery-details">
+          <h5>Delivery Date</h5>
           <hr />
           <select name="deliveryDate" value={formState.deliveryDate} onChange={handleInputChange}>
             <option value="today">Today</option>
@@ -246,8 +251,8 @@ const PlaceOrder = () => {
         </div>
 
         {/* Delivery Time */}
-        <div>
-          <h4>Delivery Time</h4>
+        <div className="delivery-details">
+          <h5>Delivery Time</h5>
           <hr />
           <select name="deliveryTime" value={formState.deliveryTime} onChange={handleInputChange}>
             <option value="">Select Time</option>
@@ -260,8 +265,8 @@ const PlaceOrder = () => {
         </div>
 
         {/* Phone Number */}
-        <div>
-          <h4>Phone Number</h4>
+        <div className="delivery-details">
+          <h5>Phone Number</h5>
           <hr />
           <input
             type="text"
@@ -270,15 +275,14 @@ const PlaceOrder = () => {
             placeholder="Enter your phone number"
             value={formState.phoneNumber}
             onChange={handleInputChange}
-            required
           />
         </div>
 
         {/* Payment Method */}
-        <div>
-          <h4>Choose Payment Method</h4>
+        <div className="delivery-details">
+          <h5>Choose Payment Method</h5>
           <hr />
-          <label>
+          <label style={{ marginRight: "20px" }}>
             <input
               type="radio"
               name="paymentOption"
@@ -301,7 +305,7 @@ const PlaceOrder = () => {
         </div>
 
         {/* Action Buttons */}
-        <div>
+        <div className="action-buttons">
           <button onClick={() => navigate("/Cart")} className="back-button">
             Back
           </button>
@@ -311,30 +315,35 @@ const PlaceOrder = () => {
         </div>
       </div>
 
-      <div className="place-order-right">
-        <h3>My Cart ({getTotalItemsInCart()} items)</h3>
+      <div className="place-order-right ">
+        <div className="cart-header">
+        <h2>My Cart ({getTotalItemsInCart()} items)</h2> <hr/>
         {food_list.map(
           (item) =>
             cartItems[item._id] > 0 && (
-              <div key={item._id}>
+              <div key={item._id} className="cart-item">
                 <img src={`${url}/images/${item.image}`} alt={item.name} />
-                <p>{item.name}</p>
-                <p>Price: Rs. {item.price}</p>
-                <p>Quantity: {cartItems[item._id]}</p>
-              </div>
-            )
+                <div className="item-details">
+                <h4>{item.name}</h4>
+                <p><i>Price: Rs. {item.price}</i></p>
+                <p> <i>Quantity: {cartItems[item._id]}</i></p>  <hr  className="hr"/>
+                </div>
+              </div> 
+              
+            ) 
         )}
-        <div>
-          <p>Subtotal: Rs. {getTotalCartAmount()}</p>
-          <p>Delivery Fee: Rs. {deliveryFee}</p>
-          <p>Total: Rs. {totalAmount}</p>
+        </div>
+        <div className="cart-summary">
+          <p>Subtotal: <i className="cart-amt">Rs. {getTotalCartAmount()}</i></p>
+          <p>Delivery Fee: <i className="cart-amtt"> Rs. {deliveryFee}</i></p> <hr />
+          <p>Total: <i className="cart-amttt">Rs. {totalAmount}</i></p>
         </div>
       </div>
 
       {isMapVisible && (
         <div className="map-modal">
           <div id="map" style={{ height: "500px", width: "70%" }}></div>
-          <button onClick={closeMap}>Close Map</button>
+          <button className="close-map-button" onClick={closeMap}>Close Map</button>
         </div>
       )}
 
