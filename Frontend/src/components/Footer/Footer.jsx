@@ -46,7 +46,7 @@ const Footer = () => {
             </li>
             <li>
               <a href="https://www.gmail.com/" target="_blank">
-                <MdEmail  style={{marginLeft:"px"}}/> support@kbhayo.com
+                <MdEmail  style={{marginLeft:"px"}}/> khajavayo@gmail.com
               </a>
             </li>
           </ul>
