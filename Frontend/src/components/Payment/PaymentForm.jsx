@@ -32,7 +32,6 @@ const PaymentForm = () => {
 
   return (
     <div className="payment-container">
-  <h1 className="payment-title">eSewa Payment Integration</h1>
 
   <form className="payment-form" onSubmit={handlePayment}>
     <div className="form-group">

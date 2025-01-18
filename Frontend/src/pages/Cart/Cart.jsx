@@ -3,13 +3,22 @@ import "./Cart.css";
 import { StoreContext } from "../../Context/StoreContext";
 import { useNavigate } from "react-router-dom";
 
-const Cart = () => {
-  const { cartItems, food_list, removeFromCart, getTotalCartAmount, getTotalItemsInCart,url } =
-    useContext(StoreContext);
+const Cart = ({ setShowLogin }) => {  // Accept setShowLogin as a prop
+  const { cartItems, food_list, removeFromCart, getTotalCartAmount, getTotalItemsInCart, token, url } = useContext(StoreContext);
   const navigate = useNavigate();
 
   // Check if cart is empty
   const isCartEmpty = !food_list.some((items) => cartItems[items._id] > 0);
+
+  const handleCheckout = () => {
+    if (!token) {
+      // If no token, show login modal
+      setShowLogin(true); // This will trigger the login modal in App.jsx
+    } else {
+      // If token exists, proceed to checkout page
+      navigate("/order");
+    }
+  };
 
   return (
     <div className="cart-page">
@@ -23,7 +32,7 @@ const Cart = () => {
         <>
           {/* Cart details if items are present */}
           <div className="cart">
-            <div className="cart-content"> {/* New flex container */}
+            <div className="cart-content">
               <div className="cart-items">
                 <div className="cart-itemstitle">
                   <p>Items</p>
@@ -39,14 +48,13 @@ const Cart = () => {
                 <div className="cart-total-items">
                   <h4>Total Items: {getTotalItemsInCart()}</h4>
                 </div>
-                
 
                 {food_list.map((items, index) => {
                   if (cartItems[items._id] > 0) {
                     return (
                       <div key={index} className="cart-itemstitle cart-itemsitem">
-                        <img src={url+"/images/"+items.image} alt="" />
-                        <p> {items.name}</p>
+                        <img src={url + "/images/" + items.image} alt="" />
+                        <p>{items.name}</p>
                         <p> Rs.{items.price}</p>
                         <p>{cartItems[items._id]}</p>
                         <p> Rs.{items.price * cartItems[items._id]}</p>   {/* Total amount of items */}
@@ -69,19 +77,19 @@ const Cart = () => {
                 </div>
                 <div className="cart-totaldetail">
                   <p>Subtotal</p>
-                  <p style={{marginLeft:"5rem"}}> Rs.{getTotalCartAmount()}</p> <hr />
+                  <p style={{ marginLeft: "5rem" }}> Rs.{getTotalCartAmount()}</p> <hr />
                 </div>
                 <div className="cart-totaldetail">
                   <p>Delivery Fee</p>
-                  <p  style={{marginLeft:"3.3rem"}}> Rs.{getTotalCartAmount() === 0 ? 0 : 85}</p> <hr />
+                  <p style={{ marginLeft: "3.3rem" }}> Rs.{getTotalCartAmount() === 0 ? 0 : 85}</p> <hr />
                 </div>
                 <div className="cart-totaldetail">
                   <b>Total</b>
-                  <b style={{marginLeft:"6.3rem"}}>
+                  <b style={{ marginLeft: "6.3rem" }}>
                     Rs.{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 85}
                   </b>
                 </div>
-                <button onClick={() => navigate("/order")}>Checkout</button>
+                <button onClick={handleCheckout}>Checkout</button>
               </div>
             </div>
           </div>

@@ -21,31 +21,32 @@ const App = () => {
   const location = useLocation(); // Get current route
 
   // Define the routes where the footer should NOT be displayed
-  const hideFooterRoutes = ["/cart", "/order"];
+  const hideFooterRoutes = ["/cart", "/order", "/paymentform", "/payment-success", "/payment-failure"];
+
   return (
     <>
-      {showLogin ? <Login setShowLogin={setShowLogin} /> : null}
+      {showLogin && <Login setShowLogin={setShowLogin} />}
       <div className="app">
         <Navbar setShowLogin={setShowLogin} />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="home" element={<Home />} />
-          <Route path="footer" element={<Footer />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/cart" element={<Cart setShowLogin={setShowLogin} />} />
+          <Route path="/order" element={<PlaceOrder />} />
+          <Route path="/paymentform" element={<PaymentForm />} />
+          <Route path="/payment-success" element={<Success />} />
+          <Route path="/payment-failure" element={<Failure />} />
 
-          <Route path="cart" element={<Cart />} />
-          <Route path="order" element={<PlaceOrder />} />
-          <Route path="paymentform" element={<PaymentForm />} />
-          <Route path="payment-success" element={<Success />} />
-          <Route path="payment-failure" element={<Failure />} />
-
-          <Route path="c_home" element={<C_home />} />
-          <Route path="c_about" element={<C_about />} />
-          <Route path="c_delivery" element={<C_delivery />} />
-          <Route path="c_privacy" element={<C_privacy />} />
-          <Route path="/myorders" element={<MyOrders/>} />
+          {/* Company-related Routes */}
+          <Route path="/c_home" element={<C_home />} />
+          <Route path="/c_about" element={<C_about />} />
+          <Route path="/c_delivery" element={<C_delivery />} />
+          <Route path="/c_privacy" element={<C_privacy />} />
+          
+          <Route path="/myorders" element={<MyOrders />} />
         </Routes>
 
-        {/* Conditionally render Footer only on non-Cart pages */}
+        {/* Conditionally render Footer only on non-footer hidden routes */}
         {!hideFooterRoutes.includes(location.pathname) && <Footer />}
       </div>
     </>
