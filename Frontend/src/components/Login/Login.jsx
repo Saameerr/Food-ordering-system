@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { RxCross2 } from "react-icons/rx";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 import "./Login.css";
 import { StoreContext } from "../../Context/StoreContext";
 import axios from "axios";
@@ -20,6 +21,7 @@ const Login = ({ setShowLogin }) => {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false); // Password visibility toggle
 
   const onChangeHandler = (event) => {
     const name = event.target.name;
@@ -60,36 +62,31 @@ const Login = ({ setShowLogin }) => {
   const handleForgotPassword = async (event) => {
     event.preventDefault();
 
-    // Step 1: Request OTP
     if (step === 1) {
       try {
         const response = await axios.post(`${url}/api/user/requestPasswordReset`, { email });
         if (response.data.success) {
-          toast.success(response.data.message); // OTP sent successfully
-          setStep(2); // Move to Step 2: OTP Verification
+          toast.success(response.data.message);
+          setStep(2);
         } else {
           toast.error(response.data.message);
         }
       } catch (error) {
         toast.error("Error occurred while requesting OTP.");
       }
-    }
-    // Step 2: Verify OTP
-    else if (step === 2) {
+    } else if (step === 2) {
       try {
         const response = await axios.post(`${url}/api/user/verifyOTP`, { email, otp });
         if (response.data.success) {
-          toast.success(response.data.message); // OTP verified successfully
-          setStep(3); // Move to Step 3: Reset Password
+          toast.success(response.data.message);
+          setStep(3);
         } else {
           toast.error(response.data.message);
         }
       } catch (error) {
         toast.error("Error occurred while verifying OTP.");
       }
-    }
-    // Step 3: Reset Password
-    else if (step === 3) {
+    } else if (step === 3) {
       try {
         const response = await axios.post(`${url}/api/user/resetPassword`, {
           email,
@@ -97,9 +94,9 @@ const Login = ({ setShowLogin }) => {
           newPassword,
         });
         if (response.data.success) {
-          toast.success(response.data.message); // Password reset successfully
-          setForgotPasswordState(false); // Return to login screen
-          setStep(1); // Reset steps
+          toast.success(response.data.message);
+          setForgotPasswordState(false);
+          setStep(1);
         } else {
           toast.error(response.data.message);
         }
@@ -112,7 +109,7 @@ const Login = ({ setShowLogin }) => {
   return (
     <div className="login-overlay">
       <div className="login">
-        <ToastContainer /> {/* Add ToastContainer to render toasts */}
+        <ToastContainer />
         {!forgotPasswordState ? (
           <form onSubmit={onLogin} className="login-container">
             <div className="login-title">
@@ -141,25 +138,31 @@ const Login = ({ setShowLogin }) => {
                 placeholder="Your e-mail"
                 required
               />
-              <input
-                name="password"
-                onChange={onChangeHandler}
-                value={data.password}
-                type="password"
-                placeholder="Password"
-                required
-              />
-             <div className="password-requirement">
-                   
-                        <ul>
-                            <li>At least 8 characters</li>
-                            <li>One uppercase letter</li>
-                            <li>One lowercase letter</li>
-                            <li>One number</li>
-                            <li>One special symbol (e.g., @, #, $, %, etc.)</li>
-                        </ul>
-                   
-                    </div>
+              <div className="password-field">
+                <input
+                  name="password"
+                  onChange={onChangeHandler}
+                  value={data.password}
+                  type={showPassword ? "text" : "password"} // Toggle input type
+                  placeholder="Password"
+                  required
+                />
+                <span
+                  className="toggle-password-icon"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
+              <div className="password-requirement">
+                <ul>
+                  <li>At least 8 characters</li>
+                  <li>One uppercase letter</li>
+                  <li>One lowercase letter</li>
+                  <li>One number</li>
+                  <li>One special symbol (e.g., @, #, $, %, etc.)</li>
+                </ul>
+              </div>
             </div>
 
             <button type="submit">
@@ -219,14 +222,23 @@ const Login = ({ setShowLogin }) => {
 
               {step === 3 && (
                 <>
-                  <label>New Password:</label>
+                  <label >New Password:</label>
+                  <div className="password-field">
                   <input
-                    type="password"
+                    name="password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder="Enter new password"
+                    type={showPassword ? "text" : "password"} // Toggle input type
                     required
                   />
+                  <span
+                  className="toggle-password-icon"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+                  </div>
                 </>
               )}
             </div>

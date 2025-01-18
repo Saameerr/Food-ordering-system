@@ -137,6 +137,27 @@ p span:hover::after {
     font-size: 12px;
 }
 
+/*password field visibility */
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 40px; /* Space for the icon */
+}
+
+.toggle-password-icon {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+
 
 /* Animation for the login form */
 @keyframes slideIn {
