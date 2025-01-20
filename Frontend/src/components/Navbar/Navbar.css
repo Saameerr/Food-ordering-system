@@ -62,10 +62,9 @@
   background: transparent;
   border: none;
   font-size: 14px;
-  height: 12px;
   width: 200px; 
-  margin-left: 8px;
-  color: #333;
+  margin-left: 5px;
+  color: #1d1b1b;
 }
 
 .navbar-search-container input:focus {
