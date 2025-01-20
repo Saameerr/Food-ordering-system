@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { StoreContext } from "../../Context/StoreContext";
 import FoodItem from "../FoodItem/FoodItem"; // Import the FoodItem component
+import "./ItemDetailsPage.css";
 
 const ItemDetailsPage = () => {
   const { id } = useParams(); // Get the item id from the URL parameter
