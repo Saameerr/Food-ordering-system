@@ -28,17 +28,26 @@ const addFood = async (req,res)=> {
 
 }
 
+// List of all food items with search functionality
+const listFood = async (req, res) => {
+    const search = req.query.search || ""; // Retrieve the search query
+    try {
+      // Use a regex to perform a case-insensitive search on the food name
+      const foods = await foodModel.find({
+        $or: [
+          { name: { $regex: search, $options: "i" } },  // Case-insensitive search for name
+          { category: { $regex: search, $options: "i" } } // Case-insensitive search for category
+        ]
+      });
+      
+      res.json({ success: true, data: foods });
+    } catch (error) {
+      console.log(error);
+      res.json({ success: false, message: "Error fetching food items" });
+    }
+  };
+  
 
-    //List of all food items
-    const listFood = async (req, res) => {
-        try {
-            const foods = await foodModel.find(); // Fetch all food items
-            res.json({ success: true, data: foods });
-        } catch (error) {
-            console.log(error);
-            res.json({ success: false, message: "Error fetching food items" });
-        }
-    };
 
     //Remove food items
     const removeFood = async (req,res)=>{

@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar/Navbar.jsx";
 import Login from "./components/Login/Login.jsx";
 import Home from "./pages/Home/Home.jsx";
 import Cart from "./pages/Cart/Cart.jsx";
+import ItemDetailsPage from "./components/ItemDetails/ItemDetailsPage.jsx";
 import PlaceOrder from "./pages/PlaceOrder/PlaceOrder.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import C_home from "./components/Company/C_home.jsx";
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/cart" element={<Cart setShowLogin={setShowLogin} />} />
+          <Route path="/item/:id" element={<ItemDetailsPage />} /> {/* Route for item details */}
           <Route path="/order" element={<PlaceOrder />} />
           <Route path="/paymentform" element={<PaymentForm />} />
           <Route path="/payment-success" element={<Success />} />
