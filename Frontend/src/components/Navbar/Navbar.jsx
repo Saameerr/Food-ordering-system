@@ -24,7 +24,7 @@ const Navbar = ({ setShowLogin }) => {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Handle Search
+  // Perform search based on the debounced query
   useEffect(() => {
     if (debouncedQuery.trim()) {
       handleSearch();
@@ -40,7 +40,7 @@ const Navbar = ({ setShowLogin }) => {
     navigate("/");
   };
 
-  // Perform search based on the debounced query
+  // Handle Search
   const handleSearch = () => {
     if (!debouncedQuery.trim()) return;
 
@@ -53,33 +53,34 @@ const Navbar = ({ setShowLogin }) => {
   };
 
   // Handle Enter key press to select search result
-const handleKeyDown = (e) => {
-  if (e.key === "Enter") {
-    const exactMatch = searchResults.find(
-      (item) => item.name.toLowerCase() === searchQuery.toLowerCase()
-    );
-
-    if (exactMatch) {
-      // Navigate to the item details page if an exact match is found
-      navigate(`/item/${exactMatch._id}`);
-    } else {
-      // If no exact match, check if the query matches a category
-      const categoryMatch = food_list.filter((item) =>
-        item.category.toLowerCase().includes(searchQuery.toLowerCase())
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      const exactMatch = searchResults.find(
+        (item) => item.name.toLowerCase() === searchQuery.toLowerCase()
       );
 
-      if (categoryMatch.length > 0) {
-        // Navigate to the category page displaying all items in that category
-        navigate(`/category/${searchQuery.toLowerCase()}`);
+      if (exactMatch) {
+        // Navigate to the item details page if an exact match is found
+        navigate(`/item/${exactMatch._id}`);
       } else {
-        setSearchResults([]);
-        alert("No items found. Please refine your search.");
+        // If no exact match, check if the query matches a category
+        const categoryMatch = food_list.filter((item) =>
+          item.category.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+        if (categoryMatch.length > 0) {
+          // Navigate to the category page displaying all items in that category
+          navigate(`/category/${searchQuery.toLowerCase()}`);
+        } else {
+          setSearchResults([]);
+          alert("No items found. Please refine your search.");
+        }
       }
+      // Clear suggestions after Enter key press
+      setSearchResults([]);
+      setSearchQuery(""); // Clear the search input
     }
-  }
-};
-
-
+  };
 
   // Handle click on an item from search results
   const handleItemClick = (itemId, itemName) => {
@@ -135,7 +136,7 @@ const handleKeyDown = (e) => {
             onKeyDown={handleKeyDown}
           />
         </div>
-        {debouncedQuery && searchResults.length > 0 && (
+        {searchQuery && searchResults.length > 0 && (
           <div className="search-results">
             <ul>
               {searchResults.map((item) => (
