@@ -64,49 +64,61 @@ const Navbar = ({ setShowLogin }) => {
       );
       const data = await response.json();
       if (data.success) {
-        setSearchResults(data.data); // Update searchResults state with filtered food items
+        // Check if the query matches an item's name
+        const exactMatch = data.data.find(
+          (item) => item.name.toLowerCase() === debouncedQuery.toLowerCase()
+        );
+
+        if (exactMatch) {
+          // If an exact match is found, filter items by category
+          const categoryItems = data.data.filter(
+            (item) =>
+              item.category.toLowerCase() === exactMatch.category.toLowerCase()
+          );
+          setSearchResults(categoryItems); // Show items in the same category
+        } else {
+          // If no exact match, show all items matching the query
+          setSearchResults(data.data);
+        }
       } else {
-        setSearchResults([]); // Clear the results in case of error
+        setSearchResults([]); // Clear results in case of error
       }
     } catch (error) {
       console.error("Search error:", error);
-      setSearchResults([]); // Clear the results in case of error
+      setSearchResults([]); // Clear results in case of error
     }
   };
 
-  // Handle Enter key press to redirect on exact match
- // Trigger redirect or handle "No results" on Enter
-const handleKeyDown = (e) => {
-  if (e.key === "Enter") {
-    const exactMatch = searchResults.find(
-      (item) => item.name.toLowerCase() === searchQuery.toLowerCase()
-    );
+  const handleItemClick = (itemName) => {
+    setSearchQuery(itemName); // Update the search input with the clicked item's name
+    setDebouncedQuery(itemName); // Trigger the search logic immediately
+  };
 
-    if (exactMatch) {
-      // Redirect to ItemDetailsPage for exact match
-      navigate(`/item/${exactMatch._id}`);
-    } else {
-      // Find items by category if exact match is not found
-      const categoryMatch = searchResults.filter(
-        (item) =>
-          item.category.toLowerCase().includes(searchQuery.toLowerCase())
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      const exactMatch = searchResults.find(
+        (item) => item.name.toLowerCase() === searchQuery.toLowerCase()
       );
 
-      if (categoryMatch.length > 0) {
-        // If items from the same category are found, display them
-        setSearchResults(categoryMatch);
+      if (exactMatch) {
+        // Redirect to ItemDetailsPage for exact match
+        navigate(`/item/${exactMatch._id}`);
       } else {
-        // If no items are found by name or category, show no results
-        setSearchResults([]); // Clear results
-        alert("No items found. Please refine your search.");
+        // Find items by category if exact match is not found
+        const categoryMatch = searchResults.filter((item) =>
+          item.category.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+        if (categoryMatch.length > 0) {
+          // If items from the same category are found, display them
+          setSearchResults(categoryMatch);
+        } else {
+          // If no items are found by name or category, show no results
+          setSearchResults([]); // Clear results
+          alert("No items found. Please refine your search.");
+        }
       }
     }
-  }
-};
-
-
-  const handleItemClick = (itemId) => {
-    navigate(`/item/${itemId}`);
   };
 
   return (
@@ -118,7 +130,9 @@ const handleKeyDown = (e) => {
         <li
           onClick={() => {
             setMenu("Home");
-            document.getElementById("home").scrollIntoView({ behavior: "smooth" });
+            document
+              .getElementById("home")
+              .scrollIntoView({ behavior: "smooth" });
           }}
           className={menu === "Home" ? "active" : ""}
         >
@@ -127,7 +141,9 @@ const handleKeyDown = (e) => {
         <li
           onClick={() => {
             setMenu("Menu");
-            document.getElementById("explore-menu").scrollIntoView({ behavior: "smooth" });
+            document
+              .getElementById("explore-menu")
+              .scrollIntoView({ behavior: "smooth" });
           }}
           className={menu === "Menu" ? "active" : ""}
         >
@@ -136,7 +152,9 @@ const handleKeyDown = (e) => {
         <li
           onClick={() => {
             setMenu("Contact us");
-            document.getElementById("footer").scrollIntoView({ behavior: "smooth" });
+            document
+              .getElementById("footer")
+              .scrollIntoView({ behavior: "smooth" });
           }}
           className={menu === "Contact us" ? "active" : ""}
         >
@@ -166,7 +184,10 @@ const handleKeyDown = (e) => {
             {searchResults.length > 0 ? (
               <ul>
                 {searchResults.map((item) => (
-                  <li key={item._id} onClick={() => handleItemClick(item._id)}>
+                  <li
+                    key={item._id}
+                    onClick={() => handleItemClick(item.name)} // Pass the item's name to the function
+                  >
                     {item.name}
                   </li>
                 ))}
@@ -179,9 +200,13 @@ const handleKeyDown = (e) => {
       </div>
       <div className="navbar-shopping-cart">
         <Link to="/cart">
-          <FaShoppingCart style={{ height: "25px", width: "25px", cursor: "pointer" }} />
+          <FaShoppingCart
+            style={{ height: "25px", width: "25px", cursor: "pointer" }}
+          />
         </Link>
-        {getTotalItemsInCart() > 0 && <div className="cart-item-count">{getTotalItemsInCart()}</div>}
+        {getTotalItemsInCart() > 0 && (
+          <div className="cart-item-count">{getTotalItemsInCart()}</div>
+        )}
       </div>
       {!token ? (
         <button onClick={() => setShowLogin(true)}>Sign in</button>
@@ -190,7 +215,11 @@ const handleKeyDown = (e) => {
           className="navbar-profile"
           onClick={() => setDropdownOpen((prev) => !prev)}
         >
-          <img src={assets.profile_icon} alt="Profile" className="profile-icon" />
+          <img
+            src={assets.profile_icon}
+            alt="Profile"
+            className="profile-icon"
+          />
           <ul className={`nav-profile-dropdown ${dropdownOpen ? "show" : ""}`}>
             <li>
               <img src={assets.bag_icon} alt="Orders" />
