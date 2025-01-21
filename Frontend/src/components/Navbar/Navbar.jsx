@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import "./Navbar.css";
 import { IoSearch } from "react-icons/io5";
 import { FaShoppingCart } from "react-icons/fa";
@@ -15,6 +15,7 @@ const Navbar = ({ setShowLogin }) => {
   const navigate = useNavigate();
 
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
+  const searchRef = useRef(null); // Reference to the search bar and results container
 
   // Debounced Search
   useEffect(() => {
@@ -24,7 +25,7 @@ const Navbar = ({ setShowLogin }) => {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Perform search based on the debounced query
+  // Handle Search
   useEffect(() => {
     if (debouncedQuery.trim()) {
       handleSearch();
@@ -40,7 +41,7 @@ const Navbar = ({ setShowLogin }) => {
     navigate("/");
   };
 
-  // Handle Search
+  // Perform search based on the debounced query
   const handleSearch = () => {
     if (!debouncedQuery.trim()) return;
 
@@ -60,25 +61,24 @@ const Navbar = ({ setShowLogin }) => {
       );
 
       if (exactMatch) {
-        // Navigate to the item details page if an exact match is found
+        // Redirect to the item details page
+        setSearchResults([]); // Clear search results
         navigate(`/item/${exactMatch._id}`);
       } else {
-        // If no exact match, check if the query matches a category
+        // Check if query matches a category and navigate
         const categoryMatch = food_list.filter((item) =>
           item.category.toLowerCase().includes(searchQuery.toLowerCase())
         );
 
         if (categoryMatch.length > 0) {
-          // Navigate to the category page displaying all items in that category
+          // Redirect to the category page
+          setSearchResults([]); // Clear search results
           navigate(`/category/${searchQuery.toLowerCase()}`);
         } else {
-          setSearchResults([]);
+          setSearchResults([]); // Clear search results if no match
           alert("No items found. Please refine your search.");
         }
       }
-      // Clear suggestions after Enter key press
-      setSearchResults([]);
-      setSearchQuery(""); // Clear the search input
     }
   };
 
@@ -94,6 +94,21 @@ const Navbar = ({ setShowLogin }) => {
     setMenu(menuName);
     document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
   };
+
+  // Close search results when clicked outside of the search bar or search results
+  const handleClickOutside = (e) => {
+    if (searchRef.current && !searchRef.current.contains(e.target)) {
+      setSearchResults([]); // Clear search results
+    }
+  };
+
+  // Set up event listener for clicks outside the search bar and results
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="navbar">
@@ -120,7 +135,7 @@ const Navbar = ({ setShowLogin }) => {
           Contact us
         </li>
       </ul>
-      <div className="navbar-search-icon">
+      <div className="navbar-search-icon" ref={searchRef}>
         <div className="navbar-search-container">
           <IoSearch
             id="icon"
@@ -136,7 +151,7 @@ const Navbar = ({ setShowLogin }) => {
             onKeyDown={handleKeyDown}
           />
         </div>
-        {searchQuery && searchResults.length > 0 && (
+        {debouncedQuery && searchResults.length > 0 && (
           <div className="search-results">
             <ul>
               {searchResults.map((item) => (
