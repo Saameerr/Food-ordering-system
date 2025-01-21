@@ -11,20 +11,20 @@ const Navbar = ({ setShowLogin }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const { getTotalItemsInCart, token, setToken } = useContext(StoreContext);
+  const { getTotalItemsInCart, token, setToken, food_list } = useContext(StoreContext);
   const navigate = useNavigate();
 
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
 
+  // Debounced Search
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedQuery(searchQuery);
     }, 500);
-    return () => {
-      clearTimeout(timer);
-    };
+    return () => clearTimeout(timer);
   }, [searchQuery]);
 
+  // Handle Search
   useEffect(() => {
     if (debouncedQuery.trim()) {
       handleSearch();
@@ -33,70 +33,65 @@ const Navbar = ({ setShowLogin }) => {
     }
   }, [debouncedQuery]);
 
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (!event.target.closest(".navbar-profile")) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener("click", handleOutsideClick);
-    return () => {
-      document.removeEventListener("click", handleOutsideClick);
-    };
-  }, []);
-
+  // Logout functionality
   const logout = () => {
     localStorage.removeItem("token");
     setToken("");
     navigate("/");
   };
 
-  const handleSearch = async () => {
+  // Perform search based on the debounced query
+  const handleSearch = () => {
     if (!debouncedQuery.trim()) return;
 
-    try {
-      const response = await fetch(
-        `http://localhost:4000/api/food/list?search=${debouncedQuery}`
+    const filteredResults = food_list.filter(item =>
+      item.name.toLowerCase().includes(debouncedQuery.toLowerCase()) ||
+      item.category.toLowerCase().includes(debouncedQuery.toLowerCase())
+    );
+
+    setSearchResults(filteredResults);
+  };
+
+  // Handle Enter key press to select search result
+const handleKeyDown = (e) => {
+  if (e.key === "Enter") {
+    const exactMatch = searchResults.find(
+      (item) => item.name.toLowerCase() === searchQuery.toLowerCase()
+    );
+
+    if (exactMatch) {
+      // Navigate to the item details page if an exact match is found
+      navigate(`/item/${exactMatch._id}`);
+    } else {
+      // If no exact match, check if the query matches a category
+      const categoryMatch = food_list.filter((item) =>
+        item.category.toLowerCase().includes(searchQuery.toLowerCase())
       );
-      const data = await response.json();
-      if (data.success) {
-        setSearchResults(data.data);
+
+      if (categoryMatch.length > 0) {
+        // Navigate to the category page displaying all items in that category
+        navigate(`/category/${searchQuery.toLowerCase()}`);
       } else {
         setSearchResults([]);
-      }
-    } catch (error) {
-      console.error("Search error:", error);
-      setSearchResults([]);
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      const exactMatch = searchResults.find(
-        (item) => item.name.toLowerCase() === searchQuery.toLowerCase()
-      );
-
-      if (exactMatch) {
-        navigate(`/item/${exactMatch._id}`);
-      } else {
-        const categoryMatch = searchResults.filter((item) =>
-          item.category.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-
-        if (categoryMatch.length > 0) {
-          setSearchResults(categoryMatch);
-        } else {
-          setSearchResults([]);
-          alert("No items found. Please refine your search.");
-        }
+        alert("No items found. Please refine your search.");
       }
     }
-  };
+  }
+};
 
+
+
+  // Handle click on an item from search results
   const handleItemClick = (itemId, itemName) => {
     setSearchQuery(itemName); // Fill the search bar with the clicked item's name
     setSearchResults([]); // Immediately clear the search results
     navigate(`/item/${itemId}`); // Redirect to the item details page
+  };
+
+  // Function to handle menu navigation
+  const handleMenuClick = (menuName, sectionId) => {
+    setMenu(menuName);
+    document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -106,34 +101,19 @@ const Navbar = ({ setShowLogin }) => {
       </Link>
       <ul className="navbar-menu">
         <li
-          onClick={() => {
-            setMenu("Home");
-            document
-              .getElementById("home")
-              .scrollIntoView({ behavior: "smooth" });
-          }}
+          onClick={() => handleMenuClick("Home", "home")}
           className={menu === "Home" ? "active" : ""}
         >
           Home
         </li>
         <li
-          onClick={() => {
-            setMenu("Menu");
-            document
-              .getElementById("explore-menu")
-              .scrollIntoView({ behavior: "smooth" });
-          }}
+          onClick={() => handleMenuClick("Menu", "explore-menu")}
           className={menu === "Menu" ? "active" : ""}
         >
           Menu
         </li>
         <li
-          onClick={() => {
-            setMenu("Contact us");
-            document
-              .getElementById("footer")
-              .scrollIntoView({ behavior: "smooth" });
-          }}
+          onClick={() => handleMenuClick("Contact us", "footer")}
           className={menu === "Contact us" ? "active" : ""}
         >
           Contact us
@@ -151,9 +131,7 @@ const Navbar = ({ setShowLogin }) => {
             className="navbar-search-input"
             placeholder="Search..."
             value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-            }}
+            onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleKeyDown}
           />
         </div>
@@ -174,9 +152,7 @@ const Navbar = ({ setShowLogin }) => {
       </div>
       <div className="navbar-shopping-cart">
         <Link to="/cart">
-          <FaShoppingCart
-            style={{ height: "25px", width: "25px", cursor: "pointer" }}
-          />
+          <FaShoppingCart style={{ height: "25px", width: "25px", cursor: "pointer" }} />
         </Link>
         {getTotalItemsInCart() > 0 && (
           <div className="cart-item-count">{getTotalItemsInCart()}</div>
@@ -185,15 +161,8 @@ const Navbar = ({ setShowLogin }) => {
       {!token ? (
         <button onClick={() => setShowLogin(true)}>Sign in</button>
       ) : (
-        <div
-          className="navbar-profile"
-          onClick={() => setDropdownOpen((prev) => !prev)}
-        >
-          <img
-            src={assets.profile_icon}
-            alt="Profile"
-            className="profile-icon"
-          />
+        <div className="navbar-profile" onClick={() => setDropdownOpen((prev) => !prev)}>
+          <img src={assets.profile_icon} alt="Profile" className="profile-icon" />
           <ul className={`nav-profile-dropdown ${dropdownOpen ? "show" : ""}`}>
             <li>
               <img src={assets.bag_icon} alt="Orders" />
@@ -202,7 +171,7 @@ const Navbar = ({ setShowLogin }) => {
             <hr />
             <li onClick={logout}>
               <img src={assets.logout_icon} alt="Logout" />
-              <p>Logout</p>
+              <span>Logout</span>
             </li>
           </ul>
         </div>

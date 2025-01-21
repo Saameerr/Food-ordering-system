@@ -16,13 +16,21 @@ import PaymentForm from "./components/Payment/PaymentForm.jsx";
 import Success from "./components/Payment/Success.jsx";
 import Failure from "./components/Payment/Failure.jsx";
 import MyOrders from "./pages/MyOrders/MyOrders.jsx";
+// Import CategoryPage component
+import CategoryPage from "./components/ItemDetails/CategoryPage.jsx"; // Adjust path if necessary
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
   const location = useLocation(); // Get current route
 
   // Define the routes where the footer should NOT be displayed
-  const hideFooterRoutes = ["/cart", "/order", "/paymentform", "/payment-success", "/payment-failure"];
+  const hideFooterRoutes = [
+    "/cart",
+    "/order",
+    "/paymentform",
+    "/payment-success",
+    "/payment-failure",
+  ];
 
   return (
     <>
@@ -34,6 +42,10 @@ const App = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/cart" element={<Cart setShowLogin={setShowLogin} />} />
           <Route path="/item/:id" element={<ItemDetailsPage />} /> {/* Route for item details */}
+          
+          {/* Add the route for category page */}
+          <Route path="/category/:categoryName" element={<CategoryPage />} /> {/* Category page */}
+
           <Route path="/order" element={<PlaceOrder />} />
           <Route path="/paymentform" element={<PaymentForm />} />
           <Route path="/payment-success" element={<Success />} />

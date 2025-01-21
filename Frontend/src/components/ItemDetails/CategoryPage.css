@@ -1,0 +1,19 @@
+/* Container for the category page */
+.item-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* Responsive grid */
+    gap: 30px; /* Space between items */
+    margin-top: 30px;
+  }
+  
+  /* Styling for each food item */
+  .food-item {
+    display: flex;
+    flex-direction: column; /* Stack the content vertically */
+    align-items: center; /* Center content horizontally */
+    gap: 15px; /* Space between elements inside each item */
+  }
+  
+ 
+  
+  
