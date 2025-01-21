@@ -14,26 +14,22 @@ const Navbar = ({ setShowLogin }) => {
   const { getTotalItemsInCart, token, setToken } = useContext(StoreContext);
   const navigate = useNavigate();
 
-  // Debouncing state for search query
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
 
   useEffect(() => {
-    // Debounce search query to avoid triggering search too frequently
     const timer = setTimeout(() => {
       setDebouncedQuery(searchQuery);
-    }, 500); // Wait 500ms after the user stops typing
-
+    }, 500);
     return () => {
-      clearTimeout(timer); // Clean up on each re-render
+      clearTimeout(timer);
     };
   }, [searchQuery]);
 
   useEffect(() => {
-    // Trigger search when the debounced query changes
     if (debouncedQuery.trim()) {
       handleSearch();
     } else {
-      setSearchResults([]); // Clear results when search is empty
+      setSearchResults([]);
     }
   }, [debouncedQuery]);
 
@@ -56,7 +52,7 @@ const Navbar = ({ setShowLogin }) => {
   };
 
   const handleSearch = async () => {
-    if (!debouncedQuery.trim()) return; // Exit if search query is empty
+    if (!debouncedQuery.trim()) return;
 
     try {
       const response = await fetch(
@@ -64,34 +60,14 @@ const Navbar = ({ setShowLogin }) => {
       );
       const data = await response.json();
       if (data.success) {
-        // Check if the query matches an item's name
-        const exactMatch = data.data.find(
-          (item) => item.name.toLowerCase() === debouncedQuery.toLowerCase()
-        );
-
-        if (exactMatch) {
-          // If an exact match is found, filter items by category
-          const categoryItems = data.data.filter(
-            (item) =>
-              item.category.toLowerCase() === exactMatch.category.toLowerCase()
-          );
-          setSearchResults(categoryItems); // Show items in the same category
-        } else {
-          // If no exact match, show all items matching the query
-          setSearchResults(data.data);
-        }
+        setSearchResults(data.data);
       } else {
-        setSearchResults([]); // Clear results in case of error
+        setSearchResults([]);
       }
     } catch (error) {
       console.error("Search error:", error);
-      setSearchResults([]); // Clear results in case of error
+      setSearchResults([]);
     }
-  };
-
-  const handleItemClick = (itemName) => {
-    setSearchQuery(itemName); // Update the search input with the clicked item's name
-    setDebouncedQuery(itemName); // Trigger the search logic immediately
   };
 
   const handleKeyDown = (e) => {
@@ -101,24 +77,26 @@ const Navbar = ({ setShowLogin }) => {
       );
 
       if (exactMatch) {
-        // Redirect to ItemDetailsPage for exact match
         navigate(`/item/${exactMatch._id}`);
       } else {
-        // Find items by category if exact match is not found
         const categoryMatch = searchResults.filter((item) =>
           item.category.toLowerCase().includes(searchQuery.toLowerCase())
         );
 
         if (categoryMatch.length > 0) {
-          // If items from the same category are found, display them
           setSearchResults(categoryMatch);
         } else {
-          // If no items are found by name or category, show no results
-          setSearchResults([]); // Clear results
+          setSearchResults([]);
           alert("No items found. Please refine your search.");
         }
       }
     }
+  };
+
+  const handleItemClick = (itemId, itemName) => {
+    setSearchQuery(itemName); // Fill the search bar with the clicked item's name
+    setSearchResults([]); // Immediately clear the search results
+    navigate(`/item/${itemId}`); // Redirect to the item details page
   };
 
   return (
@@ -176,25 +154,21 @@ const Navbar = ({ setShowLogin }) => {
             onChange={(e) => {
               setSearchQuery(e.target.value);
             }}
-            onKeyDown={handleKeyDown} // Trigger redirect or handle "No results" on Enter
+            onKeyDown={handleKeyDown}
           />
         </div>
-        {debouncedQuery && (
+        {debouncedQuery && searchResults.length > 0 && (
           <div className="search-results">
-            {searchResults.length > 0 ? (
-              <ul>
-                {searchResults.map((item) => (
-                  <li
-                    key={item._id}
-                    onClick={() => handleItemClick(item.name)} // Pass the item's name to the function
-                  >
-                    {item.name}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No results found.</p>
-            )}
+            <ul>
+              {searchResults.map((item) => (
+                <li
+                  key={item._id}
+                  onClick={() => handleItemClick(item._id, item.name)}
+                >
+                  {item.name}
+                </li>
+              ))}
+            </ul>
           </div>
         )}
       </div>
