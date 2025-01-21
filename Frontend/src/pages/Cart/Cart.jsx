@@ -44,10 +44,10 @@ const Cart = ({ setShowLogin }) => {  // Accept setShowLogin as a prop
                 </div>
                 <br />
 
-                {/* Display total items in the cart */}
+                {/* Display total items in the cart
                 <div className="cart-total-items">
                   <h4>Total Items: {getTotalItemsInCart()}</h4>
-                </div>
+                </div> */}
 
                 {food_list.map((items, index) => {
                   if (cartItems[items._id] > 0) {
