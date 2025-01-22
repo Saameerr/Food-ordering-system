@@ -66,7 +66,7 @@ const StoreContextProvider = (props) => {
       // Check if the quantity of the item is greater than 0
       if (cartItems[itemId] > 0) {
         // Accumulate the total quantity
-        totalItems += cartItems[itemId];
+        totalItems += 1;
       }
     }
 

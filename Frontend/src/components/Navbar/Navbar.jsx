@@ -57,7 +57,7 @@ const Navbar = ({ setShowLogin }) => {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       const exactMatch = searchResults.find(
-        (item) => item.name.toLowerCase() === searchQuery.toLowerCase()
+        (item) => item.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
 
       if (exactMatch) {

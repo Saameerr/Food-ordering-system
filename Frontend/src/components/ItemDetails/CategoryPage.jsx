@@ -15,8 +15,8 @@ const CategoryPage = () => {
 
   return (
     <div>
-      <h2>{categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} Items</h2>
-
+      {/* <h2>{categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} Items</h2> */}
+      <h2>Item Details</h2>
       {categoryItems.length > 0 ? (
         <div className="item-details">
           {/* Map over the filtered items and display each one */}
