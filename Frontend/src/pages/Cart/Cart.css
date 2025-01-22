@@ -128,7 +128,7 @@
   border: none;
   color: white;
   background-color: rgb(17, 149, 116);
-
+  border-radius:50%;
   width: 30px; /* Set a fixed width */
   height: 30px;
   display: flex;
