@@ -1,5 +1,5 @@
 import express from "express";
-import { addFood, listFood, removeFood } from "../controllers/foodController.js";
+import { addFood, listFood, removeFood, updateFood } from "../controllers/foodController.js";
 import multer from "multer"; // Using this will create image storage system
 
 const foodRouter = express.Router();
@@ -18,5 +18,7 @@ const upload = multer({ storage: storage });
 foodRouter.post("/add", upload.single("image"), addFood);
 foodRouter.get("/list", listFood); // Added a route to list all foods
 foodRouter.post("/remove", removeFood);
+foodRouter.put("/update/:id", upload.single("image"), updateFood);
+
 
 export default foodRouter;
