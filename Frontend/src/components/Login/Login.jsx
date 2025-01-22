@@ -154,6 +154,8 @@ const Login = ({ setShowLogin }) => {
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
               </div>
+              {/* Show password requirement only in Sign in (registration) */}
+            {currentState === "Sign in" && (
               <div className="password-requirement">
                 <ul>
                   <li>At least 8 characters</li>
@@ -163,7 +165,8 @@ const Login = ({ setShowLogin }) => {
                   <li>One special symbol (e.g., @, #, $, %, etc.)</li>
                 </ul>
               </div>
-            </div>
+            )}
+          </div>
 
             <button type="submit">
               {currentState === "Sign in" ? "Create account" : "Login"}
