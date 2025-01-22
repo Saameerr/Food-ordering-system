@@ -6,11 +6,17 @@ import "react-toastify/dist/ReactToastify.css";
 import L from "leaflet"; // Import Leaflet
 import "leaflet/dist/leaflet.css";
 import "./PlaceOrder.css";
-import axois from 'axios';
+import axois from "axios";
 
 const PlaceOrder = () => {
-  const { token, cartItems, food_list, getTotalCartAmount, getTotalItemsInCart, url } =
-    useContext(StoreContext);
+  const {
+    token,
+    cartItems,
+    food_list,
+    getTotalCartAmount,
+    getTotalItemsInCart,
+    url,
+  } = useContext(StoreContext);
 
   const [formState, setFormState] = useState({
     deliveryType: "homeDelivery",
@@ -22,7 +28,10 @@ const PlaceOrder = () => {
   });
 
   const [isMapVisible, setIsMapVisible] = useState(false);
-  const [userLocation, setUserLocation] = useState({ latitude: 27.7172, longitude: 85.324 }); // Default location: Kathmandu, Nepal
+  const [userLocation, setUserLocation] = useState({
+    latitude: 27.7172,
+    longitude: 85.324,
+  }); // Default location: Kathmandu, Nepal
   const mapRef = useRef(null); // Persist map instance across renders
   const navigate = useNavigate();
 
@@ -37,28 +46,29 @@ const PlaceOrder = () => {
   const placeOrder = async (event) => {
     event.preventDefault();
     let orderItems = [];
-    food_list.map((item)=>{
-      if(cartItems[item._id]>0){
-        let itemInfo = item; 
+    food_list.map((item) => {
+      if (cartItems[item._id] > 0) {
+        let itemInfo = item;
         itemInfo["quantity"] = cartItems[item._id];
         orderItems.push(itemInfo);
       }
-    }) 
-    
-   let orderData = {
-    address:formState,
-    items:orderItems,
-    amount:getTotalCartAmount()+84,
-   }
-   let response = await axois.post(url+"/api/order/place",orderData,{headers:{token}});
-   if (response.data.success){
-    const {session_url} = response.data;
-    window.location.replace(session_url);
-   }
-   else{
-    alert("Error");
-   }
-  }
+    });
+
+    let orderData = {
+      address: formState,
+      items: orderItems,
+      amount: getTotalCartAmount() + 84,
+    };
+    let response = await axois.post(url + "/api/order/place", orderData, {
+      headers: { token },
+    });
+    if (response.data.success) {
+      const { session_url } = response.data;
+      window.location.replace(session_url);
+    } else {
+      alert("Error");
+    }
+  };
 
   // useEffect(()=>{
   //   if(!token){
@@ -90,7 +100,10 @@ const PlaceOrder = () => {
           toast.success(`Location selected: ${locationName}`);
         });
       } else {
-        mapRef.current.setView([userLocation.latitude, userLocation.longitude], 13);
+        mapRef.current.setView(
+          [userLocation.latitude, userLocation.longitude],
+          13
+        );
       }
     }
 
@@ -121,7 +134,14 @@ const PlaceOrder = () => {
   };
 
   const handleProceedPayment = () => {
-    const { deliveryType, locationName, deliveryDate, deliveryTime, phoneNumber, paymentOption } = formState;
+    const {
+      deliveryType,
+      locationName,
+      deliveryDate,
+      deliveryTime,
+      phoneNumber,
+      paymentOption,
+    } = formState;
 
     if (deliveryType === "homeDelivery" && !locationName) {
       toast.error("Please select a location before proceeding.");
@@ -156,7 +176,9 @@ const PlaceOrder = () => {
     if (paymentOption === "digitalPayment") {
       navigate("/PaymentForm", { state: { totalAmount } });
     } else if (paymentOption === "cashOnDelivery") {
-      toast.success("You have selected Cash on Delivery. Your order will be placed.");
+      toast.success(
+        "You have selected Cash on Delivery. Your order will be placed."
+      );
     } else {
       toast.error("Please select a payment method before proceeding.");
     }
@@ -171,7 +193,9 @@ const PlaceOrder = () => {
         toast.info("Map opened! Click to select a location.");
       },
       () => {
-        toast.error("Unable to fetch your location. Please enable location services.");
+        toast.error(
+          "Unable to fetch your location. Please enable location services."
+        );
       }
     );
   };
@@ -197,158 +221,192 @@ const PlaceOrder = () => {
 
   return (
     <form onSubmit={placeOrder}>
-    <div className="place-order-container">
-      <div className="place-order-left">
-        <h1 className="heading">Checkout</h1>
+      <div className="place-order-container">
+        <div className="place-order-left">
+          <h1 className="heading">Checkout</h1>
 
-        {/* Delivery Type */}
-        <div className="delivery-details">
-          <h5>Delivery Type</h5>
-          <hr />
-          <div>
+          {/* Delivery Type */}
+          <div className="delivery-details">
+            <h5>Delivery Type</h5>
+            <hr />
+            <div className="delivery-type">
+              <label style={{ marginRight: "20px" }}>
+                <input
+                  type="radio"
+                  name="deliveryType"
+                  value="homeDelivery"
+                  checked={formState.deliveryType === "homeDelivery"}
+                  onChange={handleInputChange}
+                />
+                Home Delivery
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="deliveryType"
+                  value="takeaway"
+                  checked={formState.deliveryType === "takeaway"}
+                  onChange={handleInputChange}
+                />
+                Takeaway
+              </label>
+            </div>
+          </div>
+
+          {formState.deliveryType === "homeDelivery" && (
+            <div className="delivery-details">
+              <h5>Deliver To</h5>
+              <hr />
+              <p
+                className="location-button"
+                name="locationName"
+                onClick={openMap}
+              >
+                + Add Your Location
+              </p>
+              {formState.locationName && (
+                <p>Selected Location: {formState.locationName}</p>
+              )}
+            </div>
+          )}
+
+          {/* Delivery Date */}
+          <div className="delivery-details">
+            <h5>Delivery Date</h5>
+            <hr />
+            <select
+              name="deliveryDate"
+              value={formState.deliveryDate}
+              onChange={handleInputChange}
+            >
+              <option value="today">Today</option>
+              <option value="tomorrow">Tomorrow</option>
+            </select>
+          </div>
+
+          {/* Delivery Time */}
+          <div className="delivery-details">
+            <h5>Delivery Time</h5>
+            <hr />
+            <select
+              name="deliveryTime"
+              value={formState.deliveryTime}
+              onChange={handleInputChange}
+            >
+              <option value="">Select Time</option>
+              {timeOptions.map((time, index) => (
+                <option key={index} value={time}>
+                  {time}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Phone Number */}
+          <div className="delivery-details">
+            <h5>Phone Number</h5>
+            <hr />
+            <input className="phonenumber"
+              type="text"
+              name="phoneNumber"
+              maxLength="10"
+              placeholder="Phone Number"
+              value={formState.phoneNumber}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          {/* Payment Method */}
+          <div className="delivery-details">
+            <h5>Choose Payment Method</h5>
+            <hr />
+            <div className="payment-type">
             <label style={{ marginRight: "20px" }}>
               <input
                 type="radio"
-                name="deliveryType"
-                value="homeDelivery"
-                checked={formState.deliveryType === "homeDelivery"}
+                name="paymentOption"
+                value="cashOnDelivery"
+                checked={formState.paymentOption === "cashOnDelivery"}
                 onChange={handleInputChange}
               />
-              Home Delivery
+              Cash On Delivery
             </label>
             <label>
               <input
                 type="radio"
-                name="deliveryType"
-                value="takeaway"
-                checked={formState.deliveryType === "takeaway"}
+                name="paymentOption"
+                value="digitalPayment"
+                checked={formState.paymentOption === "digitalPayment"}
                 onChange={handleInputChange}
               />
-              Takeaway
+              E-sewa
             </label>
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="action-buttons">
+            <button onClick={() => navigate("/Cart")} className="back-button">
+              Back
+            </button>
+            <button
+              type="submit"
+              onClick={handleProceedPayment}
+              className="proceed-button"
+            >
+              Proceed for Payment
+            </button>
           </div>
         </div>
 
-        {formState.deliveryType === "homeDelivery" && (
-          <div className="delivery-details">
-            <h5>Deliver To</h5>
-            <hr />
-            <p className="location-button" name="locationName" onClick={openMap}>
-              + Add Your Location
+        <div className="place-order-right ">
+          <div className="cart-header">
+            <h2>My Cart ({getTotalItemsInCart()} items)</h2> <hr />
+            {food_list.map(
+              (item) =>
+                cartItems[item._id] > 0 && (
+                  <div key={item._id} className="cart-item">
+                    <img src={`${url}/images/${item.image}`} alt={item.name} />
+                    <div className="item-details">
+                      <h4>{item.name}</h4>
+                      <p>
+                        <i>Price: Rs. {item.price}</i>
+                      </p>
+                      <p>
+                        {" "}
+                        <i>Quantity: {cartItems[item._id]}</i>
+                      </p>{" "}
+                      <hr className="hr" />
+                    </div>
+                  </div>
+                )
+            )}
+          </div>
+          <div className="cart-summary">
+            <p>
+              Subtotal: <i className="cart-amt">Rs. {getTotalCartAmount()}</i>
             </p>
-            {formState.locationName && <p>Selected Location: {formState.locationName}</p>}
+            <p>
+              Delivery Fee: <i className="cart-amtt"> Rs. {deliveryFee}</i>
+            </p>{" "}
+            <hr />
+            <p>
+              Total: <i className="cart-amttt">Rs. {totalAmount}</i>
+            </p>
+          </div>
+        </div>
+
+        {isMapVisible && (
+          <div className="map-modal">
+            <div id="map" style={{ height: "500px", width: "70%" }}></div>
+            <button className="close-map-button" onClick={closeMap}>
+              Close Map
+            </button>
           </div>
         )}
 
-        {/* Delivery Date */}
-        <div className="delivery-details">
-          <h5>Delivery Date</h5>
-          <hr />
-          <select name="deliveryDate" value={formState.deliveryDate} onChange={handleInputChange}>
-            <option value="today">Today</option>
-            <option value="tomorrow">Tomorrow</option>
-          </select>
-        </div>
-
-        {/* Delivery Time */}
-        <div className="delivery-details">
-          <h5>Delivery Time</h5>
-          <hr />
-          <select name="deliveryTime" value={formState.deliveryTime} onChange={handleInputChange}>
-            <option value="">Select Time</option>
-            {timeOptions.map((time, index) => (
-              <option key={index} value={time}>
-                {time}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Phone Number */}
-        <div className="delivery-details">
-          <h5>Phone Number</h5>
-          <hr />
-          <input
-            type="text"
-            name="phoneNumber"
-            maxLength="10"
-            placeholder="Enter your phone number"
-            value={formState.phoneNumber}
-            onChange={handleInputChange}
-          />
-        </div>
-
-        {/* Payment Method */}
-        <div className="delivery-details">
-          <h5>Choose Payment Method</h5>
-          <hr />
-          <label style={{ marginRight: "20px" }}>
-            <input
-              type="radio"
-              name="paymentOption"
-              value="cashOnDelivery"
-              checked={formState.paymentOption === "cashOnDelivery"}
-              onChange={handleInputChange}
-            />
-            Cash On Delivery
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="paymentOption"
-              value="digitalPayment"
-              checked={formState.paymentOption === "digitalPayment"}
-              onChange={handleInputChange}
-            />
-            E-sewa
-          </label>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="action-buttons">
-          <button onClick={() => navigate("/Cart")} className="back-button">
-            Back
-          </button>
-          <button type="submit" onClick={handleProceedPayment} className="proceed-button">
-            Proceed for Payment
-          </button>
-        </div>
+        <ToastContainer />
       </div>
-
-      <div className="place-order-right ">
-        <div className="cart-header">
-        <h2>My Cart ({getTotalItemsInCart()} items)</h2> <hr/>
-        {food_list.map(
-          (item) =>
-            cartItems[item._id] > 0 && (
-              <div key={item._id} className="cart-item">
-                <img src={`${url}/images/${item.image}`} alt={item.name} />
-                <div className="item-details">
-                <h4>{item.name}</h4>
-                <p><i>Price: Rs. {item.price}</i></p>
-                <p> <i>Quantity: {cartItems[item._id]}</i></p>  <hr  className="hr"/>
-                </div>
-              </div> 
-              
-            ) 
-        )}
-        </div>
-        <div className="cart-summary">
-          <p>Subtotal: <i className="cart-amt">Rs. {getTotalCartAmount()}</i></p>
-          <p>Delivery Fee: <i className="cart-amtt"> Rs. {deliveryFee}</i></p> <hr />
-          <p>Total: <i className="cart-amttt">Rs. {totalAmount}</i></p>
-        </div>
-      </div>
-
-      {isMapVisible && (
-        <div className="map-modal">
-          <div id="map" style={{ height: "500px", width: "70%" }}></div>
-          <button className="close-map-button" onClick={closeMap}>Close Map</button>
-        </div>
-      )}
-
-      <ToastContainer />
-    </div>
     </form>
   );
 };

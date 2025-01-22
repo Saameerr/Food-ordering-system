@@ -26,6 +26,8 @@
   }
   
   .edit-btn {
+    height: 30px;
+    width: 60px;
     background-color: #4caf50;
     color: white;
     border: none;
@@ -35,6 +37,8 @@
   }
   
   .delete-btn {
+    height: 30px;
+    width: 60px;
     background-color: #f44336;
     color: white;
     border: none;
