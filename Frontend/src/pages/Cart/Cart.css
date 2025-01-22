@@ -113,3 +113,32 @@
 .empty-cart button{
   border: none;
 }
+
+.quantity_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  margin-top: -15px;
+}
+
+.quantity_btn button {
+  padding: 8px 12px; 
+  font-size: 21px; 
+  cursor: pointer;
+  border: none;
+  color: white;
+  background-color: rgb(17, 149, 116);
+
+  width: 30px; /* Set a fixed width */
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centers the text inside the button */
+}
+
+
+.quantity_btn p {
+  margin: 0 10px; /* Space between the buttons and the number */
+  font-size: 18px;
+  font-weight: bold;
+}

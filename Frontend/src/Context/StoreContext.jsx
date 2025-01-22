@@ -73,6 +73,24 @@ const StoreContextProvider = (props) => {
     return totalItems;
   }
 
+   // Function to update the quantity of a specific cart item
+   const updateCartItemQuantity = (itemId, newQuantity) => {
+    setCartItems((prevCartItems) => {
+      if (newQuantity > 0) {
+        // Update the quantity if newQuantity > 0
+        return {
+          ...prevCartItems,
+          [itemId]: newQuantity,
+        };
+      } else {
+        // Remove the item if newQuantity is 0
+        const updatedCart = { ...prevCartItems };
+        delete updatedCart[itemId];
+        return updatedCart;
+      }
+    });
+  };
+
  
 
   const contextValue = {
@@ -83,6 +101,7 @@ const StoreContextProvider = (props) => {
     removeFromCart,
     getTotalCartAmount,
     getTotalItemsInCart,
+    updateCartItemQuantity,
     url,
     token,
     setToken
