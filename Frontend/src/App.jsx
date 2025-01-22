@@ -12,6 +12,8 @@ import C_home from "./components/Company/C_home.jsx";
 import C_about from "./components/Company/C_about.jsx";
 import C_delivery from "./components/Company/C_delivery.jsx";
 import C_privacy from "./components/Company/C_privacy.jsx";
+import C_esewa from "./components/Company/C_esewa.jsx";
+import C_cod from "./components/Company/C_cod.jsx";
 import PaymentForm from "./components/Payment/PaymentForm.jsx";
 import Success from "./components/Payment/Success.jsx";
 import Failure from "./components/Payment/Failure.jsx";
@@ -56,6 +58,8 @@ const App = () => {
           <Route path="/c_about" element={<C_about />} />
           <Route path="/c_delivery" element={<C_delivery />} />
           <Route path="/c_privacy" element={<C_privacy />} />
+          <Route path="/c_esewa" element={<C_esewa />} />
+          <Route path="/c_cod" element={<C_cod />} />
           
           <Route path="/myorders" element={<MyOrders />} />
         </Routes>

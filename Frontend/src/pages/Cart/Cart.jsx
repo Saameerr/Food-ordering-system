@@ -4,7 +4,7 @@ import { StoreContext } from "../../Context/StoreContext";
 import { useNavigate } from "react-router-dom";
 
 const Cart = ({ setShowLogin }) => {  // Accept setShowLogin as a prop
-  const { cartItems, food_list, removeFromCart, getTotalCartAmount, getTotalItemsInCart, token, url } = useContext(StoreContext);
+  const { cartItems, food_list, removeFromCart, getTotalCartAmount, updateCartItemQuantity, token, url } = useContext(StoreContext);
   const navigate = useNavigate();
 
   // Check if cart is empty
@@ -17,6 +17,17 @@ const Cart = ({ setShowLogin }) => {  // Accept setShowLogin as a prop
     } else {
       // If token exists, proceed to checkout page
       navigate("/order");
+    }
+  };
+   // Increment function
+   const incrementQuantity = (itemId) => {
+    updateCartItemQuantity(itemId, cartItems[itemId] + 1);  // Update the item quantity in cart
+  };
+
+  // Decrement function
+  const decrementQuantity = (itemId) => {
+    if (cartItems[itemId] > 1) {
+      updateCartItemQuantity(itemId, cartItems[itemId] - 1);  // Update the item quantity in cart
     }
   };
 
@@ -43,12 +54,7 @@ const Cart = ({ setShowLogin }) => {  // Accept setShowLogin as a prop
                   <p>Remove</p>
                 </div>
                 <br />
-
-                {/* Display total items in the cart */}
-                <div className="cart-total-items">
-                  <h4>Total Items: {getTotalItemsInCart()}</h4>
-                </div>
-
+               
                 {food_list.map((items, index) => {
                   if (cartItems[items._id] > 0) {
                     return (
@@ -56,7 +62,12 @@ const Cart = ({ setShowLogin }) => {  // Accept setShowLogin as a prop
                         <img src={url + "/images/" + items.image} alt="" />
                         <p>{items.name}</p>
                         <p> Rs.{items.price}</p>
-                        <p>{cartItems[items._id]}</p>
+                        {/* <p>{cartItems[items._id]}</p> */}
+                        <div className="quantity_btn">
+      <button onClick={() => incrementQuantity(items._id)}>+</button>
+      <p>{cartItems[items._id]}</p>
+      <button onClick={() => decrementQuantity(items._id)}>-</button>
+    </div>
                         <p> Rs.{items.price * cartItems[items._id]}</p>   {/* Total amount of items */}
                         <p
                           onClick={() => removeFromCart(items._id)}

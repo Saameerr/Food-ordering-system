@@ -33,8 +33,8 @@ const Footer = () => {
         <div className="footer-content-right">
           <h6>Payment Methods</h6>
           <ul>
-            <li>ESewa</li>
-            <li>Cash on Delivery</li>
+            <li className="section"><Link to="C_esewa">eSewa</Link></li>
+            <li> <Link to="C_cod">Cash on Delivery</Link></li>
           </ul>
         </div>
 
