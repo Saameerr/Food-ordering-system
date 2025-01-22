@@ -3,8 +3,17 @@ import "./Cart.css";
 import { StoreContext } from "../../Context/StoreContext";
 import { useNavigate } from "react-router-dom";
 
-const Cart = ({ setShowLogin }) => {  // Accept setShowLogin as a prop
-  const { cartItems, food_list, removeFromCart, getTotalCartAmount, updateCartItemQuantity, token, url } = useContext(StoreContext);
+const Cart = ({ setShowLogin }) => {
+  // Accept setShowLogin as a prop
+  const {
+    cartItems,
+    food_list,
+    removeFromCart,
+    getTotalCartAmount,
+    updateCartItemQuantity,
+    token,
+    url,
+  } = useContext(StoreContext);
   const navigate = useNavigate();
 
   // Check if cart is empty
@@ -19,15 +28,15 @@ const Cart = ({ setShowLogin }) => {  // Accept setShowLogin as a prop
       navigate("/order");
     }
   };
-   // Increment function
-   const incrementQuantity = (itemId) => {
-    updateCartItemQuantity(itemId, cartItems[itemId] + 1);  // Update the item quantity in cart
+  // Increment function
+  const incrementQuantity = (itemId) => {
+    updateCartItemQuantity(itemId, cartItems[itemId] + 1); // Update the item quantity in cart
   };
 
   // Decrement function
   const decrementQuantity = (itemId) => {
     if (cartItems[itemId] > 1) {
-      updateCartItemQuantity(itemId, cartItems[itemId] - 1);  // Update the item quantity in cart
+      updateCartItemQuantity(itemId, cartItems[itemId] - 1); // Update the item quantity in cart
     }
   };
 
@@ -36,8 +45,14 @@ const Cart = ({ setShowLogin }) => {  // Accept setShowLogin as a prop
       {/* Show 'Cart is empty' message if no items in cart */}
       {isCartEmpty ? (
         <div className="empty-cart">
-          <img src="cartEmpty.png" alt="nophoto" style={{ height: "400px", width: "400px", cursor: "pointer" }} />
-          <a href="home"><button>Go to Home</button></a>
+          <img
+            src="cartEmpty.png"
+            alt="nophoto"
+            style={{ height: "400px", width: "400px", cursor: "pointer" }}
+          />
+          <a href="home">
+            <button>Go to Home</button>
+          </a>
         </div>
       ) : (
         <>
@@ -54,21 +69,28 @@ const Cart = ({ setShowLogin }) => {  // Accept setShowLogin as a prop
                   <p>Remove</p>
                 </div>
                 <br />
-               
+
                 {food_list.map((items, index) => {
                   if (cartItems[items._id] > 0) {
                     return (
-                      <div key={index} className="cart-itemstitle cart-itemsitem">
+                      <div
+                        key={index}
+                        className="cart-itemstitle cart-itemsitem"
+                      >
                         <img src={url + "/images/" + items.image} alt="" />
                         <p>{items.name}</p>
                         <p> Rs.{items.price}</p>
-                        {/* <p>{cartItems[items._id]}</p> */}
                         <div className="quantity_btn">
-      <button onClick={() => incrementQuantity(items._id)}>+</button>
-      <p>{cartItems[items._id]}</p>
-      <button onClick={() => decrementQuantity(items._id)}>-</button>
-    </div>
-                        <p> Rs.{items.price * cartItems[items._id]}</p>   {/* Total amount of items */}
+                          <button onClick={() => incrementQuantity(items._id)}>
+                            +
+                          </button>
+                          <p>{cartItems[items._id]}</p>
+                          <button onClick={() => decrementQuantity(items._id)}>
+                            -
+                          </button>
+                        </div>
+                        <p> Rs.{items.price * cartItems[items._id]}</p>{" "}
+                        {/* Total amount of items */}
                         <p
                           onClick={() => removeFromCart(items._id)}
                           className="removecart"
@@ -88,16 +110,25 @@ const Cart = ({ setShowLogin }) => {  // Accept setShowLogin as a prop
                 </div>
                 <div className="cart-totaldetail">
                   <p>Subtotal</p>
-                  <p style={{ marginLeft: "5rem" }}> Rs.{getTotalCartAmount()}</p> <hr />
+                  <p style={{ marginLeft: "5rem" }}>
+                    {" "}
+                    Rs.{getTotalCartAmount()}
+                  </p>{" "}
+                  <hr />
                 </div>
                 <div className="cart-totaldetail">
                   <p>Delivery Fee</p>
-                  <p style={{ marginLeft: "3.3rem" }}> Rs.{getTotalCartAmount() === 0 ? 0 : 85}</p> <hr />
+                  <p style={{ marginLeft: "3.3rem" }}>
+                    {" "}
+                    Rs.{getTotalCartAmount() === 0 ? 0 : 85}
+                  </p>{" "}
+                  <hr />
                 </div>
                 <div className="cart-totaldetail">
                   <b>Total</b>
                   <b style={{ marginLeft: "6.3rem" }}>
-                    Rs.{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 85}
+                    Rs.
+                    {getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 85}
                   </b>
                 </div>
                 <button onClick={handleCheckout}>Checkout</button>

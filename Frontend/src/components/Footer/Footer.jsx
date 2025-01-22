@@ -34,7 +34,7 @@ const Footer = () => {
           <h6>Payment Methods</h6>
           <ul>
             <li className="section"><Link to="C_esewa">eSewa</Link></li>
-            <li> <Link to="C_cod">Cash on Delivery</Link></li>
+            <li className="section"> <Link to="C_cod">Cash on Delivery</Link></li>
           </ul>
         </div>
 

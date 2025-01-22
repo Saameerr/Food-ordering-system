@@ -21,12 +21,24 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  const removeFromCart =async (itemId) => {
-    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+  const removeFromCart = async (itemId) => {
+    // Update the cart state to remove the item completely
+    setCartItems((prev) => {
+      const updatedCart = { ...prev };
+      delete updatedCart[itemId]; // Remove the item by its ID
+      return updatedCart;
+    });
+  
+    // If the user is logged in, send an API request to remove the item from the backend
     if (token) {
-      await axios.post(url+"/api/cart/remove",{itemId}, {headers:{token}})
+      try {
+        await axios.post(url + "/api/cart/remove", { itemId }, { headers: { token } });
+      } catch (error) {
+        console.error("Error removing item from cart:", error);
+      }
     }
   };
+  
 
   const getTotalCartAmount = () => {
     let totalAmount = 0;
