@@ -187,7 +187,7 @@ const Navbar = ({ setShowLogin }) => {
         )}
       </div>
       {!token ? (
-        <button onClick={() => setShowLogin(true)}>Sign in</button>
+        <button onClick={() => setShowLogin(true)||handleMenuClick("Sign in", "signin")}>Sign in</button>
       ) : (
         <div
           className="navbar-profile"
@@ -199,15 +199,15 @@ const Navbar = ({ setShowLogin }) => {
             className="profile-icon"
           />
           <ul className={`nav-profile-dropdown ${dropdownOpen ? "show" : ""}`}>
-            <li style={{ marginLeft: "-1rem" }}>
+            <li style={{ marginLeft: "-1rem" }} >
               <img src={assets.bag_icon} alt="Orders" />
-              <span onClick={() => navigate("/MyOrders")}>Orders</span>
+              <span onClick={() => navigate("/MyOrders")||handleMenuClick("Orders", "orders")}>Orders</span>
             </li>
             <hr style={{ marginLeft: "-2rem" }} />
             <div style={{ marginTop: "-10px", paddingBottom: "15px" }}>
               <li onClick={logout} style={{ marginLeft: "-1rem" }}>
                 <img src={assets.logout_icon} alt="Logout" />
-                <span>Logout</span>
+                <span onClick={() => handleMenuClick("Logout", "logout")}>Logout</span>
               </li>
             </div>
           </ul>
