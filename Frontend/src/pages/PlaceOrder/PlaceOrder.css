@@ -139,7 +139,7 @@
       
       .cart-item {
           display: flex;
-          margin-bottom: 15px;
+          margin-bottom: 5px;
           align-items: center;
       }
       
@@ -165,8 +165,7 @@
           font-size: 14px;
       }
       .hr{
-        color: red;
-        margin-bottom: 1px;
+        color: rgb(247, 29, 29);
       }
       
       .cart-summary {

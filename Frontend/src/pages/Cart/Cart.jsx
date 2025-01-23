@@ -85,7 +85,7 @@ const Cart = ({ setShowLogin }) => {
                             +
                           </button>
                           <p>{cartItems[items._id]}</p>
-                          <button onClick={() => decrementQuantity(items._id)}>
+                          <button onClick={() => decrementQuantity(items._id)} style={{backgroundColor:"tomato"}}>
                             -
                           </button>
                         </div>

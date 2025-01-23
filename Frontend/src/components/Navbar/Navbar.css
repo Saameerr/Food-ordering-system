@@ -144,17 +144,19 @@
 .nav-profile-dropdown {
   display: none;
   position: absolute;
+  margin-top: 0.8rem;
   top: calc(100% + 5px); /* Dropdown appears slightly below the profile icon */
   background: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   list-style: none;
-  min-width: 150px; /* Fixed width */
+  min-width: 135px; /* Fixed width */
   font-size: 14px;
   transition: opacity 0.3s ease, transform 0.3s ease;
   opacity: 0;
   transform: translateY(-10px); /* Animation */
   pointer-events: none; /* Prevent clicks when not visible */
+  
 }
 
 .nav-profile-dropdown.show {
@@ -184,9 +186,6 @@
   width: 20px;
   height: 20px;
 }
-
-
-
 
 
 
@@ -264,8 +263,6 @@
   color: #888;
   text-align: center;
 }
-
-
 
 
 

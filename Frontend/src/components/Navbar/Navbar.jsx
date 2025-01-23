@@ -180,15 +180,17 @@ const Navbar = ({ setShowLogin }) => {
         <div className="navbar-profile" onClick={() => setDropdownOpen((prev) => !prev)}>
           <img src={assets.profile_icon} alt="Profile" className="profile-icon" />
           <ul className={`nav-profile-dropdown ${dropdownOpen ? "show" : ""}`}>
-            <li>
+            <li style={{marginLeft:"-1rem"}}>
               <img src={assets.bag_icon} alt="Orders" />
               <span onClick={() => navigate("/MyOrders")}>Orders</span>
             </li>
-            <hr />
-            <li onClick={logout}>
+            <hr style={{marginLeft:"-2rem"}}/>
+            <div style={{marginTop:"-10px",paddingBottom:"15px"}}>
+            <li onClick={logout} style={{marginLeft:"-1rem"}}>
               <img src={assets.logout_icon} alt="Logout" />
               <span>Logout</span>
             </li>
+            </div>
           </ul>
         </div>
       )}
