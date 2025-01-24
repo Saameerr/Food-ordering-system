@@ -3,6 +3,8 @@ import './List.css';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+
 
 const List = ({ url }) => {
   const [list, setList] = useState([]);
@@ -71,9 +73,29 @@ const List = ({ url }) => {
               <button onClick={() => editFood(item)} className="edit-btn">
                 Edit
               </button>
-              <button onClick={() => removeFood(item._id)} className="delete-btn">
-                Delete
-              </button>
+              <button
+  onClick={() => {
+    Swal.fire({
+      title: 'Are you sure you want to delete this Item?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        removeFood(item._id);
+        Swal.fire('Deleted!', 'The item has been deleted.', 'success');
+      }
+    });
+  }}
+  className="delete-btn"
+>
+  Delete
+</button>
+
+
             </div>
           </div>
         ))}
