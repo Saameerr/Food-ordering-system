@@ -306,7 +306,8 @@ const PlaceOrder = () => {
           <div className="delivery-details">
             <h5>Phone Number</h5>
             <hr />
-            <input className="phonenumber"
+            <input
+              className="phonenumber"
               type="text"
               name="phoneNumber"
               maxLength="10"
@@ -321,26 +322,26 @@ const PlaceOrder = () => {
             <h5>Choose Payment Method</h5>
             <hr />
             <div className="payment-type">
-            <label style={{ marginRight: "20px" }}>
-              <input
-                type="radio"
-                name="paymentOption"
-                value="cashOnDelivery"
-                checked={formState.paymentOption === "cashOnDelivery"}
-                onChange={handleInputChange}
-              />
-              Cash On Delivery
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="paymentOption"
-                value="digitalPayment"
-                checked={formState.paymentOption === "digitalPayment"}
-                onChange={handleInputChange}
-              />
-              E-sewa
-            </label>
+              <label style={{ marginRight: "20px" }}>
+                <input
+                  type="radio"
+                  name="paymentOption"
+                  value="cashOnDelivery"
+                  checked={formState.paymentOption === "cashOnDelivery"}
+                  onChange={handleInputChange}
+                />
+                Cash On Delivery
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="paymentOption"
+                  value="digitalPayment"
+                  checked={formState.paymentOption === "digitalPayment"}
+                  onChange={handleInputChange}
+                />
+                E-sewa
+              </label>
             </div>
           </div>
 
@@ -368,15 +369,16 @@ const PlaceOrder = () => {
                   <div key={item._id} className="cart-item">
                     <img src={`${url}/images/${item.image}`} alt={item.name} />
                     <div className="item-details">
-                      <h4>{item.name}</h4>
-                      <p>
-                        <i>Price: Rs. {item.price}</i>
-                      </p>
-                      <p>
+                      <div className="sub-item">
+                        <h4>{item.name}</h4>
+                        <p style={{marginButton:"2rem",gap:"2rem"}}>
+                          <i>Price: Rs. {item.price}</i>
+                        </p>
+                        <p style={{marginTop:"-1rem"}}>
                         {" "}
-                        <i>Quantity: {cartItems[item._id]}</i>
+                        <i>Quantity: {cartItems[item._id]}</i><hr className="hr" />
                       </p>{" "}
-                      <hr className="hr" />
+                      </div>
                     </div>
                   </div>
                 )
