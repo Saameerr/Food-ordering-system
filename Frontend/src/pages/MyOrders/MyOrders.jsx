@@ -10,11 +10,19 @@ const MyOrders = () => {
     const [data,setdata] = useState([]);
 
     const fetchOrders = async () => {
-        const response = await axios.post(url+"/api/order/userorders",{},{headers:{token}});
-        setdata(response.data.data);
-        console.log(response.data.data);
-    }
-
+        try {
+            const response = await axios.post(
+                `${url}/api/order/userorders`,
+                {}, 
+                { headers: { token } }
+            );
+            setdata(response.data.data); // The data should now be sorted by createdAt
+            console.log(response.data.data); // Logs sorted orders
+        } catch (error) {
+            console.error("Error fetching orders:", error);
+        }
+    };
+    
     useEffect(() =>{
         if(token){
             fetchOrders();
@@ -38,7 +46,7 @@ const MyOrders = () => {
                             }
                         })}
                         </p>
-                        <p>Rs{order.amount}.00</p>
+                        <p>Rs {order.amount}.00</p>
                         <p>Items: {order.items.length}</p>
                         <p><span>&#x25cf;</span><b> {order.status}</b></p>
                         <button onClick={fetchOrders}>Track Order</button>
