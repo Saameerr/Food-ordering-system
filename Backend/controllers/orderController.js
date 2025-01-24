@@ -36,16 +36,16 @@ const userOrders = async(req,res) => {
 
 
 //listing orders for admin pannel
-const listOrders = async (req,res) => {
+const listOrders = async (req, res) => {
     try {
-        const orders = await orderModel.find({});
-        res.json({success:true,data:orders})
+      const orders = await orderModel.find({}).sort({ createdAt: -1 }); // Sort by `createdAt` descending
+      res.json({ success: true, data: orders });
     } catch (error) {
-        console.log(error);
-        res.json({success:false,message:"Error"})
-        
+      console.log(error);
+      res.json({ success: false, message: "Error" });
     }
-}
+  };
+  
 
 //api for updating order status
 const updatestatus = async (req,res) => {
