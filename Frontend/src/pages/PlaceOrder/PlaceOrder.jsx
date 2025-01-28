@@ -16,6 +16,7 @@ const PlaceOrder = () => {
     getTotalCartAmount,
     getTotalItemsInCart,
     url,
+    clearCart,
   } = useContext(StoreContext);
 
   const [formState, setFormState] = useState({
@@ -38,46 +39,47 @@ const PlaceOrder = () => {
   const deliveryFee = formState.deliveryType === "takeaway" ? 0 : 85;
   const totalAmount = getTotalCartAmount() + deliveryFee;
 
-  // useEffect to log formState to console
-  // useEffect(() => {
-  //   console.log("Current form state:", formState);
-  // }, [formState]); // This will run whenever formState changes
-
   const placeOrder = async (event) => {
     event.preventDefault();
+    
+    // Prepare the order items
     let orderItems = [];
-    food_list.map((item) => {
+    food_list.forEach((item) => {
       if (cartItems[item._id] > 0) {
         let itemInfo = item;
         itemInfo["quantity"] = cartItems[item._id];
         orderItems.push(itemInfo);
       }
     });
-
+  
+    // Prepare order data
     let orderData = {
       address: formState,
       items: orderItems,
-      amount: getTotalCartAmount() + 84,
+      amount: getTotalCartAmount() + deliveryFee, // Added delivery fee
     };
-    let response = await axois.post(url + "/api/order/place", orderData, {
-      headers: { token },
-    });
-    if (response.data.success) {
-      const { session_url } = response.data;
-      window.location.replace(session_url);
-    } else {
-      alert("Error");
+  
+    try {
+      // Place the order via API
+      const response = await axois.post(url + "/api/order/place", orderData, {
+        headers: { token },
+      });
+  
+      if (response.data.success) {
+        const { session_url } = response.data;
+        
+  
+        // Redirect to payment or order confirmation page
+        window.location.replace(session_url);
+      } else {
+        toast.error("Error placing the order. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred while placing your order.");
+      console.error("Error placing order:", error);
     }
   };
-
-  // useEffect(()=>{
-  //   if(!token){
-  //     navigate('/cart')
-  //   }
-  //   else if(getTotalCartAmount()===0){
-  //     navigate
-  //   }
-  // },[token])
+  
 
   useEffect(() => {
     if (isMapVisible && userLocation) {
@@ -142,6 +144,7 @@ const PlaceOrder = () => {
       phoneNumber,
       paymentOption,
     } = formState;
+  
 
     if (deliveryType === "homeDelivery" && !locationName) {
       toast.error("Please select a location before proceeding.");
@@ -182,6 +185,8 @@ const PlaceOrder = () => {
     } else {
       toast.error("Please select a payment method before proceeding.");
     }
+        // Clear the cart after the successful order
+         clearCart();  
   };
 
   const openMap = () => {
@@ -376,8 +381,8 @@ const PlaceOrder = () => {
                         </p>
                         <p style={{marginTop:"-1rem"}}>
                         {" "}
-                        <i>Quantity: {cartItems[item._id]}</i><hr className="hr" />
-                      </p>{" "}
+                        <i>Quantity: {cartItems[item._id]}</i>
+                      </p>{" "}<hr className="hr" />
                       </div>
                     </div>
                   </div>

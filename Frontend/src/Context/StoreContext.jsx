@@ -103,6 +103,38 @@ const StoreContextProvider = (props) => {
     });
   };
 
+
+  // Clear cart function
+  const clearCart = async () => {
+    if (!token) {
+      console.error("Token is missing. Cannot clear the cart.");
+      return; // Exit early if token is not present
+    }
+  
+    try {
+      // Post request to backend to clear the cart
+      const response = await axios.post(`${url}/api/cart/clear`, {}, { headers: { token } });
+  
+      if (response.status === 200) {
+        // Reset the cart state on frontend only if backend call succeeds
+        setCartItems({});
+        console.log("Cart cleared successfully!");
+        // Optionally: Show a success notification
+        // toast.success("Your cart has been cleared!");
+      } else {
+        console.error("Failed to clear the cart:", response.data.message);
+        // Optionally: Show an error notification
+        // toast.error("Failed to clear the cart.");
+      }
+    } catch (error) {
+      console.error("Error resetting cart items:", error.message);
+      // Optionally: Show an error notification
+      // toast.error("An error occurred while clearing the cart.");
+    }
+  };
+  
+  
+
  
 
   const contextValue = {
@@ -116,7 +148,8 @@ const StoreContextProvider = (props) => {
     updateCartItemQuantity,
     url,
     token,
-    setToken
+    setToken,
+    clearCart
   };
   return (
     <StoreContext.Provider value={contextValue}>
