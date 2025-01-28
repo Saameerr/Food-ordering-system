@@ -178,7 +178,7 @@ const PlaceOrder = () => {
 
     if (paymentOption === "digitalPayment") {
       navigate("/PaymentForm", { state: { totalAmount } });
-    } else if (paymentOption === "cashOnDelivery") {
+    } else if (paymentOption === "cash On Delivery") {
       toast.success(
         "You have selected Cash on Delivery. Your order will be placed."
       );
