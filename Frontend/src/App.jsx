@@ -32,6 +32,7 @@ const App = () => {
     "/paymentform",
     "/payment-success",
     "/payment-failure",
+    "/MyOrders",
   ];
 
   return (
