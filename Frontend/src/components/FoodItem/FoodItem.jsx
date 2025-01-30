@@ -7,44 +7,21 @@ const FoodItem = ({ id, name, price, description, image }) => {
   const { cartItems, addToCart, removeFromCart, url } =
     useContext(StoreContext);
 
-  // State for rating
-  const [rating, setRating] = useState(() => {
-    // Retrieve rating from sessionStorage if available
-    const savedRating = sessionStorage.getItem(`rating-${id}`);
-    return savedRating ? parseFloat(savedRating) : 0; // Default to 0 if no rating saved
+  // State to track order count
+  const [orderCount, setOrderCount] = useState(() => {
+    const savedCount = localStorage.getItem(`orderCount-${id}`);
+    return savedCount ? parseInt(savedCount, 10) : 0; // Default to 0 if no order count saved
   });
 
-  // Update sessionStorage whenever the rating changes
+  // Update localStorage whenever the order count changes
   useEffect(() => {
-    sessionStorage.setItem(`rating-${id}`, rating);
-  }, [rating, id]);
+    localStorage.setItem(`orderCount-${id}`, orderCount);
+  }, [orderCount, id]);
 
-  // Handle rating selection
-  const handleRating = (newRating) => {
-    setRating(newRating); // Update rating state
-  };
-
-  // Render stars dynamically based on rating
-  const renderStars = (currentRating) => {
-    return Array.from({ length: 5 }, (_, index) => {
-      const starValue = index + 1;
-      return (
-        <span
-          key={starValue}
-          className={`star ${
-            starValue <= currentRating ? "selected" : "unselected"
-          }`}
-          onClick={() => handleRating(starValue)}
-          style={{
-            cursor: "pointer",
-            fontSize: "20px",
-            color: starValue <= currentRating ? "#ffc107" : "#e4e5e9",
-          }}
-        >
-          ★
-        </span>
-      );
-    });
+  // Handle item order
+  const handleOrder = () => {
+    addToCart(id);
+    setOrderCount((prevCount) => prevCount + 1);
   };
 
   return (
@@ -58,14 +35,14 @@ const FoodItem = ({ id, name, price, description, image }) => {
         {!cartItems[id] ? (
           <img
             className="add"
-            onClick={() => addToCart(id)}
+            onClick={handleOrder}
             src={assets.add_icon_white}
             alt="Add"
           />
         ) : (
           <div className="food-item-counter">
             <img
-              onClick={() => addToCart(id)}
+              onClick={handleOrder}
               src={assets.add_icon_green}
               alt="Increase"
             />
@@ -79,10 +56,12 @@ const FoodItem = ({ id, name, price, description, image }) => {
         )}
 
         <div className="food-item-info">
-          <div className="food-item-name-rating">
-            <p>{name}</p>
-            <div className="food-item-stars">{renderStars(rating)}</div>
-          </div>
+          <p className="food-item-name">
+            {name}{" "}
+            {orderCount > 0 && (
+              <span className="order-count">({orderCount} ordered)</span>
+            )}
+          </p>
           <p className="food-item-desc">{description}</p>
           <p className="food-item-price">Rs.{price}</p>
         </div>

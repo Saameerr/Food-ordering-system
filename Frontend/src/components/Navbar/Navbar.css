@@ -9,9 +9,10 @@
   z-index: 100;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   padding: 0 20px; 
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); 
+ 
 }
 
 /* Logo */
@@ -80,11 +81,12 @@
 /* Cart Icon */
 .navbar-shopping-cart {
   position: relative;
-  width: 40px; /* Fixed width prevents resizing */
-  height: 40px;
+  width: 30px; /* Fixed width prevents resizing */
+  height: 35px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 50px;
 }
 
 

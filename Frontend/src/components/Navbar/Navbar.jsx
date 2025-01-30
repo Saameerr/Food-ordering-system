@@ -192,12 +192,18 @@ const Navbar = ({ setShowLogin }) => {
             )}
           </div>
         </Link>
-        {getTotalItemsInCart() > 0 && (
+        {/* {getTotalItemsInCart() > 0 && (
           <div className="cart-item-count">{getTotalItemsInCart()}</div>
-        )}
+        )} */}
       </div>
       {!token ? (
-        <button onClick={() => setShowLogin(true)||handleMenuClick("Sign in", "signin")}>Sign in</button>
+        <button
+          onClick={() =>
+            setShowLogin(true) || handleMenuClick("Sign in", "signin")
+          }
+        >
+          Sign in
+        </button>
       ) : (
         <div
           className="navbar-profile"
@@ -209,15 +215,23 @@ const Navbar = ({ setShowLogin }) => {
             className="profile-icon"
           />
           <ul className={`nav-profile-dropdown ${dropdownOpen ? "show" : ""}`}>
-            <li style={{ marginLeft: "-1rem" }} >
+            <li style={{ marginLeft: "-1rem" }}>
               <img src={assets.bag_icon} alt="Orders" />
-              <span onClick={() => navigate("/MyOrders")||handleMenuClick("Orders", "orders")}>Orders</span>
+              <span
+                onClick={() =>
+                  navigate("/MyOrders") || handleMenuClick("Orders", "orders")
+                }
+              >
+                Orders
+              </span>
             </li>
             <hr style={{ marginLeft: "-2rem" }} />
             <div style={{ marginTop: "-10px", paddingBottom: "15px" }}>
               <li onClick={logout} style={{ marginLeft: "-1rem" }}>
                 <img src={assets.logout_icon} alt="Logout" />
-                <span onClick={() => handleMenuClick("Logout", "logout")}>Logout</span>
+                <span onClick={() => handleMenuClick("Logout", "logout")}>
+                  Logout
+                </span>
               </li>
             </div>
           </ul>
