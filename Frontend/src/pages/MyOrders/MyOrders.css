@@ -24,6 +24,11 @@
     width: 50px;
 }
 
+.my-orders-order p{
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
 .my-orders-order p span{
     color: tomato;
 }
