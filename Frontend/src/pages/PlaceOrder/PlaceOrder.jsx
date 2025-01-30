@@ -186,7 +186,19 @@ const PlaceOrder = () => {
       toast.error("Please select a payment method before proceeding.");
     }
         // Clear the cart after the successful order
-         clearCart();  
+         // Handle payment options
+  if (paymentOption === "digitalPayment") {
+    // For digital payment (E-Sewa), navigate to the payment form
+    navigate("/PaymentForm", { state: { totalAmount } });
+  } else if (paymentOption === "cashOnDelivery") {
+    // For cash on delivery, clear the cart immediately after order is placed
+    toast.success(
+      "You have selected Cash on Delivery. Your order will be placed."
+    );
+    clearCart(); // Clear the cart for Cash on Delivery
+  } else {
+    toast.error("Please select a payment method before proceeding.");
+  } 
   };
 
   const openMap = () => {

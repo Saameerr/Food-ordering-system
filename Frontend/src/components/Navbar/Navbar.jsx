@@ -94,8 +94,18 @@ const Navbar = ({ setShowLogin }) => {
   // Function to handle menu navigation
   const handleMenuClick = (menuName, sectionId) => {
     setMenu(menuName);
-    document.getElementById(sectionId).scrollIntoView({ behavior: "smooth" });
+    if (sectionId === "cart") {
+      navigate("/cart"); // Navigate to cart page
+    } else {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      } else {
+        console.warn(`Element with id '${sectionId}' not found.`);
+      }
+    }
   };
+  
 
   // Close search results when clicked outside of the search bar or search results
   const handleClickOutside = (e) => {
