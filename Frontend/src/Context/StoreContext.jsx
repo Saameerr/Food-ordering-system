@@ -22,6 +22,29 @@ const StoreContextProvider = (props) => {
   };
 
   const removeFromCart = async (itemId) => {
+    setCartItems((prev) => {
+      const updatedCart = { ...prev };
+  
+      if (updatedCart[itemId] > 1) {
+        updatedCart[itemId] -= 1; // Decrease count by 1
+      } else {
+        delete updatedCart[itemId]; // Remove item completely if count reaches 0
+      }
+  
+      return updatedCart;
+    });
+  
+    if (token) {
+      try {
+        await axios.post(url + "/api/cart/remove", { itemId }, { headers: { token } });
+      } catch (error) {
+        console.error("Error removing item from cart:", error);
+      }
+    }
+  };
+  
+
+  const removeAllFromCart = async (itemId) => {
     // Update the cart state to remove the item completely
     setCartItems((prev) => {
       const updatedCart = { ...prev };
@@ -143,6 +166,7 @@ const StoreContextProvider = (props) => {
     setCartItems,
     addToCart,
     removeFromCart,
+    removeAllFromCart,
     getTotalCartAmount,
     getTotalItemsInCart,
     updateCartItemQuantity,

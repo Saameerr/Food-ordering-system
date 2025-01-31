@@ -8,7 +8,7 @@ const Cart = ({ setShowLogin }) => {
   const {
     cartItems,
     food_list,
-    removeFromCart,
+    removeAllFromCart,
     getTotalCartAmount,
     updateCartItemQuantity,
     token,
@@ -92,7 +92,7 @@ const Cart = ({ setShowLogin }) => {
                         <p> Rs.{items.price * cartItems[items._id]}</p>{" "}
                         {/* Total amount of items */}
                         <p
-                          onClick={() => removeFromCart(items._id)}
+                          onClick={() => removeAllFromCart(items._id)}
                           className="removecart"
                         >
                           x
