@@ -21,14 +21,14 @@ const StoreContextProvider = (props) => {
     }
   };
 
-  const removeFromCart = async (itemId) => {
+  const removeFromCart = async (itemId, removeAll = false) => {
     setCartItems((prev) => {
       const updatedCart = { ...prev };
   
-      if (updatedCart[itemId] > 1) {
-        updatedCart[itemId] -= 1; // Decrease count by 1
+      if (removeAll || updatedCart[itemId] <= 1) {
+        delete updatedCart[itemId]; // Completely remove item
       } else {
-        delete updatedCart[itemId]; // Remove item completely if count reaches 0
+        updatedCart[itemId] -= 1; // Decrease count by 1
       }
   
       return updatedCart;
@@ -36,32 +36,14 @@ const StoreContextProvider = (props) => {
   
     if (token) {
       try {
-        await axios.post(url + "/api/cart/remove", { itemId }, { headers: { token } });
+        await axios.post(url + "/api/cart/remove", { itemId, removeAll }, { headers: { token } });
       } catch (error) {
         console.error("Error removing item from cart:", error);
       }
     }
   };
   
-
-  const removeAllFromCart = async (itemId) => {
-    // Update the cart state to remove the item completely
-    setCartItems((prev) => {
-      const updatedCart = { ...prev };
-      delete updatedCart[itemId]; // Remove the item by its ID
-      return updatedCart;
-    });
-  
-    // If the user is logged in, send an API request to remove the item from the backend
-    if (token) {
-      try {
-        await axios.post(url + "/api/cart/remove", { itemId }, { headers: { token } });
-      } catch (error) {
-        console.error("Error removing item from cart:", error);
-      }
-    }
-  };
-  
+    
 
   const getTotalCartAmount = () => {
     let totalAmount = 0;
@@ -166,7 +148,6 @@ const StoreContextProvider = (props) => {
     setCartItems,
     addToCart,
     removeFromCart,
-    removeAllFromCart,
     getTotalCartAmount,
     getTotalItemsInCart,
     updateCartItemQuantity,
