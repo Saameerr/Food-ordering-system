@@ -59,7 +59,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
           <p className="food-item-name">
             {name}{" "}
             {orderCount > 0 && (
-              <span className="order-count">({orderCount} ordered)</span>
+              <span className="order-count">({orderCount} Ordered)</span>
             )}
           </p>
           <p className="food-item-desc">{description}</p>
