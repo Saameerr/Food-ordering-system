@@ -40,7 +40,28 @@
     font-size: 12px;
     margin-top: -0.50rem;
     text-align: justify;
+  
+    
 }
+.food-item-desc.collapsed {
+    overflow: hidden;
+    display: -webkit-box;
+    /* -webkit-line-clamp: 2; Limits to 2 lines */
+    -webkit-box-orient: vertical;
+  }
+  
+  .food-item-desc.expanded {
+    display: block;
+  }
+
+  .read-more {
+    padding-left: 2px;
+    text-align: center;
+    color: tomato;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+  }
 
 .food-item-price {
     color: red;
