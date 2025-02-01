@@ -27,7 +27,12 @@
 .my-orders-order p{
   text-align: center;
   margin-top: 1.5rem;
+  white-space: nowrap;
+  flex-grow: 1; /* Allows item names to take up available space */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Truncate long names with "..." */
 }
+
 
 .my-orders-order p span{
     color: tomato;
