@@ -68,6 +68,18 @@ const removeFood = async (req, res) => {
   }
 };
 
+// Controller to get food items with orderCount > 0
+const getFoodItems = async (req, res) => {
+  try {
+    const foodItems = await foodModel.find({ orderCount: { $gt: 0 } });
+    res.json({ success: true, data: foodItems });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: "Error fetching food items" });
+  }
+};
+
+
 // Update food item
 const updateFood = async (req, res) => {
   try {
@@ -103,4 +115,4 @@ const updateFood = async (req, res) => {
   }
 };
 
-export { addFood, listFood, removeFood, updateFood };
+export { addFood, listFood, removeFood, getFoodItems, updateFood };
