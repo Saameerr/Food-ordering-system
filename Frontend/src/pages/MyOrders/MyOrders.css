@@ -15,7 +15,7 @@
     align-items: center;
     gap: 30px;
     font-size: 14px;
-    padding: 10px 20px;
+    padding: 10px 10px;
     color: #454545;
     border: 1px solid  tomato;
 }
@@ -25,13 +25,9 @@
 }
 
 .my-orders-order p{
-  text-align: center;
-  margin-top: 1.5rem;
-  white-space: nowrap;
-  flex-grow: 1; /* Allows item names to take up available space */
-  overflow: hidden;
-  text-overflow: ellipsis; /* Truncate long names with "..." */
+  margin-top: 0.5rem;
 }
+
 
 
 .my-orders-order p span{
@@ -42,6 +38,96 @@
    font-weight: 500;
    color: #454545;
 }
+.my-orders{
+  margin: 50px 0px;
+}
+
+.my-orders .container{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.my-orders-order{
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 1fr 1fr 2fr 1fr;
+  align-items: center;
+  gap: 30px;
+  font-size: 14px;
+  padding: 10px 20px;
+  color: #454545;
+  border: 1px solid  tomato;
+}
+
+.my-orders-order img{
+  width: 50px;
+}
+
+.my-orders-order p span{
+  color: tomato;
+}
+
+.my-orders-order p b{
+ font-weight: 500;
+ color: #454545;
+}
+
+.my-orders-order button{
+  border: none;
+  padding: 12px 0px;
+  border-radius: 5px;
+  background-color: #f1bcbc;
+  cursor: pointer;
+  color: #454545;
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin: 20px 0;
+}
+
+.progress-container::before {
+  content: "";
+  position: absolute;
+  top: 40%;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #ccc;
+  z-index: 0;
+}
+
+.progress-dot {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border: 4px solid #ccc;
+  border-radius: 50%;
+  z-index: 1;
+  transition: all 0.3s ease-in-out;
+}
+
+.progress-dot.active {
+  border-color: #4caf50;
+  background: #4caf50;
+}
+
+.progress-dot span {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  color: #666;
+  font-weight: 600;
+  white-space: nowrap; /* Prevent line breaks */
+  text-align: center; /* Center align text */
+}
 
 .my-orders-order button{
     border: none;
@@ -51,6 +137,16 @@
     cursor: pointer;
     color: #454545;
 }
+
+p label {
+  font-size: 12px;
+  padding: 0 3px ;
+  color: tomato;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+}
+
 
 .progress-container {
     display: flex;
@@ -99,3 +195,33 @@
     text-align: center; /* Center align text */
   }
   
+  .load-buttons {
+    display: flex;
+    justify-content: center; /* Center the buttons */
+    gap: 15px; /* Space between buttons */
+    margin-top: 20px;
+}
+
+.load-buttons button {
+    width: 100px;
+    text-align: center;
+    padding: 3px 3px;
+    font-size: 14px;
+    font-weight: bold;
+    color: rgb(22, 22, 22);
+    background-color: white;
+    border: 1px solid tomato;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.load-buttons button:hover {
+    background-color: tomato;
+    transform: scale(1.05);
+}
+
+.load-buttons button:active {
+    background-color: red;
+    transform: scale(0.98);
+}

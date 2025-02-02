@@ -14,7 +14,32 @@
     gap: 30px;
     row-gap: 50px;
   }
-  
+
+  /* Style for Load More and Load Less buttons */
+.load-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Space between buttons */
+  margin-top: 20px;
+}
+
+.load-buttons button {
+  width: 115px;
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color: rgb(182, 167, 165);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.load-buttons button:hover {
+  background-color: #cc5500;
+  opacity: 80%;
+}
+
   .no-items-message {
     text-align: center;
     font-size: 25px;
