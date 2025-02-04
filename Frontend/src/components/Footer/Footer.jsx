@@ -42,7 +42,9 @@ const Footer = () => {
           <h6>GET IN TOUCH</h6>
           <ul>
             <li>
-              <IoMdCall  style={{marginLeft:"0px"}}/> 02100000
+              <IoMdCall  style={{marginLeft:"0px"}}/> 9815371330 <br />
+              <IoMdCall  style={{marginLeft:"0px"}}/> 9812311218 <br />
+              <IoMdCall  style={{marginLeft:"0px"}}/> 9804341280
             </li>
             <li>
               <a href="https://www.gmail.com/" target="_blank">
@@ -51,17 +53,17 @@ const Footer = () => {
             </li>
           </ul>
           <div className="footer-social-icons">
-            <a href="https://www.facebook.com/"  className="facebook" target="_blank">
+            <a href="https://www.facebook.com/profile.php?id=61572237497892"  className="facebook" target="_blank">
               <FaFacebook
                 style={{ height: "25px", width: "25px", marginRight: "20px", marginLeft:"1rem", marginTop:"0.5rem", color:"#3b5998"}}
               />
             </a>
-            <a href="https://www.instagram.com/" target="_blank">
+            <a href="https://www.instagram.com/khaja_bhayo/" target="_blank">
               <FaInstagramSquare
                style={{ height: "25px", width: "25px", marginRight: "20px", marginTop:"0.5rem", color:"#e1306c"}}
               />
             </a>
-            <a href="https://www.twitter.com/" target="_blank"> 
+            <a href="https://x.com/BhayoKhaja2396" target="_blank"> 
               <FaTwitter style={{ height: "25px", width: "25px", marginTop:"0.5rem",color:"#1da1f2"}} />
             </a>
           </div>
