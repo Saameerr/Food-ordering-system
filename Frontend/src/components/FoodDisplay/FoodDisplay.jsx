@@ -6,21 +6,10 @@ import FoodItem from "../FoodItem/FoodItem";
 const FoodDisplay = ({ category }) => {
   const { food_list } = useContext(StoreContext);
   const [visibleCount, setVisibleCount] = useState(12);
-  const [expanded, setExpanded] = useState(false);
 
   const filteredFoodItems = food_list.filter(
     (item) => category === "All" || category === item.category
   );
-
-  const handleLoadMore = () => {
-    setVisibleCount((prevCount) =>
-      Math.min(prevCount + 12, filteredFoodItems.length)
-    );
-  };
-
-  const handleLoadLess = () => {
-    setVisibleCount((prevCount) => Math.max(prevCount - 12, 12));
-  };
 
   return (
     <div className="food-display" id="food-display">
@@ -28,10 +17,8 @@ const FoodDisplay = ({ category }) => {
 
       <div className="food-display-list">
         {filteredFoodItems.length === 0 ? (
-          // Show "Items not found" if no items match the selected category
-          <p className="no-items-message">Opps! Items not found</p>
+          <p className="no-items-message">Oops! Items not found</p>
         ) : (
-          // Render only the visible FoodItem components
           filteredFoodItems
             .slice(0, visibleCount)
             .map((item, index) => (
@@ -46,12 +33,20 @@ const FoodDisplay = ({ category }) => {
             ))
         )}
       </div>
-      <div className="load-buttons">
-        <button onClick={handleLoadMore}>Load More</button>
-        {visibleCount > 12 && (
-          <button onClick={handleLoadLess}>Load Less</button>
-        )}
-      </div>
+
+      {filteredFoodItems.length > 0 && (
+        <div className="load-buttons">
+          <button onClick={() => setVisibleCount((prev) => Math.min(prev + 12, filteredFoodItems.length))}>
+            Load More
+          </button>
+          {visibleCount > 12 && (
+            <button onClick={() => setVisibleCount((prev) => Math.max(prev - 12, 12))}>
+              Load Less
+            </button>
+          )}
+        </div>
+      )}
+
       <br />
       <br />
       <hr />
