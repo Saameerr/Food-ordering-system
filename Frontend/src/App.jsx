@@ -18,6 +18,7 @@ import PaymentForm from "./components/Payment/PaymentForm.jsx";
 import Success from "./components/Payment/Success.jsx";
 import Failure from "./components/Payment/Failure.jsx";
 import MyOrders from "./pages/MyOrders/MyOrders.jsx";
+import CashonDelivery from "./pages/PlaceOrder/CashonDelivery.jsx";
 // Import CategoryPage component
 import CategoryPage from "./components/ItemDetails/CategoryPage.jsx"; // Adjust path if necessary
 
@@ -50,6 +51,7 @@ const App = () => {
           <Route path="/category/:categoryName" element={<CategoryPage />} /> {/* Category page */}
 
           <Route path="/order" element={<PlaceOrder />} />
+          <Route path ="/codMsg" element={<CashonDelivery/>}/>
           <Route path="/paymentform" element={<PaymentForm />} />
           <Route path="/payment-success" element={<Success />} />
           <Route path="/payment-failure" element={<Failure />} />

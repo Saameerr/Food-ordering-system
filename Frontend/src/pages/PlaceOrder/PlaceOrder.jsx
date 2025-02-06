@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import L from "leaflet"; // Import Leaflet
 import "leaflet/dist/leaflet.css";
 import "./PlaceOrder.css";
-import axois from "axios";
+import axios from "axios";
 
 const PlaceOrder = () => {
   const {
@@ -61,7 +61,7 @@ const PlaceOrder = () => {
   
     try {
       // Place the order via API
-      const response = await axois.post(url + "/api/order/place", orderData, {
+      const response = await axios.post(url + "/api/order/place", orderData, {
         headers: { token },
       });
   
@@ -175,31 +175,18 @@ const PlaceOrder = () => {
       toast.error("Please enter a valid 10-digit phone number");
       return;
     }
-
     if (paymentOption === "digitalPayment") {
       navigate("/PaymentForm", { state: { totalAmount } });
     } else if (paymentOption === "cashOnDelivery") {
-      toast.success(
-        "You have selected Cash on Delivery. Your order will be placed."
-      );
+      clearCart(); // Cart clear garne
+      setTimeout(() => {
+        navigate("/codMsg");
+      }, 100); // 2 sec paxi navigate garne
     } else {
       toast.error("Please select a payment method before proceeding.");
     }
-        // Clear the cart after the successful order
-         // Handle payment options
-  if (paymentOption === "digitalPayment") {
-    // For digital payment (E-Sewa), navigate to the payment form
-    navigate("/PaymentForm", { state: { totalAmount } });
-  } else if (paymentOption === "cashOnDelivery") {
-    // For cash on delivery, clear the cart immediately after order is placed
-    toast.success(
-      "You have selected Cash on Delivery. Your order will be placed."
-    );
-    clearCart(); // Clear the cart for Cash on Delivery
-  } else {
-    toast.error("Please select a payment method before proceeding.");
-  } 
   };
+    
 
   const openMap = () => {
     navigator.geolocation.getCurrentPosition(

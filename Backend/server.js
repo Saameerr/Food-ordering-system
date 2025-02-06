@@ -7,7 +7,7 @@ import 'dotenv/config'
 import cartRouter from "./routes/cartRoute.js"
 import bodyParser from "body-parser"
 import { EsewaInitiatePayment, paymentStatus } from "./controllers/esewa.controller.js";
-import ordrRouter from "./routes/orderRoute.js"
+import orderRouter from "./routes/orderRoute.js"
 
 
 
@@ -33,7 +33,7 @@ app.use("/images",express.static('uploads'))
 app.use("/api/user", userRouter)
 app.use("/api/cart",cartRouter)
 
-app.use("/api/order",ordrRouter)
+app.use("/api/order",orderRouter)
 
 app.post("/initiate-payment", EsewaInitiatePayment);
 app.post("/payment-status", paymentStatus);
