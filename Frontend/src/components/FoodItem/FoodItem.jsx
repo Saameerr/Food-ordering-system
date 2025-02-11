@@ -6,21 +6,9 @@ import { StoreContext } from "../../Context/StoreContext";
 const FoodItem = ({ id, name, price, description, image }) => {
   const { cartItems, addToCart, removeFromCart, url } =
     useContext(StoreContext);
-
-  const [orderCount, setOrderCount] = useState(() => {
-    const savedCount = localStorage.getItem(`orderCount-${id}`);
-    return savedCount ? parseInt(savedCount, 10) : 0;
-  });
-
   const [isExpanded, setIsExpanded] = useState(false);
-
-  useEffect(() => {
-    localStorage.setItem(`orderCount-${id}`, orderCount);
-  }, [orderCount, id]);
-
   const handleOrder = () => {
     addToCart(id);
-    setOrderCount((prevCount) => prevCount + 1);
   };
 
   return (
@@ -55,12 +43,9 @@ const FoodItem = ({ id, name, price, description, image }) => {
         )}
 
         <div className="food-item-info">
-          {/* <p className="food-item-name"> */}
-          {/* {name}{" "}
-            {orderCount > 0 && (
-              <span className="order-count">({orderCount} Ordered)</span>
-            )} */}
-          {/* </p> */}
+          <p className="food-item-name">
+          {name}{" "}
+          </p>
           <p className="food-item-desc">
             {isExpanded
               ? description
