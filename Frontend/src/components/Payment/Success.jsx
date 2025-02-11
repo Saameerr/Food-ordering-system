@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { base64Decode } from "esewajs";
 import axios from "axios";
-import './success.css'
+import "./success.css";
 
 const Success = () => {
   const [isSuccess, setIsSuccess] = useState(false);
@@ -18,7 +18,7 @@ const Success = () => {
   if (!token) {
     return (
       <div className="success">
-           <img src="invalid.png" alt="" />
+        <img src="invalid.png" alt="" />
         <h1>Invalid Request</h1>
         <p>No payment information was provided.</p>
         <button onClick={() => navigate("/")} className="go-home-button">
@@ -47,9 +47,12 @@ const Success = () => {
 
   const verifyPaymentAndUpdateStatus = async () => {
     try {
-      const response = await axios.post("http://localhost:4000/payment-status", {
-        product_id: decoded.transaction_uuid,
-      });
+      const response = await axios.post(
+        "http://localhost:4000/payment-status",
+        {
+          product_id: decoded.transaction_uuid,
+        }
+      );
       if (response.status === 200) {
         setIsLoading(false);
         setIsSuccess(true);
@@ -69,7 +72,7 @@ const Success = () => {
   if (!isLoading && !isSuccess)
     return (
       <div className="success">
-           <img src="fail_icon.png" alt="" />
+        <img src="fail_icon.png" alt="" />
         <h1>Oops!..Error occurred on confirming payment</h1>
         <h2>We will resolve it soon.</h2>
         <button onClick={() => navigate("/")} className="go-home-button">
