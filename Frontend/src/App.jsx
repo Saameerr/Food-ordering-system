@@ -34,6 +34,7 @@ const App = () => {
     "/payment-success",
     "/payment-failure",
     "/MyOrders",
+    "/codMsg",
   ];
 
   return (
