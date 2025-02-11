@@ -2,7 +2,7 @@ import React from "react";
 import "./Footer.css";
 // import {assets} from '../assets/assets'
 import { FaFacebook } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { FaInstagramSquare } from "react-icons/fa";
 import { IoMdCall } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
@@ -64,7 +64,7 @@ const Footer = () => {
               />
             </a>
             <a href="https://x.com/BhayoKhaja2396" target="_blank"> 
-              <FaTwitter style={{ height: "25px", width: "25px", marginTop:"0.5rem",color:"#1da1f2"}} />
+              <FaXTwitter style={{ height: "25px", width: "25px", marginTop:"0.5rem",color:"#000000"}} />
             </a>
           </div>
         </div>
