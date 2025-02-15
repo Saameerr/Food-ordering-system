@@ -63,7 +63,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
         <div className="food-item-info">
           <div className="info">
           <p className="food-item-name">{name}</p>
-          <p className="food-item-ordered-count">{orderedCount === 0 ? "Be the first to order!" : `Ordered: ${orderedCount} times`}</p>
+          <p className="food-item-ordered-count">{orderedCount === 0 ? "🔥 Be the first to order!" : `🛒 Ordered: ${orderedCount} times`}</p>
           </div>
         
           <p className="food-item-desc">
