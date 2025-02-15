@@ -24,11 +24,11 @@
   }
   
   .food-item-ordered-count {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600; /* Make the text bold */
     color: #ff5722; /* Use an attractive color like orange */
     background-color: #fff3e0; /* Light orange background */
-    padding: 4px 8px; /* Add some padding */
+    padding: 2px 4px; /* Add some padding */
     border-radius: 12px; /* Rounded corners */
     border: 1px solid #ffcc80; /* Subtle border */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
