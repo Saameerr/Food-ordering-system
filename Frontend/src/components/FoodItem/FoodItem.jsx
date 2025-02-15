@@ -2,11 +2,29 @@ import React, { useContext, useState, useEffect } from "react";
 import "./FoodItem.css";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../Context/StoreContext";
+import axios from "axios"
 
 const FoodItem = ({ id, name, price, description, image }) => {
   const { cartItems, addToCart, removeFromCart, url } =
     useContext(StoreContext);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [orderedCount, setOrderedCount] = useState(0);
+
+  // Fetch the ordered count when the component mounts
+  useEffect(() => {
+    const fetchOrderedCount = async () => {
+      try {
+        const response = await axios.get(`${url}/api/order/ordered-count/${id}`);
+        if (response.data.success) {
+          setOrderedCount(response.data.orderedCount);
+        }
+      } catch (error) {
+        console.error("Error fetching ordered count:", error);
+      }
+    };
+    fetchOrderedCount();
+  }, [id, url]);
+
   const handleOrder = () => {
     addToCart(id);
   };
@@ -43,9 +61,11 @@ const FoodItem = ({ id, name, price, description, image }) => {
         )}
 
         <div className="food-item-info">
-          <p className="food-item-name">
-          {name}{" "}
-          </p>
+          <div className="info">
+          <p className="food-item-name">{name}</p>
+          <p className="food-item-ordered-count">{orderedCount === 0 ? "Be the first to order!" : `Ordered: ${orderedCount} times`}</p>
+          </div>
+        
           <p className="food-item-desc">
             {isExpanded
               ? description
