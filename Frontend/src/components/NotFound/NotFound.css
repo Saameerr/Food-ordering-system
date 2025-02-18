@@ -1,0 +1,18 @@
+.image{
+    display: flex;
+   
+
+    margin-left: 20rem;
+}
+.text{
+   margin-top: 30rem;
+   margin-left: -18rem;
+   border: 1px solid;
+   color: white;
+   background-color: red;
+   font-weight: bold;
+   padding: 7px;
+}
+.text:hover{
+    background-color: rgb(169, 23, 23);
+}

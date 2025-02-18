@@ -19,6 +19,7 @@ import Success from "./components/Payment/Success.jsx";
 import Failure from "./components/Payment/Failure.jsx";
 import MyOrders from "./pages/MyOrders/MyOrders.jsx";
 import CashonDelivery from "./pages/PlaceOrder/CashonDelivery.jsx";
+import NotFound from "./components/NotFound/NotFound.jsx";
 // Import CategoryPage component
 import CategoryPage from "./components/ItemDetails/CategoryPage.jsx"; // Adjust path if necessary
 
@@ -35,6 +36,7 @@ const App = () => {
     "/payment-failure",
     "/MyOrders",
     "/codMsg",
+    "/*",
   ];
 
   return (
@@ -44,6 +46,7 @@ const App = () => {
         <Navbar setShowLogin={setShowLogin} />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="*" element={<NotFound />} />
           <Route path="/home" element={<Home />} />
           <Route path="/cart" element={<Cart setShowLogin={setShowLogin} />} />
           <Route path="/item/:id" element={<ItemDetailsPage />} /> {/* Route for item details */}
