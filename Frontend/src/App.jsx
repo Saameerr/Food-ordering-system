@@ -20,8 +20,7 @@ import Failure from "./components/Payment/Failure.jsx";
 import MyOrders from "./pages/MyOrders/MyOrders.jsx";
 import CashonDelivery from "./pages/PlaceOrder/CashonDelivery.jsx";
 import NotFound from "./components/NotFound/NotFound.jsx";
-// Import CategoryPage component
-import CategoryPage from "./components/ItemDetails/CategoryPage.jsx"; // Adjust path if necessary
+import CategoryPage from "./components/ItemDetails/CategoryPage.jsx";
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -45,8 +44,7 @@ const App = () => {
       <div className="app">
         <Navbar setShowLogin={setShowLogin} />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/" element={<Home />} />       
           <Route path="/home" element={<Home />} />
           <Route path="/cart" element={<Cart setShowLogin={setShowLogin} />} />
           <Route path="/item/:id" element={<ItemDetailsPage />} /> {/* Route for item details */}
@@ -69,6 +67,7 @@ const App = () => {
           <Route path="/c_cod" element={<C_cod />} />
           
           <Route path="/myorders" element={<MyOrders />} />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
 
         {/* Conditionally render Footer only on non-footer hidden routes */}
