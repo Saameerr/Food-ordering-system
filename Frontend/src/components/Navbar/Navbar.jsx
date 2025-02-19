@@ -94,9 +94,21 @@ const Navbar = ({ setShowLogin }) => {
   // Function to handle menu navigation
   const handleMenuClick = (menuName, sectionId) => {
     setMenu(menuName);
+  
     if (sectionId === "cart") {
-      navigate("/cart"); // Navigate to cart page
-    } else {
+      navigate("/cart"); // Navigate to Cart
+    } 
+    else if (sectionId === "explore-menu" || sectionId === "footer") {
+      if (location.pathname !== "/") {
+        navigate("/"); // Navigate to Home if not already there
+        setTimeout(() => {
+          document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      } else {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+      }
+    } 
+    else {
       const section = document.getElementById(sectionId);
       if (section) {
         section.scrollIntoView({ behavior: "smooth" });
@@ -129,16 +141,17 @@ const Navbar = ({ setShowLogin }) => {
       </Link>
       <ul className="navbar-menu">
         <li
+        
           onClick={() => handleMenuClick("Home", "home")}
           className={menu === "Home" ? "active" : ""}
         >
-          Home
+          <Link to="/">Home</Link>
         </li>
         <li
           onClick={() => handleMenuClick("Menu", "explore-menu")}
           className={menu === "Menu" ? "active" : ""}
         >
-          Menu
+         Menu
         </li>
         <li
           onClick={() => handleMenuClick("Contact us", "footer")}
