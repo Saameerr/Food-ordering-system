@@ -6,7 +6,7 @@
     align-items: center;
     text-align: center;
     padding: 20px;
-    background-color: #f8d7da; /* Light red background for failure */
+    background-color: #d4edda; /* Light red background for failure */
     color: #721c24; /* Dark red text for error messages */
     border: 1px solid #f5c6cb;
     border-radius: 8px;
