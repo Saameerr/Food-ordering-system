@@ -39,9 +39,8 @@ const PlaceOrder = () => {
   const deliveryFee = formState.deliveryType === "takeaway" ? 0 : 85;
   const totalAmount = getTotalCartAmount() + deliveryFee;
 
-  const placeOrder = async (event) => {
+  const placeOrders = async (event) => {
     event.preventDefault();
-    
     // Prepare the order items
     let orderItems = [];
     food_list.forEach((item) => {
@@ -51,26 +50,68 @@ const PlaceOrder = () => {
         orderItems.push(itemInfo);
       }
     });
-  
+
+    if (formState.deliveryType === "homeDelivery" && !formState.locationName) {
+      toast.error("Please select a location before proceeding.");
+      return;
+    }
+
+    if (!formState.deliveryDate) {
+      toast.error("Please select a delivery date before proceeding.");
+      return;
+    }
+
+    if (!formState.deliveryTime) {
+      toast.error("Please select a delivery time before proceeding.");
+      return;
+    }
+
+    if (!formState.phoneNumber) {
+      toast.error("Please enter a valid phone number before proceeding.");
+      return;
+    }
+
+    if (
+      !formState.phoneNumber ||
+      formState.phoneNumber.length !== 10 ||
+      !/^[0-9]+$/.test(formState.phoneNumber) ||
+      !/^(97|98)/.test(formState.phoneNumber)
+    ) {
+      toast.error("Please enter a valid 10-digit phone number");
+      return;
+    }
+
+    if (!formState.paymentOption) {
+      toast.error("Please select a payment method before proceeding.");
+      return;
+    }
+
     // Prepare order data
     let orderData = {
       address: formState,
       items: orderItems,
       amount: getTotalCartAmount() + deliveryFee, // Added delivery fee
     };
-  
+
     try {
       // Place the order via API
       const response = await axios.post(url + "/api/order/place", orderData, {
         headers: { token },
       });
-  
+
       if (response.data.success) {
-        const { session_url } = response.data;
-        
-  
+        if (formState.paymentOption === "digitalPayment") {
+          navigate("/PaymentForm", { state: { totalAmount } });
+        } else if (formState.paymentOption === "cashOnDelivery") {
+          clearCart(); // Cart clear garne
+          setTimeout(() => {
+            navigate("/codMsg");
+          }, 100); // 2 sec paxi navigate garne
+        }
+        // const { session_url } = response.data;
+
         // Redirect to payment or order confirmation page
-        window.location.replace(session_url);
+        // window.location.replace(session_url);
       } else {
         toast.error("Error placing the order. Please try again.");
       }
@@ -79,7 +120,6 @@ const PlaceOrder = () => {
       console.error("Error placing order:", error);
     }
   };
-  
 
   useEffect(() => {
     if (isMapVisible && userLocation) {
@@ -135,59 +175,6 @@ const PlaceOrder = () => {
     setFormState((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleProceedPayment = () => {
-    const {
-      deliveryType,
-      locationName,
-      deliveryDate,
-      deliveryTime,
-      phoneNumber,
-      paymentOption,
-    } = formState;
-  
-
-    if (deliveryType === "homeDelivery" && !locationName) {
-      toast.error("Please select a location before proceeding.");
-      return;
-    }
-
-    if (!deliveryDate) {
-      toast.error("Please select a delivery date before proceeding.");
-      return;
-    }
-
-    if (!deliveryTime) {
-      toast.error("Please select a delivery time before proceeding.");
-      return;
-    }
-
-    if (!phoneNumber) {
-      toast.error("Please enter a valid phone number before proceeding.");
-      return;
-    }
-
-    if (
-      !phoneNumber ||
-      phoneNumber.length !== 10 ||
-      !/^[0-9]+$/.test(phoneNumber) ||
-      !/^(97|98)/.test(phoneNumber)
-    ) {
-      toast.error("Please enter a valid 10-digit phone number");
-      return;
-    }
-    if (paymentOption === "digitalPayment") {
-      navigate("/PaymentForm", { state: { totalAmount } });
-    } else if (paymentOption === "cashOnDelivery") {
-      clearCart(); // Cart clear garne
-      setTimeout(() => {
-        navigate("/codMsg");
-      }, 100); // 2 sec paxi navigate garne
-    } else {
-      toast.error("Please select a payment method before proceeding.");
-    }
-  };
-    
-
   const openMap = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -224,7 +211,7 @@ const PlaceOrder = () => {
   }
 
   return (
-    <form onSubmit={placeOrder}>
+    <form onSubmit={placeOrders}>
       <div className="place-order-container">
         <div className="place-order-left">
           <h1 className="heading">Checkout</h1>
@@ -356,7 +343,6 @@ const PlaceOrder = () => {
             </button>
             <button
               type="submit"
-              onClick={handleProceedPayment}
               className="proceed-button"
             >
               Proceed for Payment
@@ -375,13 +361,14 @@ const PlaceOrder = () => {
                     <div className="item-details">
                       <div className="sub-item">
                         <h4>{item.name}</h4>
-                        <p style={{marginButton:"2rem",gap:"2rem"}}>
+                        <p style={{ marginButton: "2rem", gap: "2rem" }}>
                           <i>Price: Rs. {item.price}</i>
                         </p>
-                        <p style={{marginTop:"-1rem"}}>
-                        {" "}
-                        <i>Quantity: {cartItems[item._id]}</i>
-                      </p>{" "}<hr className="hr" />
+                        <p style={{ marginTop: "-1rem" }}>
+                          {" "}
+                          <i>Quantity: {cartItems[item._id]}</i>
+                        </p>{" "}
+                        <hr className="hr" />
                       </div>
                     </div>
                   </div>
